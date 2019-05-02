@@ -8,47 +8,102 @@
             .Lucca {fill: #fff; stroke: black; stroke-width: 1px;}
         </style>
     </head>
-    <body>
-        <script type="text/javascript">
-            var width = 960;
-            var height = 960;
-            
-            // define map projection
-            var projection = d3.geoAlbers()
-                    .center([-2, 44])
-                    .rotate([347, 0])
-                    .parallels([35, 45])
-                    .scale(10000)
-                    .translate([width / 2, height / 2]);
+    <!-- <body> -->
+    <svg width="960" height="960"></svg>
+    <script type="text/javascript">
+        var width = 960;
+        var height = 960;
+        
+        // define map projection
+        var projection = d3.geoAlbers()
+                .center([-2, 44])
+                .rotate([347, 0])
+                .parallels([35, 45])
+                .scale(10000)
+                .translate([width / 2, height / 2]);
 
-            // define path generator
-            var path = d3.geoPath()
-                          .projection(projection);
+        // define path generator
+        var path = d3.geoPath()
+                        .projection(projection);
 
-            // create svg element
-            var svg = d3.select("body")
-                        .append("svg")
-                        .attr("width", width)
-                        .attr("height", height);
+        // create svg element
+        var svg = d3.select("svg"),
+            margin = {right: 50, left: 50},
+            width = +svg.attr("width") - margin.left - margin.right
+            height = +svg.attr("height");
+        // using <body> instead of <svg>
+        // var svg = d3.select("body")
+        //             .append("svg")
+        //             .attr("width", width)
+        //             .attr("height", height);
 
-            // construct map
-            d3.json("http://127.0.0.1:8887/maps/italy-provinces_geojson.json").then(function(json) {
-                svg.selectAll("path")
-                    .data(json.features)
-                    .join("path")
-                    .attr("class", function(d) { return d.properties.NAME_2; })
-                    .attr("fill", "#3d3d3d")
-                    .attr("stroke", "white")
-                    .attr("stroke-linejoin", "round")
-                    .attr("stroke-width", ".05%")
-                    .attr("d", path);
-            });
+        // create slider
+        var slider = svg.append("g") // g short for group
+            .attr("class", "slider")
+            .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+        
+        // state variable, to be changed by dropdown (future slider)
+        var state = ({year: "1333"})
 
-            // debt data
-            d3.csv("http://127.0.0.1:8887/DALME_datasets/lucca_debt.csv").then(function(csv) {
-                svg.selectAll("path")
-                    .data(csv)
-                    .enter().append("circle")
+        // construct map
+        d3.json("http://127.0.0.1:8887/maps/italy-provinces_geojson.json").then(function(json) {
+            svg.selectAll("path")
+                .data(json.features)
+                .join("path")
+                .attr("class", function(d) { return d.properties.NAME_2; })
+                .attr("fill", "#3d3d3d")
+                .attr("stroke", "white")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-width", ".05%")
+                .attr("d", path);
+        });
+
+        // debt data
+        d3.csv("http://127.0.0.1:8887/DALME_datasets/lucca_debt.csv").then(function(data) {
+            filtered_data = data.filter(row => isYear(row, state.year))
+
+            dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
+            enterdots = dots.enter()
+                            .append("circle")
+                            .attr("class", "dot")
+                            .attr("cx", function(d) {
+                                return projection([d["lon"], d["lat"] ])[0];
+                            })
+                            .attr("cy", function(d) {
+                                return projection([d["lon"], d["lat"] ])[1];
+                            })
+                            .attr("r", 1)
+                            .attr("fill", "red");
+
+            // selector
+            var select =  d3.select("body")
+                .append("div")
+                .append("select")
+
+            select
+                .on("change", function(d) {
+                    var value = d3.select(this).property("value");
+                    update(value);
+                });
+
+            // using a dropdown for now
+            select.selectAll("option")
+                .data(d3.map(data, function(d){ return d.date_year; }).keys()) // remove duplicate years
+                .enter()
+                .append("option")
+                .attr("value", function(d) { return d; })
+                .text(function(d) { return d; });
+            function update(year) {
+                state.year = year;
+                var newData = data.filter(row => isYear(row, state.year));
+
+                dots = svg.selectAll(".dot").data(newData);
+                dots.exit()
+                    .remove();
+                
+                dots.enter()
+                    .append("circle")
+                    .attr("class", "dot")
                     .attr("cx", function(d) {
                         return projection([d["lon"], d["lat"] ])[0];
                     })
@@ -57,8 +112,24 @@
                     })
                     .attr("r", 1)
                     .attr("fill", "red");
-            });
+                dots
+                    .transition('update') // probably don't really need this transition
+                    .duration(500)
+                    .attr("cx", function(d) {
+                        return projection([d["lon"], d["lat"] ])[0];
+                    })
+                    .attr("cy", function(d) {
+                        return projection([d["lon"], d["lat"] ])[1];
+                    })
+                    .attr("r", 1)
+                    .attr("fill", "red");
+            }
+        });
 
-        </script>
-    </body>
+        function isYear(row, year) {
+            return row.date_year === year;
+        }
+
+    </script>
+    <!-- </body> -->
 </html>
