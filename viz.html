@@ -19,7 +19,8 @@
                 .center([-2, 44])
                 .rotate([347, 0])
                 .parallels([35, 45])
-                .scale(10000)
+                // .scale(10000)
+                .scale(40000)
                 .translate([width / 2, height / 2]);
 
         // define path generator
@@ -46,7 +47,7 @@
         var state = ({year: "1333"})
 
         // construct map
-        d3.json("http://127.0.0.1:8887/maps/italy-provinces_geojson.json").then(function(json) {
+        d3.json("maps/italy-provinces_geojson.json").then(function(json) {
             svg.selectAll("path")
                 .data(json.features)
                 .join("path")
@@ -59,7 +60,7 @@
         });
 
         // debt data
-        d3.csv("http://127.0.0.1:8887/DALME_datasets/lucca_debt.csv").then(function(data) {
+        d3.csv("DALME_datasets/lucca_debt.csv").then(function(data) {
             filtered_data = data.filter(row => isYear(row, state.year) && hasLocation(row));
 
             dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
