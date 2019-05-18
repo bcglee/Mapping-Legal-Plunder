@@ -9,9 +9,9 @@
         </style>
     </head>
     <!-- <body> -->
-    <svg width="400" height="400"></svg>
+    <svg width="1000" height="400"></svg>
     <script type="text/javascript">
-        var width = 400;
+        var width = 1000;
         var height = 400;
 
         // define map projection
@@ -20,38 +20,26 @@
                 .rotate([347, 0])
                 .parallels([35, 45])
                 // .scale(10000)
-                .scale(10000)
+                .scale(20000)
                 .translate([width / 2, height / 2]);
 
         // define path generator
         var path = d3.geoPath()
                         .projection(projection);
 
-        //const zoom = d3.zoom()
-        //               .scaleExtent([1, 8])
-        //               .on('zoom', zoomed);
-
+        //defines the zoom function
+        var zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
+                      .scaleExtent([0.5, 8])
+                      .on("zoom", zoomed);
 
         // create svg element
-        var svg = d3.select("svg").call(d3.zoom().on("zoom", function () {
-              svg.attr("transform", d3.event.transform)
-            })),
-        //var svg = d3.select("svg"),
+        var svg = d3.select("svg"),
             margin = {right: 50, left: 50},
             width = +svg.attr("width") - margin.left - margin.right
             height = +svg.attr("height");
-        // using <body> instead of <svg>
-        // var svg = d3.select("body")
-        //             .append("svg")
-        //             .attr("width", width)
-        //             .attr("height", height);
 
-        //svg.call(zoom);
-
-        // create slider
-        var slider = svg.append("g") // g short for group
-            .attr("class", "slider")
-            .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+        //calls the zoom function
+        svg.call(zoom);
 
         // state variable, to be changed by dropdown (future slider)
         var state = ({year: "1333"})
@@ -198,7 +186,7 @@
         }
 
         function zoomed() {
-                         g
+                         svg
                            .selectAll('path') // To prevent stroke width from scaling
                            .attr('transform', d3.event.transform);
                        }
