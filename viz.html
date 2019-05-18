@@ -9,26 +9,34 @@
         </style>
     </head>
     <!-- <body> -->
-    <svg width="960" height="960"></svg>
+    <svg width="400" height="400"></svg>
     <script type="text/javascript">
-        var width = 960;
-        var height = 960;
-        
+        var width = 400;
+        var height = 400;
+
         // define map projection
         var projection = d3.geoAlbers()
                 .center([-2, 44])
                 .rotate([347, 0])
                 .parallels([35, 45])
                 // .scale(10000)
-                .scale(40000)
+                .scale(10000)
                 .translate([width / 2, height / 2]);
 
         // define path generator
         var path = d3.geoPath()
                         .projection(projection);
 
+        //const zoom = d3.zoom()
+        //               .scaleExtent([1, 8])
+        //               .on('zoom', zoomed);
+
+
         // create svg element
-        var svg = d3.select("svg"),
+        var svg = d3.select("svg").call(d3.zoom().on("zoom", function () {
+              svg.attr("transform", d3.event.transform)
+            })),
+        //var svg = d3.select("svg"),
             margin = {right: 50, left: 50},
             width = +svg.attr("width") - margin.left - margin.right
             height = +svg.attr("height");
@@ -38,11 +46,13 @@
         //             .attr("width", width)
         //             .attr("height", height);
 
+        //svg.call(zoom);
+
         // create slider
         var slider = svg.append("g") // g short for group
             .attr("class", "slider")
             .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
-        
+
         // state variable, to be changed by dropdown (future slider)
         var state = ({year: "1333"})
 
@@ -109,14 +119,14 @@
                     .duration(duration)
                     .style("opacity", 0)
                     .attr("r", 0);
-                
+
                 // remove exit()
                 dots.exit()
                     .transition("remove")
                     .duration(0)
                     .delay(duration)
                     .remove();
-                
+
                 // create points for enter()
                 // dots.enter()
                 //     .append("circle")
@@ -186,6 +196,13 @@
             }
             return row.lat !== '';
         }
+
+        function zoomed() {
+                         g
+                           .selectAll('path') // To prevent stroke width from scaling
+                           .attr('transform', d3.event.transform);
+                       }
+
 
     </script>
     <!-- </body> -->
