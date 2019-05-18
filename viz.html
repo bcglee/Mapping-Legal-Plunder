@@ -4,9 +4,7 @@
         <meta charset="utf-8">
         <title>Lucca Debt</title>
         <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
-        <style type="text/css">
-            .Lucca {fill: #fff; stroke: black; stroke-width: 1px;}
-        </style>
+        <script src="https://unpkg.com/topojson@3"></script>
     </head>
     <!-- <body> -->
     <svg width="1000" height="600"></svg>
@@ -47,16 +45,11 @@
         // state variable, to be changed by dropdown (future slider)
         var state = ({year: "1333"})
 
-        // construct map
-        d3.json("maps/italy-provinces_geojson.json").then(function(json) {
+        d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function(map) {
             svg.selectAll("path")
-                .data(json.features)
+                .data(topojson.feature(map, map.objects.custom).features)
                 .join("path")
-                .attr("class", function(d) { return d.properties.NAME_2; })
                 .attr("fill", "#3d3d3d")
-                .attr("stroke", "white")
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-width", ".05%")
                 .attr("d", path);
         });
 
