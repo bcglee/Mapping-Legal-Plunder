@@ -25,16 +25,18 @@
         var path = d3.geoPath()
                         .projection(projection);
 
-        //defines the zoom function
-        var zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
-                      .scaleExtent([0.5, 8])
-                      .on("zoom", zoomed);
-
         // create svg element
         var svg = d3.select("svg"),
             margin = {right: 50, left: 50},
+            //width = svg.attr("width")
             width = +svg.attr("width") - margin.left - margin.right
             height = +svg.attr("height");
+
+            //defines the zoom function
+            var zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
+                          .scaleExtent([0.5, 8])
+                          .translateExtent([[0,0], [width+margin.left+margin.right, height]])
+                          .on("zoom", zoomed);
 
         // sets dot size for plotting
         var dot_size = 3
@@ -55,7 +57,7 @@
 
         svg.append('rect')
            .attr('width', width+margin.left+margin.right)
-           .attr('height', height+margin.left+margin.right)
+           .attr('height', height)
            .attr('fill', 'lightBlue');
 
         // debt data
@@ -188,29 +190,14 @@
 
         //function for zooming
         function zoomed() {
-                         //transforms the map appropriately (with zoom)
-                         svg
+                        //transforms the map appropriately (with zoom)
+                          svg
                            .selectAll('path')
                            .attr('transform', d3.event.transform);
                         //transforms the dots appropriately (with zoom)
                           svg
                            .selectAll(".dot")
                            .attr('transform', d3.event.transform);
-
-                           var e = d3.event,
-                               // now, constrain the x and y components of the translation by the
-                               // dimensions of the viewport
-                               tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale)),
-                               ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
-                           // then, update the zoom behavior's internal translation, so that
-                           // it knows how to properly manipulate it on the next movement
-                           zoom.translate([tx, ty]);
-                           // and finally, update the <g> element's transform attribute with the
-                           // correct translation and scale (in reverse order)
-                           g.attr("transform", [
-                             "translate(" + [tx, ty] + ")",
-                             "scale(" + e.scale + ")"
-                           ].join(" "));
                        }
 
 
