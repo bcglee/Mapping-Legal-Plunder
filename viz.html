@@ -18,7 +18,7 @@
                 .rotate([347, 0])
                 .parallels([35, 45])
                 // .scale(10000)
-                .scale(20000)
+                .scale(10000)
                 .translate([width / 2, height / 2]);
 
         // define path generator
@@ -34,12 +34,12 @@
 
             //defines the zoom function
             var zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
-                          .scaleExtent([0.5, 8])
+                          .scaleExtent([1, 8])
                           .translateExtent([[0,0], [width+margin.left+margin.right, height]])
                           .on("zoom", zoomed);
 
         // sets dot size for plotting
-        var dot_size = 3
+        var dot_size = 2
 
         //calls the zoom function
         svg.call(zoom);
