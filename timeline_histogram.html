@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<script src="//d3js.org/d3.v4.min.js"></script>
+
+<style>
+
+.bar rect  {
+  fill: steelblue;
+}
+
+.bar text {
+  fill: #fff;
+  font: 10px sans-serif;
+}
+
+</style>
+
+
+<body>
+
+<script>
+
+  //USED THIS WEBSITE:  https://bl.ocks.org/EmbraceLife/eed2f62f855854739ddf5e572d4322ed
+
+var parseDate = d3.isoParse,
+    formatCount = d3.format(",.0f");
+
+var margin = {top: 10, right: 30, bottom: 30, left: 30},
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+// ---- date data scale-map to px --------------------------
+//   1. assign xScale a scaleTime func
+var xScale = d3.scaleTime()
+// 	 2. set input or date range
+    .domain([new Date(1330, 0, 1), new Date(1345, 0, 1)])
+// 	 3. set output or px range
+    .rangeRound([0, width]);
+
+
+var yScale = d3.scaleLinear()
+    .range([height, 0]);
+
+var histogram = d3.histogram()
+
+// histogram func only use date value from each row of dataset
+// .value() is like a row function to d3.histogram()
+// as .row() to d3.tsv()
+    .value(function(d) { return d.date_full; })
+    .domain(xScale.domain())
+    .thresholds(xScale.ticks(d3.timeMonth)); //note error with xScale(x1) in rect!!
+
+  //from this:  https://stackoverflow.com/questions/40173533/customize-the-d3-month-or-year-tick-format
+  var xAxis = d3.axisBottom(xScale)
+    .tickFormat(function(date){
+      if (d3.timeMonth(date) < date) {
+        return d3.timeFormat('%b')(date);
+      } else {
+        return d3.timeFormat('%Y')(date);
+      }
+    });
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+        .selectAll(".tick text")
+          .style("text-anchor", "start")
+          .attr("x", 6)
+          .attr("y", 6);
+
+// apply date format func to date value of each row of data
+function type(d) {
+  d.date_full = parseDate(d.date_full);
+  return d;
+}
+
+// import data here
+d3.csv("DALME_datasets/lucca_debt_full_dates_cleaned.csv", type, function(error, data) {
+
+  if (error) throw error;
+
+
+// ---- apply data to histogram func -------------
+// meaning: regroup all data into different bins
+  var bins = histogram(data);
+// console.log(bins);
+
+
+  yScale.domain([0, d3.max(bins, function(d) { return d.length; })]);
+
+
+  var bar = svg.selectAll(".bar")
+      .data(bins)
+	    .enter().append("g")
+      .attr("class", "bar")
+      .attr("transform", function(d) { return "translate(" + xScale(d.x0) + "," + yScale(d.length) + ")"; });
+
+
+var rects =  bar.append("rect")
+      .attr("x", 1)
+      .attr("width", function(d) { console.log(xScale(d.x1), xScale(d.x0)); return xScale(d.x1) - xScale(d.x0) - 1;})
+      .attr("height", function(d) { return height - yScale(d.length); });
+
+  //bar.append("text")
+  //    .attr("dy", ".75em")// trial and error
+  //    .attr("y", 6) // text backdown 6 px
+  //    .attr("x", function(d) { return (xScale(d.x1) - xScale(d.x0)) / 2; })
+  //    .attr("text-anchor", "middle")
+  //    .text(function(d) { return formatCount(d.length); });
+});
+
+
+
+</script>
