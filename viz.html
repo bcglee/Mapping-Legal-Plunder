@@ -133,39 +133,29 @@
                 .attr("value", function(d) { return d; })
                 .text(function(d) { return d; });
 
+            // TODO: need to also update transform (translation & scale)
+            // in order to work with pan & zoom properly
             function update(year) {
                 state.year = year;
                 var newData = data.filter(row => isYear(row, state.year) && hasLocation(row));
-                // newData = newData.filter(row => hasLocation(row)); // remove rows w/o location data
                 var duration = 750; // (total transition time)/2
-
-                dots = svg.selectAll(".dot").data(newData);
 
                 // make all dots disappear
                 svg.selectAll(".dot")
+                    // transition.remove() requires element have no pending transitions,
+                    // so we change its class
+                    .attr("class", "old_dot")
                     .transition("leave")
+                    .remove()
                     .duration(duration)
                     .style("opacity", 0)
                     .attr("r", 0);
 
-                // remove exit()
-                dots.exit()
-                    .transition("remove")
-                    .duration(0)
-                    .delay(duration)
-                    .remove();
-
+                dots = svg.selectAll(".dot").data(newData);
+                
                 // create points for enter()
-                // dots.enter()
-                //     .append("circle")
-                //     .attr("class", "dot")
-                //     .attr("fill", "red")
-                //     .attr("r", 0);
                 dots.enter()
                     .append("circle")
-                    // .transition("move1") // may need to change name
-                    // .duration(0)
-                    // .delay(duration)
                     .attr("class", "dot")
                     .attr("cx", function(d) {
                         return projection([d["lon"], d["lat"] ])[0];
@@ -177,34 +167,6 @@
                     .style("opacity", 0)
                     .attr("r", 0);
 
-                // move new data to correct position, make visible
-                // dots.merge(dots)
-                //     .transition("move") // use a 0ms transition w/ delay to
-                //     // allow previous transition to finish
-                //     .duration(0)
-                //     .delay(duration)
-                //     .attr("cx", function(d) {
-                //         return projection([d["lon"], d["lat"] ])[0];
-                //     })
-                //     .attr("cy", function(d) {
-                //         return projection([d["lon"], d["lat"] ])[1];
-                //     })
-                //     .transition("enter")
-                //     .duration(duration)
-                //     .attr("r", 1)
-                //     .attr("fill", "red");
-                dots.transition("move") // use a 0ms transition w/ delay to
-                    // allow previous transition to finish
-                    .duration(0)
-                    .delay(duration)
-                    .attr("cx", function(d) {
-                        return projection([d["lon"], d["lat"] ])[0];
-                    })
-                    .attr("cy", function(d) {
-                        return projection([d["lon"], d["lat"] ])[1];
-                    });
-
-                // dots.merge(dots)
                 svg.selectAll(".dot")
                     .transition("enter")
                     .duration(duration)
@@ -219,9 +181,6 @@
         }
 
         function hasLocation(row) {
-            if (row.lat === '') {
-                console.log();
-            }
             return row.lat !== '';
         }
 
