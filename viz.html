@@ -55,7 +55,8 @@
         // state variable, to be changed by dropdown (future slider)
         var state = ({year: "1333"});
 
-        d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function(map) {
+        // d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function(map) {
+        d3.json("maps/italy.json").then(function(map) {
             svg.selectAll("path")
                 .data(topojson.feature(map, map.objects.custom).features)
                 .join("path")
@@ -155,7 +156,7 @@
 
                 dots = svg.selectAll(".dot").data(newData);
                 
-                // create (invisible) points for enter()
+                // create (invisible) points for enter(), which is all of the new data
                 dots.enter()
                     .append("circle")
                     .attr("class", "dot")
