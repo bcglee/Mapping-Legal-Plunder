@@ -270,7 +270,6 @@ var xAxis = d3.axisBottom(xScale)
 // apply date format func to date value of each row of data
 function type(d) {
 d.date_full = parseDate(d.date_full);
-console.log(d.date_full)
 return d;
 }
 
@@ -294,7 +293,41 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv",type).then(functi
     var rects =  bar.append("rect")
         .attr("x", 1)
         .attr("width", function(d) { return xScale(d.x1) - xScale(d.x0) - 1;})
-        .attr("height", function(d) { console.log(height); return height - yScale(d.length); });
+        .attr("height", function(d) { return height - yScale(d.length); });
+    var brush = d3.brushX()
+                  .extent([[0, 0], [width, height]])
+                  .on("start brush end", brushmoved);
+    var gBrush = svg2.append("g")
+                  .attr("class", "brush")
+                  .call(brush);
+    var brushResizePath = function(d) {
+    var e = +(d.type == "e"),
+        x = e ? 1 : -1,
+        y = height / 2;
+    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+}
+var handle = gBrush.selectAll(".handle--custom")
+  .data([{type: "w"}, {type: "e"}])
+  .enter().append("path")
+    .attr("class", "handle--custom")
+    .attr("stroke", "#000")
+    .attr("cursor", "ew-resize")
+    .attr("d", brushResizePath);
+
+gBrush.call(brush.move, [0.3, 0.5].map(xScale));
+
+function brushmoved() {
+  var s = d3.event.selection;
+  if (s == null) {
+    handle.attr("display", "none");
+    //circle.classed("active", false);
+  } else {
+    //var sx = s.map(x.invert);
+    //circle.classed("active", function(d) { return sx[0] <= d && d <= sx[1]; });
+    handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - height / 4] + ")"; });
+  }
+}
+
 });
 
 
