@@ -111,7 +111,7 @@
         // debt data
         d3.csv("data/DALME_datasets/lucca_debt.csv").then(function(data) {
             filtered_data = data.filter(row => isYear(row, state.year) && hasLocation(row));
-
+          
             dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
             enterdots = dots.enter()
                             .append("circle")
@@ -288,7 +288,7 @@ var histogram = d3.histogram()
 // as .row() to d3.tsv()
   .value(function(d) { return d.date_full; })
   .domain(xScale.domain())
-  .thresholds(xScale.ticks(d3.timeMonth)); //note error with xScale(x1) in rect!!
+  .thresholds(xScale.ticks(d3.timeWeek)); //note error with xScale(x1) in rect!!
 
 //from this:  https://stackoverflow.com/questions/40173533/customize-the-d3-month-or-year-tick-format
 var xAxis = d3.axisBottom(xScale)
@@ -312,21 +312,18 @@ var xAxis = d3.axisBottom(xScale)
 // apply date format func to date value of each row of data
 function type(d) {
 d.date_full = parseDate(d.date_full);
+console.log(d.date_full)
 return d;
 }
-
 // import data here
-d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type, function(error, data) {
 
-if (error) throw error;
 
-console.log("TEST");
+d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv",type).then(function(data) {
 
 // ---- apply data to histogram func -------------
 // meaning: regroup all data into different bins
 var bins = histogram(data);
 // console.log(bins);
-
 
 yScale.domain([0, d3.max(bins, function(d) { return d.length; })]);
 
@@ -340,8 +337,8 @@ var bar = svg2.selectAll(".bar")
 
 var rects =  bar.append("rect")
     .attr("x", 1)
-    .attr("width", function(d) { console.log(xScale(d.x1), xScale(d.x0)); return xScale(d.x1) - xScale(d.x0) - 1;})
-    .attr("height", function(d) { return height - yScale(d.length); });
+    .attr("width", function(d) { return xScale(d.x1) - xScale(d.x0) - 1;})
+    .attr("height", function(d) { console.log(height); return height - yScale(d.length); });
 
 //bar.append("text")
 //    .attr("dy", ".75em")// trial and error
