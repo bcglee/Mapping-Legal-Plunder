@@ -1,0 +1,416 @@
+﻿Object ID,Condition
+84,old
+132,old
+142,torn
+187,torn
+189,torn
+192,torn
+331,old
+444,torn
+446,torn
+448,old
+449,torn
+450,torn
+502,old
+503,old
+529,torn
+539,old
+544,old
+546,old
+581,old
+582,old
+635,torn
+702,old
+720,new
+742,shabby
+779,torn
+1011,torn
+1041,ragged
+1056,torn
+1057,very old
+1058,old
+1058,shabby
+1107,old
+1132,very old
+1145,old
+1145,reworked
+1151,new
+1194,ancient
+1195,torn
+1213,old
+1213,torn
+1214,old
+1228,old
+1235,old
+1295,old
+1306,old
+1386,old
+1387,new
+1390,old
+1391,old
+1410,old
+1454,old
+1459,old
+1459,torn
+1506,old
+1530,old
+1582,old
+1583,old
+1624,old
+1624,torn
+1625,ripped
+1625,torn
+1654,old
+1667,old
+1668,old
+1669,old
+1679,old
+1799,new
+1805,old
+1817,old
+1818,old
+1820,old
+1902,torn
+1943,torn
+1967,old
+2041,new
+2116,old
+2176,old
+2186,torn
+2195,old
+2196,old
+2197,old
+2197,torn
+2215,old
+2215,ragged
+2216,old
+2216,reworked
+2262,old
+2263,new
+2267,torn
+2286,old
+2358,new
+2359,new
+2513,new
+2514,old
+2515,new
+2585,old
+2595,old
+2596,shabby
+2596,torn
+2642,old
+2664,torn
+2695,old
+2696,old
+2697,torn
+2699,new
+2736,old
+2747,torn
+2976,torn
+2977,torn
+2991,torn
+3023,torn
+3028,old
+3029,old
+3032,new
+3048,new
+3050,destroyed
+3071,torn
+3082,old
+3094,torn
+3099,old
+3162,reworked
+3168,old
+3169,new
+3171,new
+3199,old
+3222,old
+3245,old
+3259,old
+3260,old
+3270,old
+3272,old
+3274,old
+3276,torn
+3280,worn
+3284,old
+3296,new
+3318,worn
+3320,reworked
+3356,ragged
+3377,torn
+3378,new
+3385,old
+3401,old
+3401,torn
+3412,old
+3412,torn
+3413,old
+3413,torn
+3456,old
+3457,old
+3470,old
+3647,old
+3648,old
+3755,old
+3756,old
+3757,old
+3757,torn
+3759,terrible
+3760,old
+3769,torn
+4025,old
+4119,old
+4119,ragged
+4134,torn
+4157,new
+4202,ragged
+4225,old
+4226,old
+4227,old
+4227,ripped
+4228,old
+4228,ripped
+4229,old
+4229,shabby
+4229,torn
+4230,old
+4230,ripped
+4270,new
+4285,worn
+4287,old
+4287,reworked
+4288,old
+4289,old
+4290,old
+4290,ripped
+4294,new
+4295,old
+4311,worn
+4356,worn
+4369,torn
+4371,old
+4371,torn
+4371,worn
+4375,old
+4381,worn
+4382,torn
+4383,torn
+4396,old
+4396,torn
+4397,torn
+4413,worn
+4461,old
+4462,old
+4466,torn
+4493,old
+4523,ancient
+4523,torn
+4526,torn
+4556,new
+4556,old
+4566,old
+4566,torn
+4717,old
+4717,torn
+4792,worn
+4836,torn
+4857,worn
+4861,torn
+4862,torn
+4869,old
+4915,torn
+4967,old
+5037,torn
+5071,torn
+5119,old
+5133,old
+5150,old
+5296,old
+5297,old
+5300,old
+5302,new
+5342,old
+5342,torn
+5386,old
+5581,whole
+5581,worn
+5582,worn
+5681,old
+5748,worn
+5750,worn
+5845,worn
+5857,worn
+5858,old
+5925,old
+5994,torn
+5997,torn
+6099,old
+6100,old
+6107,little value
+6107,old
+6107,shabby
+6124,old
+6263,old
+6263,torn
+6298,old
+6299,ancient
+6299,very old
+6303,old
+6303,torn
+6305,worn
+6400,ragged
+6403,torn
+6411,old
+6411,torn
+6430,old
+6452,old
+6452,torn
+6454,old
+6466,new
+6467,old
+6467,torn
+6476,worn
+6477,worn
+6478,old
+6478,torn
+6488,old
+6512,old
+6529,torn
+6532,old
+6556,old
+6557,old
+6569,old
+6593,old
+6599,torn
+6600,shabby
+6604,old
+6605,old
+6606,old
+6618,torn
+6623,old
+6624,torn
+6625,old
+6627,old
+6630,old
+6656,old
+6675,old
+6676,new
+6676,unfinished
+6730,new
+6785,new
+6807,old
+6850,old
+6851,old
+6852,new
+6861,old
+6861,torn
+6870,new
+6871,old
+6907,old
+6908,old
+6919,old
+6919,torn
+6920,old
+6923,old
+6990,old
+6993,old
+6997,old
+6998,old
+7006,old
+7006,torn
+7009,old
+7022,old
+7022,torn
+7025,new
+7071,torn
+7072,torn
+7182,old
+7185,new
+7205,old
+7211,old
+7221,torn
+7290,old
+7346,old
+7456,new
+7475,new
+7578,old
+7655,old
+7655,torn
+7668,old
+7748,old
+7760,old
+7997,little value
+8091,old
+8181,little value
+8194,little value
+8196,little value
+8210,little value
+8278,little value
+8523,old
+8524,old
+8530,shabby
+8756,old
+8798,old
+8850,little value
+8901,little value
+9065,old
+9347,ancient
+9476,little value
+9477,little value
+9479,little value
+9480,ancient
+9483,little value
+9483,torn
+9485,little value
+9487,little value
+9490,little value
+9639,good
+9639,shabby
+9995,little value
+9996,little value
+9997,little value
+9998,little value
+10000,little value
+10015,little value
+10343,little value
+10355,little value
+10820,little value
+10955,little value
+10961,little value
+11317,old
+11434,little value
+11435,torn
+11513,little value
+11513,old
+11818,ancient
+11941,shabby
+12036,shabby
+12037,little value
+12105,little value
+12356,old
+12695,ruined
+12917,ancient
+12959,little value
+13202,good
+13203,new
+13205,new
+13218,little value
+13254,ancient
+13258,ancient
+13258,used
+13258,worn
+13379,little value
+13512,worn
+13628,ancient
+13635,ancient
+13639,new
+13848,good
+14163,old
+14913,little value
+15067,ancient
+15080,ancient
+15387,ancient
+15416,old
+15442,little value
+15445,little value
