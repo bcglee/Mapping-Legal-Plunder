@@ -11,7 +11,7 @@
         <input name="reset"
                type="button"
                value="Reset Zoom"
-               onclick="reset()" />
+               onclick="resetzoom()" />
     </div>
     <svg width="1000" height="600"></svg>
     <script type="text/javascript">
@@ -88,7 +88,7 @@
         });
 
         //reset button for resetting zoom
-        function reset(){
+        function resetzoom(){
           svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
         };
 
