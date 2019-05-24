@@ -45,6 +45,8 @@
             margin = {right: 50, left: 50},
             width = +svg.attr("width") - margin.left - margin.right
             height = +svg.attr("height");
+        
+        var curr_transform;
 
         // defines the zoom function
         var zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
@@ -139,28 +141,27 @@
           svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
         };
 
+        // TODO: maybe use a different transition (fade out/in?) to avoid
+        // misleading users into tinking shrinking is meaningful
         function update(year, data) {
             state.year = year;
             var newData = data.filter(row => isYear(row, state.year) && hasLocation(row));
             var duration = 750; // (total transition time)/2
 
-            dots = svg.selectAll(".dot").data(newData);
-
             // make all dots disappear
             svg.selectAll(".dot")
+                // transition.remove() requires elements have no pending transitions,
+                // so we change its class
+                .attr("class", "old_dot")
                 .transition("leave")
+                .remove()
                 .duration(duration)
                 .style("opacity", 0)
                 .attr("r", 0);
+            
+            dots = svg.selectAll(".dot").data(newData)
 
-            // remove exit()
-            dots.exit()
-                .transition("remove")
-                .duration(0)
-                .delay(duration)
-                .remove();
-
-            // create points for enter()
+            // create (invisible) points for enter()
             dots.enter()
                 .append("circle")
                 .attr("class", "dot")
@@ -170,21 +171,12 @@
                 .attr("cy", function(d) {
                     return true_projection([d["lon"], d["lat"] ])[1];
                 })
+                .attr("transform", curr_transform)
                 .attr("fill", "red")
                 .style("opacity", 0)
                 .attr("r", 0);
 
-            dots.transition("move") // use a 0ms transition w/ delay to
-                // allow previous transition to finish
-                .duration(0)
-                .delay(duration)
-                .attr("cx", function(d) {
-                    return true_projection([d["lon"], d["lat"] ])[0];
-                })
-                .attr("cy", function(d) {
-                    return true_projection([d["lon"], d["lat"] ])[1];
-                });
-
+            // fade (unshrink?) points in
             svg.selectAll(".dot")
                 .transition("enter")
                 .duration(duration)
@@ -198,14 +190,12 @@
         }
 
         function hasLocation(row) {
-            if (row.lat === '') {
-                console.log();
-            }
             return row.lat !== '';
         }
 
         //function for zooming
         function zoomed() {
+            curr_transform = d3.event.transform;
             //transforms the map appropriately (with zoom)
             svg.selectAll('path')
                 .attr('transform', d3.event.transform);
