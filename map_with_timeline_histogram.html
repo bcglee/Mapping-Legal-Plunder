@@ -226,7 +226,6 @@ var svg2 = d3.select("body").append("svg")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-
 // ---- date data scale-map to px --------------------------
 //   1. assign xScale a scaleTime func
 var xScale = d3.scaleTime()
@@ -294,6 +293,8 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv",type).then(functi
         .attr("x", 1)
         .attr("width", function(d) { return xScale(d.x1) - xScale(d.x0) - 1;})
         .attr("height", function(d) { return height - yScale(d.length); });
+
+    //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
     var brush = d3.brushX()
                   .extent([[0, 0], [width, height]])
                   .on("start brush end", brushmoved);
