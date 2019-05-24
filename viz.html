@@ -19,14 +19,14 @@
         var height = 600;
 
         // define map projections
-        var initial_projection = d3.geoAlbers()
-                .center([-2, 44])
+        var initial_projection = d3.geoAlbers() // zoomed out overview of Italy
+                .center([0, 42])
                 .rotate([347, 0])
                 .parallels([35, 45])
-                .scale(1000)
+                .scale(2750)
                 .translate([width / 2, height / 2]);
 
-        var true_projection = d3.geoAlbers()
+        var true_projection = d3.geoAlbers() // zoomed in on Lucca
                 .center([-2, 44])
                 .rotate([347, 0])
                 .parallels([35, 45])
@@ -62,15 +62,53 @@
         // state variable, to be changed by dropdown (future slider)
         var state = ({year: "1333"});
 
+        // transition duration in ms for zoom on load
+        load_transition_duration = 2500;
+        // transition delay in ms for zoom on load
+        load_transition_delay = 1500;
+
         d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function(map) {
             svg.selectAll("path")
                 .data(topojson.feature(map, map.objects.custom).features)
                 .join("path")
                 .attr("fill", "#3d3d3d")
-                .attr("d", initial_path)
-                .transition() // ugly transition, ease-in-out would be better
-                .duration(1000)
-                .attr("d", true_path);
+                .attr("d", initial_path);
+
+            d3.csv("data/DALME_datasets/lucca_debt.csv").then(function(data) {
+                filtered_data = data.filter(row => isYear(row, state.year) && hasLocation(row));
+
+                dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
+                enterdots = dots.enter()
+                                .append("circle")
+                                .attr("class", "dot")
+                                .attr("cx", function(d) {
+                                    return initial_projection([d["lon"], d["lat"] ])[0];
+                                })
+                                .attr("cy", function(d) {
+                                    return initial_projection([d["lon"], d["lat"] ])[1];
+                                })
+                                .attr("r", dot_size)
+                                .attr("fill", "red");
+            
+                svg.selectAll("path")
+                    .data(topojson.feature(map, map.objects.custom).features)
+                    .join("path")
+                    .transition("map_zoom") // ugly transition, ease-in-out would be better
+                    .delay(load_transition_delay)
+                    .duration(load_transition_duration)
+                    .attr("d", true_path);
+                
+                enterdots.transition("dot_zoom")
+                    .delay(load_transition_delay)
+                    .duration(load_transition_duration)
+                    .attr("cx", function(d) {
+                        return true_projection([d["lon"], d["lat"] ])[0];
+                    })
+                    .attr("cy", function(d) {
+                        return true_projection([d["lon"], d["lat"] ])[1];
+                    });
+                    
+            });
         });
 
         // sets center point for zoom upon load
@@ -110,20 +148,20 @@
 
         // debt data
         d3.csv("data/DALME_datasets/lucca_debt.csv").then(function(data) {
-            filtered_data = data.filter(row => isYear(row, state.year) && hasLocation(row));
+            // filtered_data = data.filter(row => isYear(row, state.year) && hasLocation(row));
 
-            dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
-            enterdots = dots.enter()
-                            .append("circle")
-                            .attr("class", "dot")
-                            .attr("cx", function(d) {
-                                return true_projection([d["lon"], d["lat"] ])[0];
-                            })
-                            .attr("cy", function(d) {
-                                return true_projection([d["lon"], d["lat"] ])[1];
-                            })
-                            .attr("r", dot_size)
-                            .attr("fill", "red");
+            // dots = svg.selectAll(".dot").data(filtered_data) // selection should be empty...
+            // enterdots = dots.enter()
+            //                 .append("circle")
+            //                 .attr("class", "dot")
+            //                 .attr("cx", function(d) {
+            //                     return true_projection([d["lon"], d["lat"] ])[0];
+            //                 })
+            //                 .attr("cy", function(d) {
+            //                     return true_projection([d["lon"], d["lat"] ])[1];
+            //                 })
+            //                 .attr("r", dot_size)
+            //                 .attr("fill", "red");
         // //transforms the map appropriately (with zoom)
         //     svg
         //     .selectAll('path')
@@ -189,10 +227,10 @@
                     // .delay(duration)
                     .attr("class", "dot")
                     .attr("cx", function(d) {
-                        return projection([d["lon"], d["lat"] ])[0];
+                        return true_projection([d["lon"], d["lat"] ])[0];
                     })
                     .attr("cy", function(d) {
-                        return projection([d["lon"], d["lat"] ])[1];
+                        return true_projection([d["lon"], d["lat"] ])[1];
                     })
                     .attr("fill", "red")
                     .style("opacity", 0)
@@ -219,10 +257,10 @@
                     .duration(0)
                     .delay(duration)
                     .attr("cx", function(d) {
-                        return projection([d["lon"], d["lat"] ])[0];
+                        return true_projection([d["lon"], d["lat"] ])[0];
                     })
                     .attr("cy", function(d) {
-                        return projection([d["lon"], d["lat"] ])[1];
+                        return true_projection([d["lon"], d["lat"] ])[1];
                     });
 
                 // dots.merge(dots)
