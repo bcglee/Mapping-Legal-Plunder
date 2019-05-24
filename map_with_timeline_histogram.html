@@ -45,7 +45,6 @@
         // create svg element
         var svg = d3.select("svg"),
             margin = {right: 50, left: 50, top:10, bottom:10},
-            //width = svg.attr("width")
             width = +svg.attr("width") - margin.left - margin.right
             height = +svg.attr("height");
 
@@ -218,7 +217,7 @@ var parseDate = d3.isoParse,
 
 var margin = {top: 10, right: 30, bottom: 30, left: 30},
   width = 1000 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  height = 200 - margin.top - margin.bottom;
 
 var svg2 = d3.select("body").append("svg")
   .attr("width", width + margin.left + margin.right)
