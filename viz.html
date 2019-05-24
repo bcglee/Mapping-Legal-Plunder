@@ -18,18 +18,27 @@
         var width = 1000;
         var height = 600;
 
-        // define map projection
-        var projection = d3.geoAlbers()
+        // define map projections
+        var initial_projection = d3.geoAlbers()
                 .center([-2, 44])
                 .rotate([347, 0])
                 .parallels([35, 45])
-                // .scale(10000)
+                .scale(1000)
+                .translate([width / 2, height / 2]);
+
+        var true_projection = d3.geoAlbers()
+                .center([-2, 44])
+                .rotate([347, 0])
+                .parallels([35, 45])
                 .scale(10000)
                 .translate([width / 2, height / 2]);
 
-        // define path generator
-        var path = d3.geoPath()
-                        .projection(projection);
+        // define path generators
+        var initial_path = d3.geoPath()
+                        .projection(initial_projection);
+
+        var true_path = d3.geoPath()
+                    .projection(true_projection);
 
         // create svg element
         var svg = d3.select("svg"),
@@ -58,16 +67,18 @@
                 .data(topojson.feature(map, map.objects.custom).features)
                 .join("path")
                 .attr("fill", "#3d3d3d")
-                .attr("d", path);
+                .attr("d", initial_path)
+                .transition() // ugly transition, ease-in-out would be better
+                .duration(1000)
+                .attr("d", true_path);
         });
-
 
         // sets center point for zoom upon load
         var centertest = [10.44889, 43.88762];
 
 
         svg.on("click", function() {
-          var point = projection(centertest);
+          var point = true_projection(centertest);
             svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
              //svg
              // .selectAll('path')
@@ -106,13 +117,23 @@
                             .append("circle")
                             .attr("class", "dot")
                             .attr("cx", function(d) {
-                                return projection([d["lon"], d["lat"] ])[0];
+                                return true_projection([d["lon"], d["lat"] ])[0];
                             })
                             .attr("cy", function(d) {
-                                return projection([d["lon"], d["lat"] ])[1];
+                                return true_projection([d["lon"], d["lat"] ])[1];
                             })
                             .attr("r", dot_size)
                             .attr("fill", "red");
+        // //transforms the map appropriately (with zoom)
+        //     svg
+        //     .selectAll('path')
+        //     .attr('transform', {k: 1.0195976829981905, x: -10.13200211006449, y: -4.732840444063015});
+
+        // //transforms the dots appropriately (with zoom)
+        //     svg
+        //     .selectAll(".dot")
+        //     .attr('transform', {k: 1.0195976829981905, x: -10.13200211006449, y: -4.732840444063015});
+
 
             // selector
             var select =  d3.select("body")
