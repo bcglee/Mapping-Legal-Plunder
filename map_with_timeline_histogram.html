@@ -294,6 +294,9 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv",type).then(functi
         .attr("x", 1)
         .attr("width", function(d) { return xScale(d.x1) - xScale(d.x0) - 1;})
         .attr("height", function(d) { return height - yScale(d.length); });
+
+
+    //Brush Non functional from- https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a    
     var brush = d3.brushX()
                   .extent([[0, 0], [width, height]])
                   .on("start brush end", brushmoved);
@@ -317,14 +320,30 @@ var handle = gBrush.selectAll(".handle--custom")
 gBrush.call(brush.move, [0.3, 0.5].map(xScale));
 
 function brushmoved() {
-  var s = d3.event.selection;
-  if (s == null) {
+  var selection = d3.event.selection;
+  if (selection == null) {
     handle.attr("display", "none");
     //circle.classed("active", false);
   } else {
+    var e = d3.event.selection.map(xScale.invert, xScale);
+    //console.log(e)
+
+  //  svg.selectAll(".dot")
+  //     .attr("d", svg2(data.filter(function(d) {console.log(d.date_full)}))
+  //     )
+
+
+
+           // test.classed("selected", function (d) {
+           //   console.log(d.date);
+            //  console.log(e[0]);
+            //  console.log(e[1]);
+            //    return e[0] <= d.date && d.date <= e[1];
+            //});
+
     //var sx = s.map(x.invert);
     //circle.classed("active", function(d) { return sx[0] <= d && d <= sx[1]; });
-    handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - height / 4] + ")"; });
+    handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ selection [i], - height / 4] + ")"; });
   }
 }
 
