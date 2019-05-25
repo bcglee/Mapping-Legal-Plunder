@@ -208,78 +208,6 @@
         d.date_full = parseDate(d.date_full);
         return d;
     }
-
-    /* *** FUNCTIONS *** */
-
-    //reset button for resetting zoom
-    function resetzoom() {
-        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-    };
-
-    // TODO: maybe use a different transition (fade out/in?) to avoid
-    // misleading users into tinking shrinking is meaningful
-    function update(year, data) {
-        state.year = year;
-        var newData = data.filter(row => isYear(row, state.year) && hasLocation(row));
-        var duration = 750; // (total transition time)/2
-
-        // make all dots disappear
-        svg.selectAll(".dot")
-            // transition.remove() requires elements have no pending transitions,
-            // so we change its class
-            .attr("class", "old_dot")
-            .transition("leave")
-            .remove()
-            .duration(duration)
-            .style("opacity", 0)
-            .attr("r", 0);
-
-        dots = svg.selectAll(".dot").data(newData)
-
-        // create (invisible) points for enter()
-        dots.enter()
-            .append("circle")
-            .attr("class", "dot")
-            .attr("cx", function (d) {
-                return true_projection([d["lon"], d["lat"]])[0];
-            })
-            .attr("cy", function (d) {
-                return true_projection([d["lon"], d["lat"]])[1];
-            })
-            .attr("transform", curr_transform)
-            .attr("fill", "red")
-            .style("opacity", 0)
-            .attr("r", 0);
-
-        // fade (unshrink?) points in
-        svg.selectAll(".dot")
-            .transition("enter")
-            .duration(duration)
-            .delay(duration)
-            .style("opacity", 1)
-            .attr("r", dot_size);
-    }
-
-    function isYear(row, year) {
-        return row.date_year === year;
-    }
-
-    function hasLocation(row) {
-        return row.lat !== '';
-    }
-
-    //function for zooming
-    function zoomed() {
-        curr_transform = d3.event.transform;
-        //transforms the map appropriately (with zoom)
-        svg.selectAll('path')
-            .attr('transform', d3.event.transform);
-
-        //transforms the dots appropriately (with zoom)
-        svg.selectAll(".dot")
-            .attr('transform', d3.event.transform);
-    };
-
     d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
 
         // ---- apply data to histogram func -------------
@@ -354,6 +282,78 @@
         }
 
     });
+
+    /* *** FUNCTIONS *** */
+
+    //reset button for resetting zoom
+    function resetzoom() {
+        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    };
+
+    // TODO: maybe use a different transition (fade out/in?) to avoid
+    // misleading users into tinking shrinking is meaningful
+    function update(year, data) {
+        state.year = year;
+        var newData = data.filter(row => isYear(row, state.year) && hasLocation(row));
+        var duration = 750; // (total transition time)/2
+
+        // make all dots disappear
+        svg.selectAll(".dot")
+            // transition.remove() requires elements have no pending transitions,
+            // so we change its class
+            .attr("class", "old_dot")
+            .transition("leave")
+            .remove()
+            .duration(duration)
+            .style("opacity", 0)
+            .attr("r", 0);
+
+        dots = svg.selectAll(".dot").data(newData)
+
+        // create (invisible) points for enter()
+        dots.enter()
+            .append("circle")
+            .attr("class", "dot")
+            .attr("cx", function (d) {
+                return true_projection([d["lon"], d["lat"]])[0];
+            })
+            .attr("cy", function (d) {
+                return true_projection([d["lon"], d["lat"]])[1];
+            })
+            .attr("transform", curr_transform)
+            .attr("fill", "red")
+            .style("opacity", 0)
+            .attr("r", 0);
+
+        // fade (unshrink?) points in
+        svg.selectAll(".dot")
+            .transition("enter")
+            .duration(duration)
+            .delay(duration)
+            .style("opacity", 1)
+            .attr("r", dot_size);
+    }
+
+    function isYear(row, year) {
+        return row.date_year === year;
+    }
+
+    function hasLocation(row) {
+        return row.lat !== '';
+    }
+
+    // function for zooming
+    function zoomed() {
+        curr_transform = d3.event.transform;
+        //transforms the map appropriately (with zoom)
+        svg.selectAll('path')
+            .attr('transform', d3.event.transform);
+
+        //transforms the dots appropriately (with zoom)
+        svg.selectAll(".dot")
+            .attr('transform', d3.event.transform);
+    };
+
 </script>
 <!-- </body> -->
 
