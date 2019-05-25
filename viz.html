@@ -79,7 +79,7 @@
 
     // initial plottng of gray points for zoom
     d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function (map) {
-        d3.csv("data/DALME_datasets/unique_locations.csv").then(function (data) {
+        d3.csv("data/unique_locations.csv").then(function (data) {
             // show map
             svg.selectAll("path")
                 .data(topojson.feature(map, map.objects.custom).features)
