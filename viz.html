@@ -131,10 +131,13 @@
                 });
         });
 
+        // adds blue background in order to make water blue
         svg.append('rect')
            .attr('width', width+margin.left+margin.right)
            .attr('height', height)
            .attr('fill', 'lightBlue');
+
+        /* *** FUNCTIONS *** */
 
         //reset button for resetting zoom
         function resetzoom(){
@@ -204,7 +207,6 @@
             svg.selectAll(".dot")
                 .attr('transform', d3.event.transform);
         };
-
 
     </script>
     <!-- </body> -->
