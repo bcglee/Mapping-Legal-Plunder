@@ -88,10 +88,10 @@
                 .attr("d", initial_path);
 
             // show dots
-            dots = svg.selectAll(".dot").data(data) // selection should be empty...
+            dots = svg.selectAll(".backdot").data(data) // selection should be empty...
             enterdots = dots.enter()
                 .append("circle")
-                .attr("class", "dot")
+                .attr("class", "backdot")
                 .attr("cx", function (d) {
                     return initial_projection([d["lon"], d["lat"]])[0];
                 })
@@ -250,11 +250,11 @@
             } else {
                 var e = d3.event.selection.map(xScale.invert, xScale);
                 d3.selectAll('circle').remove();
-                svg.selectAll('dot')
+                svg.selectAll('foredot')
                 .data(data)
                 .enter()
                 .append("circle")
-                .attr("class", "dot")
+                .attr("class", "foredot")
                 .attr("cx", function (d) {
                    return true_projection([d["lon"], d["lat"]])[0];
                 })
@@ -289,7 +289,7 @@
         var duration = 750; // (total transition time)/2
 
         // make all dots disappear
-        svg.selectAll(".dot")
+        svg.selectAll(".backdot")
             // transition.remove() requires elements have no pending transitions,
             // so we change its class
             .attr("class", "old_dot")
@@ -299,12 +299,12 @@
             .style("opacity", 0)
             .attr("r", 0);
 
-        dots = svg.selectAll(".dot").data(newData)
+        dots = svg.selectAll(".backdot").data(newData)
 
         // create (invisible) points for enter()
         dots.enter()
             .append("circle")
-            .attr("class", "dot")
+            .attr("class", "backdot")
             .attr("cx", function (d) {
                 return true_projection([d["lon"], d["lat"]])[0];
             })
@@ -317,7 +317,7 @@
             .attr("r", 0);
 
         // fade (unshrink?) points in
-        svg.selectAll(".dot")
+        svg.selectAll(".backdot")
             .transition("enter")
             .duration(duration)
             .delay(duration)
@@ -341,7 +341,7 @@
             .attr('transform', d3.event.transform);
 
         //transforms the dots appropriately (with zoom)
-        svg.selectAll(".dot")
+        svg.selectAll(".backdot")
             .attr('transform', d3.event.transform);
     };
 
