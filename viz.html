@@ -197,6 +197,7 @@
     }
 
     d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
+        d3.csv("data/unique_locations.csv").then(function (locations) {
 
         // ---- apply data to histogram func -------------
         // meaning: regroup all data into different bins
@@ -270,7 +271,7 @@
                 handle.attr("display", null).attr("transform", function (d, i) { return "translate(" + [selection[i], - height / 4] + ")"; });
             }
         }
-
+      })
     });
 
     /* *** FUNCTIONS *** */
