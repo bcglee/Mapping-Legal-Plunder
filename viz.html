@@ -79,7 +79,7 @@
 
     // initial plottng of gray points for zoom
     d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function (map) {
-        d3.csv("data/DALME_datasets/lucca_debt.csv").then(function (data) {
+        d3.csv("data/DALME_datasets/unique_locations.csv").then(function (data) {
             // show map
             svg.selectAll("path")
                 .data(topojson.feature(map, map.objects.custom).features)
@@ -98,8 +98,12 @@
                 .attr("cy", function (d) {
                     return initial_projection([d["lon"], d["lat"]])[1];
                 })
-                .attr("r", dot_size)
-                .attr("fill","gray");
+                .attr("r", function(d) {
+                    // return Math.log(d["ct"]+1);
+                    return Math.sqrt(d["ct"]/20);
+                })
+                .attr("fill","gray")
+                .attr("fill-opacity", .75);
 
             // zoom in on load
             svg.selectAll("path")
@@ -119,24 +123,6 @@
                 .attr("cy", function (d) {
                     return true_projection([d["lon"], d["lat"]])[1];
                 });
-
-            // selector
-            var select = d3.select("body")
-                .append("div")
-                .append("select")
-
-            select.on("change", function (d) {
-                var value = d3.select(this).property("value");
-                update(value, data);
-            });
-
-            // using a dropdown for now
-            select.selectAll("option")
-                .data(d3.map(data, function (d) { return d.date_year; }).keys()) // remove duplicate years
-                .enter()
-                .append("option")
-                .attr("value", function (d) { return d; })
-                .text(function (d) { return d; });
         });
     });
 
