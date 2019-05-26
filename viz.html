@@ -265,7 +265,7 @@
                     })
                     .attr("transform", curr_transform)
                     .attr("r", function(d) {
-                        return Math.sqrt(newData.filter(el => el["lat"] === d["lat"] && el["lon"] === d["lon"]).length/20);
+                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/20);
                     })
                     .style("fill", "green");
 
@@ -344,7 +344,7 @@
         //transforms the dots appropriately (with zoom)
         svg.selectAll(".backdot")
             .attr('transform', d3.event.transform);
-            
+
         //transforms the dots appropriately (with zoom)
         svg.selectAll(".foredot")
             .attr('transform', d3.event.transform);
