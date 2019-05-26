@@ -249,24 +249,25 @@
                 //circle.classed("active", false);
             } else {
                 var e = d3.event.selection.map(xScale.invert, xScale);
-                d3.selectAll('circle').remove();
-                svg.selectAll('foredot')
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("class", "foredot")
-                .attr("cx", function (d) {
-                   return true_projection([d["lon"], d["lat"]])[0];
-                })
-                 .attr("cy", function (d) {
-                     return true_projection([d["lon"], d["lat"]])[1];
-                 })
-                 .attr("r", dot_size)
-                .style("fill", function (d) {
-                if (e[0] <= d.date_full && e[1] >= d.date_full)
-                     { return "green"; }
-                else { return "gray"; }
-            });
+                var newData = data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
+                d3.selectAll('.foredot').remove(); // remove old foredots
+
+                svg.selectAll('.foredot')
+                    .data(locations)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "foredot")
+                    .attr("cx", function (d) {
+                        return true_projection([d["lon"], d["lat"]])[0];
+                    })
+                    .attr("cy", function (d) {
+                        return true_projection([d["lon"], d["lat"]])[1];
+                    })
+                    .attr("transform", curr_transform)
+                    .attr("r", function(d) {
+                        return Math.sqrt(newData.filter(el => el["lat"] === d["lat"] && el["lon"] === d["lon"]).length/20);
+                    })
+                    .style("fill", "green");
 
                 handle.attr("display", null).attr("transform", function (d, i) { return "translate(" + [selection[i], - height / 4] + ")"; });
             }
