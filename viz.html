@@ -77,6 +77,14 @@
     // transition delay in ms for zoom on load
     load_transition_delay = 1500;
 
+    // http://bl.ocks.org/biovisualize/1016860
+    // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
+    var tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden");
+
     // initial plottng of gray points for zoom
     d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function (map) {
         d3.csv("data/unique_locations.csv").then(function (data) {
@@ -103,7 +111,14 @@
                     return Math.sqrt(d["ct"]/2);
                 })
                 .attr("fill","gray")
-                .attr("fill-opacity", .75);
+                .attr("fill-opacity", .75)
+                .on("mouseover", function(d){return tooltip.style("visibility", "visible")
+                                                           .text(d["town"]);})
+                //.on("mouseover", function(d){return tooltip.text("TEST");})
+              	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+              	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+
 
             // zoom in on load
             svg.selectAll("path")
