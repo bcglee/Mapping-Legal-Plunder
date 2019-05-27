@@ -37,9 +37,9 @@
 
     var true_projection = d3.geoAlbers() // zoomed in on Lucca
         .center([-2, 44])
-        .rotate([347, 0])
+        .rotate([347.5, 0.125])
         .parallels([35, 45])
-        .scale(10000)
+        .scale(50000)
         .translate([width / 2, height / 2]);
 
     // define path generators
@@ -100,7 +100,7 @@
                 })
                 .attr("r", function(d) {
                     // return Math.log(d["ct"]+1);
-                    return Math.sqrt(d["ct"]/20);
+                    return Math.sqrt(d["ct"]/2);
                 })
                 .attr("fill","gray")
                 .attr("fill-opacity", .75);
@@ -265,7 +265,7 @@
                     })
                     .attr("transform", curr_transform)
                     .attr("r", function(d) {
-                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/20);
+                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
                     })
                     .style("fill", "green");
 
