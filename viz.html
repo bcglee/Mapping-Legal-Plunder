@@ -282,7 +282,12 @@
                     .attr("r", function(d) {
                         return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
                     })
-                    .style("fill", "green");
+                    .style("fill", "green")
+                    .on("mouseover", function(d){return tooltip.style("visibility", "visible")
+                                                               .text(d["town"]);})
+                    //.on("mouseover", function(d){return tooltip.text("TEST");})
+                  	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+                  	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
                 handle.attr("display", null).attr("transform", function (d, i) { return "translate(" + [selection[i], - height / 4] + ")"; });
             }
