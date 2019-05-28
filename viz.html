@@ -209,13 +209,17 @@
 
     //from this:  https://stackoverflow.com/questions/40173533/customize-the-d3-month-or-year-tick-format
     var xAxis = d3.axisBottom(xScale)
-        .tickFormat(function (date) {
-            if (d3.timeMonth(date) < date) {
-                return d3.timeFormat('%b')(date);
-            } else {
-                return d3.timeFormat('%Y')(date);
-            }
-        });
+                  .tickFormat("")
+                  .ticks(30)
+                  ;
+
+        //.tickFormat(function (date) {
+        //    if (d3.timeMonth(date) < date) {
+        //        return d3.timeFormat('%b')(date);
+        //    } else {
+        //        return d3.timeFormat('%Y')(date);
+        //    }
+        //});
 
     svg2.append("g")
         .attr("class", "x axis")
@@ -232,8 +236,16 @@
         .attr("transform", "translate(0," + height + ")")
         .call(make_x_gridlines()
               .tickSize(-height)
-              .tickFormat("")
-            )
+              .tickFormat(d3.timeFormat("%Y")))
+        .selectAll("text")
+        .attr("dy", "1em");
+
+        // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+        // .selectAll("text")
+        //         .style("text-anchor", "end")
+        //         .attr("dx", "-.8em")
+        //         .attr("dy", ".15em")
+        //         .attr("transform", "rotate(-65)");
 
    var yAxis = d3.axisLeft(yScale)
 
@@ -417,7 +429,7 @@
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     function make_x_gridlines() {
         return d3.axisBottom(xScale)
-                 .ticks(10)
+                 .ticks(30)
         }
 
     // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
