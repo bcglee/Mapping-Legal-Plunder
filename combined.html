@@ -383,6 +383,16 @@
                   	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
                 handle.attr("display", null).attr("transform", function (d, i) { return "translate(" + [selection[i], - height2 / 4] + ")"; });
+                d3.selectAll('.forebar').remove(); 
+                svg3.selectAll(".forebar")
+            .data(newData)
+            .enter().append("rect")
+            .attr("class", "forebar")
+            .attr("x", function(d) { return x(d.object_category); })
+            .attr("width", x.bandwidth())
+            .style("fill", "green")
+            .attr("y", function(d) { return y(newData.filter(el => el["object_category"] === d["object_category"]).length) })
+            .attr("height", function(d) { return height3 -y(newData.filter(el => el["object_category"] === d["object_category"]).length); });
             }
         }
 
