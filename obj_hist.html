@@ -6,13 +6,13 @@
 
 </style>
 <body>
-	
-<!-- load the d3.js library -->    	
+
+<!-- load the d3.js library -->
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
+var margin = {top: 20, right: 20, bottom: 100, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -22,34 +22,29 @@ var x = d3.scaleBand()
           .padding(0.1);
 var y = d3.scaleLinear()
           .range([height, 0]);
-          
+
 // append the svg object to the body of the page
 // append a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("body").append("svg")
+var svg3 = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", 
+    .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
 // get the data
 d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", function(error, data) {
   if (error) throw error;
 
-  // format the data
-  data.forEach(function(d) {
-    d.sales = +d.sales;
-  });
-
   // Scale the range of the data in the domains
   x.domain(data.map(function(d) { return d.object_category; }));
   y.domain([0, 2000]);
 
   // append the rectangles for the bar chart
-  svg.selectAll(".bar")
+  svg3.selectAll(".bar")
       .data(data)
-    .enter().append("rect")
+      .enter().append("rect")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.object_category); })
       .attr("width", x.bandwidth())
@@ -57,13 +52,21 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", function(error, 
       .attr("height", function(d) { return height -y(data.filter(el => el["object_category"] === d["object_category"]).length); });
 
   // add the x Axis
-  svg.append("g")
+  svg3.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
   // add the y Axis
-  svg.append("g")
+  svg3.append("g")
       .call(d3.axisLeft(y));
+
+	// rotates x-axis labels
+	// https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+	svg3.selectAll("text")
+	   .style("text-anchor", "end")
+		 .attr("dx", "-.8em")
+		 .attr("dy", ".15em")
+		 .attr("transform", "rotate(-45)");
 
 });
 
