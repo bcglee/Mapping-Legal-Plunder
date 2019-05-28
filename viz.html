@@ -23,6 +23,13 @@
         border-radius: 8px;
         pointer-events: none;
     }
+
+    /* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
+    .grid line {
+      stroke: lightgrey;
+      stroke-opacity: 0.7;
+      shape-rendering: crispEdges;
+    }
 </style>
 
 <head>
@@ -219,6 +226,33 @@
         .attr("x", 6)
         .attr("y", 6);
 
+    // https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
+    svg2.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_x_gridlines()
+              .tickSize(-height)
+              .tickFormat("")
+            )
+
+   var yAxis = d3.axisLeft(yScale)
+
+   // sets yScale
+   // yScale.domain([0, d3.max(bins, function (d) { return d.length; })]); // can only set the domain of y scaling function once the data has been loaded
+   yScale.domain([0, 300])
+
+   // adds axis to svg2
+   svg2.append("g")
+       .call(yAxis);
+
+    // add the Y gridlines
+    svg2.append("g")
+        .attr("class", "grid")
+        .call(make_y_gridlines()
+             .tickSize(-width)
+             .tickFormat("")
+            )
+
     // apply date format func to date value of each row of data
     function type(d) {
         d.date_full = parseDate(d.date_full);
@@ -231,10 +265,6 @@
         // ---- apply data to histogram func -------------
         // meaning: regroup all data into different bins
         var bins = histogram(data);
-        // console.log(bins);
-
-        yScale.domain([0, d3.max(bins, function (d) { return d.length; })]);
-
 
         var bar = svg2.selectAll(".bar")
             .data(bins)
@@ -383,6 +413,18 @@
         svg.selectAll(".foredot")
             .attr('transform', d3.event.transform);
     };
+
+    // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
+    function make_x_gridlines() {
+        return d3.axisBottom(xScale)
+                 .ticks(10)
+        }
+
+    // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
+    function make_y_gridlines() {
+        return d3.axisLeft(yScale)
+                 .ticks(10)
+        }
 
 </script>
 <!-- </body> -->
