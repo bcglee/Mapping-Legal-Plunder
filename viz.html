@@ -37,7 +37,6 @@
     <title>Lucca Debt</title>
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
-    <script src="fns.js"></script>
 </head>
 <!-- <body> -->
 <div id="reset">
@@ -290,11 +289,18 @@
     // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
     svg3.append("text")
         .attr("x", (width3 / 2))
-        .attr("y", 10 - (margin3.top / 2))
+        .attr("y", 5 - (margin3.top / 2))
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .style("text-decoration", "underline")
         .text("PLUNDERED ITEM CATEGORIES");
+
+    // http://jsfiddle.net/manojmcet/PP73D/
+    svg.append("text")
+       .attr("x", (width3 / 2))
+       .attr("y", (margin3.top / 2) - 5)
+       .style("text-anchor", "middle")
+       .text("Keyword");
 
 
     // apply date format func to date value of each row of data
@@ -304,14 +310,14 @@
         return d;
     }
 
-    d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
+    d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (items) {
         d3.csv("data/unique_locations.csv").then(function (locations) {
           d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
 
 
         // ---- apply data to histogram func -------------
         // meaning: regroup all data into different bins
-        var bins = histogram(data);
+        var bins = histogram(items);
 
         var bar = svg2.selectAll(".bar")
             .data(bins)
@@ -355,7 +361,7 @@
                 //circle.classed("active", false);
             } else {
                 var e = d3.event.selection.map(time_xScale.invert, time_xScale);
-                var newData = data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
+                var newData = items.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
                 d3.selectAll('.foredot').remove(); // remove old foredots
 
                 svg.selectAll('.foredot')
@@ -395,27 +401,29 @@
         }
 
         // Scale the range of the data in the domains
-        cat_xScale.domain(data.map(function(d) { return d.object_category; }));
+        cat_xScale.domain(items.map(function(d) { return d.object_category; }));
         cat_yScale.domain([0, 2000]);
 
 
         // add the x Axis
+        var cat_xAxis = d3.axisBottom(cat_xScale);
         svg3.append("g")
             .attr("transform", "translate(0," + height3 + ")")
-            .call(d3.axisBottom(cat_xScale));
+            .call(cat_xAxis)
+            // // rotates x-axis labels
+          	// // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+            .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-45)");
 
         // add the y Axis
+        var cat_yAxis = d3.axisLeft(cat_yScale);
         svg3.append("g")
-            .call(d3.axisLeft(cat_yScale));
+            .call(cat_yAxis);
 
-      	// rotates x-axis labels
-      	// https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
-      	svg3.selectAll("text")
-            .style("text-anchor", "end")
-      		  .attr("dx", "-.8em")
-      		  .attr("dy", ".15em")
-            .attr("transform", "rotate(-45)");
-
+        // adds horizontal grid lines
         svg3.append("g")
             .attr("class", "grid")
             .call(make_y_gridlines(cat_yScale)
@@ -423,16 +431,17 @@
             .tickFormat("")
             );
 
+
         // append the rectangles for the bar chart
         svg3.selectAll(".bar")
-            .data(data)
+            .data(categories)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return cat_xScale(d.object_category); })
+            .attr("x", function(d) { return cat_xScale(d["object category"]); })
             .attr("width", cat_xScale.bandwidth())
-            .attr("y", function(d) { return cat_yScale(data.filter(el => el["object_category"] === d["object_category"]).length) })
-            .attr("height", function(d) { return height3 -cat_yScale(data.filter(el => el["object_category"] === d["object_category"]).length); });
-
+            .style("fill", "black")
+            .attr("y", function(d) { return cat_yScale(items.filter(el => el["object_category"] === d["object category"]).length) })
+            .attr("height", function(d) { return height3 - cat_yScale(items.filter(el => el["object_category"] === d["object category"]).length); });
 
         })
       })
