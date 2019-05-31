@@ -271,9 +271,13 @@
     // set the ranges
     var cat_xScale = d3.scaleBand()
               .range([0, width3])
-              .padding(0.1);
-    var cat_yScale = d3.scaleLinear()
-              .range([height3, 0]);
+              .padding(0.1)
+
+    //var cat_yScale = d3.scaleLinear()
+    //          .range([height3, 0]);
+    var cat_yScale = d3.scaleLog()
+                       .domain([1, 2000])
+                       .range([height3, 0]);
 
     // append the svg object to the body of the page
     // append a 'group' element to 'svg'
@@ -395,15 +399,23 @@
                     .attr("x", function(d) { return cat_xScale(d["object category"]); })
                     .attr("width", cat_xScale.bandwidth())
                     .style("fill", "green")
-                    .attr("y", function(d) { return cat_yScale(newData.filter(el => el["object_category"] === d["object category"]).length) })
-                    .attr("height", function(d) { return height3 - cat_yScale(newData.filter(el => el["object_category"] === d["object category"]).length); });
+                    .attr("y", function(d) {
+                      const count = items.filter(el => el["object_category"] === d["object category"]).length;
+                      //logscale need to handle case of empty selection when brushing
+                      return count !== 0 ? cat_yScale(count) : 0;
+                    })
+                    .attr("height", function(d) {
+                      const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                       //logscale need to handle case of empty selection when brushing
+                      return count !== 0 ? height3 - cat_yScale(count) : 0;
+                    });
+                    //.attr("y", function(d) { cat_yScale(newData.filter(el => el["object_category"] === d["object category"]).length + 1) })
+                    //.attr("height", function(d) { return height3 - cat_yScale(newData.filter(el => el["object_category"] === d["object category"]).length + 1); });
             }
         }
 
         // Scale the range of the data in the domains
         cat_xScale.domain(items.map(function(d) { return d.object_category; }));
-        cat_yScale.domain([0, 2000]);
-
 
         // add the x Axis
         var cat_xAxis = d3.axisBottom(cat_xScale);
@@ -414,6 +426,7 @@
           	// // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
             .selectAll("text")
                 .style("text-anchor", "end")
+                .style("color", "black")
                 .attr("dx", "-.8em")
                 .attr("dy", ".15em")
                 .attr("transform", "rotate(-45)");
@@ -431,7 +444,6 @@
             .tickFormat("")
             );
 
-
         // append the rectangles for the bar chart
         svg3.selectAll(".bar")
             .data(categories)
@@ -440,12 +452,14 @@
             .attr("x", function(d) { return cat_xScale(d["object category"]); })
             .attr("width", cat_xScale.bandwidth())
             .style("fill", "black")
-            .attr("y", function(d) { return cat_yScale(items.filter(el => el["object_category"] === d["object category"]).length) })
+            .attr("y", function(d) { return cat_yScale(items.filter(el => el["object_category"] === d["object category"]).length)})
             .attr("height", function(d) { return height3 - cat_yScale(items.filter(el => el["object_category"] === d["object category"]).length); });
 
         })
       })
     });
+    console.log("TEST");
+    console.log(cat_yScale(8));
 
     // /* *** FUNCTIONS *** */
 
