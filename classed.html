@@ -1,6 +1,6 @@
+<!-- TODO: fix any double equals -->
 <!DOCTYPE html>
 <html lang="en">
-
 <style>
     .bar rect {
         fill: steelblue;
@@ -35,23 +35,25 @@
 <head>
     <meta charset="utf-8">
     <title>Lucca Debt</title>
-    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- remove type=text/javascript -->
+    <script type="application/javascript" src="https://d3js.org/d3.v5.min.js"></script> 
     <script src="https://unpkg.com/topojson@3"></script>
-    <script src="scripts/map.js"></script>
-    <!-- histogram 1 -->
-    <!-- histogram 2 -->
-    <script src="scripts/misc.js"></script>
+
+    <!-- <script type="module" src="scripts/component.js"></script> -->
+    <!-- <script type="module" src="scripts/mapviz.js"></script> -->
+    <!-- <script src="scripts/mapviz.js"></script> -->
+    <!-- <script src="scripts/c1.js"></script> -->
+    <!-- <script type="module" src="scripts/timeline_histogram.js"></script> -->
+    <!-- <script type="module" src="scripts/object_histogram.js"></script> -->
+    <!-- <script src="scripts/misc.js"></script> -->
 </head>
-<!-- <body> -->
-<div id="reset">
-    <input name="reset" type="button" value="Reset Zoom" onclick="resetzoom()" />
-</div>
-<svg width="1000" height="450"></svg>
-<script type="text/javascript">
-    var width = 1000;
-    var height = 400;
-    const map = new Map(width, height);
-</script>
-<!-- </body> -->
+
+<body>
+    <div id="reset">
+        <input name="reset" type="button" value="Reset Zoom" onclick="resetzoom()" />
+    </div>
+    <svg width="1000" height="450"></svg>
+    <script type="module" src="scripts/main.js"></script>
+</body>
 
 </html>
