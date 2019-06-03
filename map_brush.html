@@ -325,12 +325,13 @@
         var rects = bar.append("rect")
             .attr("x", 1)
             .attr("width", function (d) { return xScale(d.x1) - xScale(d.x0) - 1; })
-            .attr("height", function (d) { return height2 - yScale(d.length); });
+            .attr("height", function (d) { return height2 - yScale(d.length); })
+            .style("fill","grey")
 
         //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
         var brush = d3.brush()
             .extent([[0, 0], [width+ margin.left + margin.right, height]])
-            .on("end ", brushmoved);
+            .on("start brush end ", brushmoved);
         var gBrush = svg.append("g")
             .attr("class", "brush")
             .call(brush);
@@ -393,6 +394,23 @@
                   	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
                 
+                      d3.selectAll('.forebar2').remove(); 
+                      var bins = histogram(newData);
+
+            var bar = svg2.selectAll(".forebar2")
+            .data(bins)
+            .enter().append("g")
+            .attr("class", "forebar2")
+            .attr("transform", function (d) { return "translate(" + xScale(d.x0) + "," + yScale(d.length) + ")"; })
+    
+
+            var rects = bar.append("rect")
+            .attr("x", 1)
+            .attr("width", function (d) { return xScale(d.x1) - xScale(d.x0) - 1; })
+            .attr("height", function (d) { return height2 - yScale(d.length); })
+            .style("fill","green")
+
+
                 d3.selectAll('.forebar').remove(); 
                 svg3.selectAll(".forebar")
             .data(newData)
