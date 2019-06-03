@@ -400,7 +400,7 @@
                     .attr("width", cat_xScale.bandwidth())
                     .style("fill", "green")
                     .attr("y", function(d) {
-                      const count = items.filter(el => el["object_category"] === d["object category"]).length;
+                      const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                       //logscale need to handle case of empty selection when brushing
                       return count !== 0 ? cat_yScale(count) : 0;
                     })
