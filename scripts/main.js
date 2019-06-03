@@ -38,9 +38,11 @@ d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(f
 
 d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
     d3.csv("data/unique_locations.csv").then(function (locations) {
-        th.post_load(data, map_viz, locations, oh);
-        oh.post_load(data, map_viz);
-        th.draw();
-        oh.draw();
+        d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
+          th.post_load(data, map_viz, locations, categories, oh);
+          oh.post_load(data, map_viz, locations, categories, th);
+          th.draw();
+          oh.draw();
+        });
     });
 });

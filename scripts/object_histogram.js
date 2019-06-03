@@ -3,17 +3,18 @@ import Component from './component.js';
 class ObjectHistogram extends Component {
     constructor (margin, width, height, data, map) {
         super(margin, width, height, data, map);
-        
+
         // init object histogram
         this.init();
     }
-    
+
     init() { // stuff we do BEFORE loading data
         // set the ranges
         this.cat_xScale = d3.scaleBand()
                             .range([0, this.width])
                             .padding(0.1);
-        this.cat_yScale = d3.scaleLinear()
+        this.cat_yScale = d3.scaleLog()
+                            .domain([1, 2000])
                             .range([this.height, 0]);
 
         // append the svg object to the body of the page
@@ -40,17 +41,17 @@ class ObjectHistogram extends Component {
     draw() { // stuff we do AFTER loading
         // Scale the range of the data in the domains
         this.cat_xScale.domain(this.data.map((d) => d.object_category));
-        this.cat_yScale.domain([0, 2000]);
 
         // append the rectangles for the bar chart
         this.svg.selectAll(".bar")
-                .data(this.data)
+                .data(this.categories)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", (d) => this.cat_xScale(d.object_category))
+                .attr("x", (d) => this.cat_xScale(d["object category"]) )
                 .attr("width", this.cat_xScale.bandwidth())
-                .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length))
-                .attr("height", (d) => this.height -this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length));
+                .style("fill", "black")
+                .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
+                .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) );
 
         // add the x Axis
         this.svg.append("g")
@@ -61,6 +62,15 @@ class ObjectHistogram extends Component {
         this.svg.append("g")
                 .call(d3.axisLeft(this.cat_yScale));
 
+        // adds horizontal grid lines
+        this.svg.append("g")
+                .attr("class", "grid")
+                .call(() => this.th.make_y_gridlines(this.cat_yScale)
+                .tickSize(-this.width)
+                .tickFormat("")
+                );
+
+
         // rotates x-axis labels
         // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
         this.svg.selectAll("text")
@@ -69,6 +79,17 @@ class ObjectHistogram extends Component {
                 .attr("dy", ".15em")
                 .attr("transform", "rotate(-45)");
     }
+
+    // stuff we can't include in constructor as they become available after
+    // loading data
+    post_load(data, map, locations, categories, timeline_hist) {
+        this.data = data;
+        this.map = map;
+        this.locations = locations;
+        this.categories = categories;
+        this.th = timeline_hist;
+    }
+
 }
 
 export default ObjectHistogram;

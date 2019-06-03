@@ -3,7 +3,7 @@ import Component from './component.js';
 class TimelineHistogram extends Component {
     constructor (margin, width, height) {
         super(margin, width, height);
-        
+
         // draw timeline histogram
         this.init();
     }
@@ -137,13 +137,14 @@ class TimelineHistogram extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, obj_hist) {
+    post_load(data, map, locations, categories, obj_hist) {
         this.data = data;
         this.map = map;
         this.locations = locations;
+        this.categories = categories;
         this.oh = obj_hist;
     }
-    
+
     /**************
     OTHER FUNCTIONS
     **************/
@@ -175,14 +176,22 @@ class TimelineHistogram extends Component {
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
             d3.selectAll('.forebar').remove();
             this.oh.svg.selectAll(".forebar")
-                       .data(newData)
-                       .enter().append("rect")
-                       .attr("class", "forebar")
-                       .attr("width", this.oh.cat_xScale.bandwidth())
-                       .style("fill", "green")
-                       .attr("y", (d) => this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length))
-                       .attr("height", (d) => this.oh.height-this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length));
-        }
+                      .data(this.categories)
+                      .enter().append("rect")
+                      .attr("class", "forebar")
+                      .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
+                      .attr("width", this.oh.cat_xScale.bandwidth())
+                      .style("fill", "green")
+                      .attr("y", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                        //logscale need to handle case of empty selection when brushing
+                        return count !== 0 ? this.oh.cat_yScale(count) : 0;
+                      })
+                      .attr("height", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                         //logscale need to handle case of empty selection when brushing
+                        return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
+                      });              }
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
