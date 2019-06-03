@@ -76,23 +76,23 @@ class TimelineHistogram extends Component {
     this.svg.append("g")
         .call(time_yAxis);
 
-        // add the Y gridlines
-        this.svg.append("g")
-            .attr("class", "grid")
-            .call(this.make_y_gridlines(this.time_yScale)
-                .tickSize(-this.width)
-                .tickFormat("")
-            );
+    // add the Y gridlines
+    this.svg.append("g")
+        .attr("class", "grid")
+        .call(this.make_y_gridlines(this.time_yScale)
+            .tickSize(-this.width)
+            .tickFormat("")
+        );
 
-        // adds title to timeline
-        // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
-        this.svg.append("text")
-            .attr("x", (this.width / 2))
-            .attr("y", 10 - (this.margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text("TIMELINE OF PLUNDER");
+    // adds title to timeline
+    // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
+    this.svg.append("text")
+        .attr("x", (this.width / 2))
+        .attr("y", 10 - (this.margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("TIMELINE OF PLUNDER");
     }
 
     draw() { // stuff we do AFTER loading data
@@ -104,14 +104,11 @@ class TimelineHistogram extends Component {
             .data(bins)
             .enter().append("g")
             .attr("class", "bar")
-            // .attr("transform", function (d) { return "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")"; });
             .attr("transform", (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")");
 
         var rects = bar.append("rect")
             .attr("x", 1)
-            // .attr("width", function (d) { return this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1; })
             .attr("width", (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1)
-            // .attr("height", function (d) { return this.height - this.time_yScale(d.length); });
             .attr("height", (d) => this.height - this.time_yScale(d.length));
 
         //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
@@ -121,12 +118,6 @@ class TimelineHistogram extends Component {
         var gBrush = this.svg.append("g")
             .attr("class", "brush")
             .call(brush);
-        // var brushResizePath = function (d) {
-        //     var e = +(d.type == "e"),
-        //         x = e ? 1 : -1,
-        //         y = this.height / 2;
-        //     return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
-        // }
         var brushResizePath = (d) => {
             var e = +(d.type == "e"),
                 x = e ? 1 : -1,
@@ -172,25 +163,11 @@ class TimelineHistogram extends Component {
                 .enter()
                 .append("circle")
                 .attr("class", "foredot")
-                // .attr("cx", function (d) {
-                //     return this.map.true_projection([d["lon"], d["lat"]])[0];
-                // })
-                // .attr("cy", function (d) {
-                //     return this.map.true_projection([d["lon"], d["lat"]])[1];
-                // })
-                .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
-                .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1])
-                .attr("transform", () => this.map.curr_transform())
-                // .attr("r", function(d) {
-                //     return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
-                // })
+                .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
+                .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
+                .attr("transform", () => this.map.curr_transform)
                 .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
                 .style("fill", "green")
-                // .on("mouseover", function(d){return this.map.tooltip.style("visibility", "visible")
-                //                                             .text(d["town"]);})
-                // //.on("mouseover", function(d){return tooltip.text("TEST");})
-                // .on("mousemove", function(){return this.map.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-                // .on("mouseout", function(){return this.map.tooltip.style("visibility", "hidden");});
                 .on("mouseover", (d) => this.tooltip.style("visibility", "visible").text(d["town"]))
                 .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
                 .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
@@ -201,12 +178,9 @@ class TimelineHistogram extends Component {
                        .data(newData)
                        .enter().append("rect")
                        .attr("class", "forebar")
-                       // .attr("x", function(d) { return cat_xScale(d.object_category); }) // this line seems not to do anything...
                        .attr("width", this.oh.cat_xScale.bandwidth())
                        .style("fill", "green")
-                    //    .attr("y", function(d) { return this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length) })
                        .attr("y", (d) => this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length))
-                    //    .attr("height", function(d) { return this.oh.height-this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length); });
                        .attr("height", (d) => this.oh.height-this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length));
         }
     }

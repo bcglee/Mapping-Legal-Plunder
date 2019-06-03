@@ -2,3 +2,7 @@
 d3.v5.min.js
 d3.v5.js
 *.DS_Store
+.eslintrc.js
+node_modules1/
+package-lock.json
+package.json

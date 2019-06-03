@@ -41,7 +41,7 @@ class ObjectHistogram extends Component {
     // may need to include this in TimelineHistogram's draw
     draw() { // stuff we do AFTER loading
         // Scale the range of the data in the domains
-        this.cat_xScale.domain(this.data.map(function(d) { return d.object_category; }));
+        this.cat_xScale.domain(this.data.map((d) => d.object_category));
         this.cat_yScale.domain([0, 2000]);
 
         // append the rectangles for the bar chart
@@ -49,10 +49,10 @@ class ObjectHistogram extends Component {
             .data(this.data)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return this.cat_xScale(d.object_category); })
+            .attr("x", (d) => this.cat_xScale(d.object_category))
             .attr("width", this.cat_xScale.bandwidth())
-            .attr("y", function(d) { return this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length) })
-            .attr("height", function(d) { return this.height -this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length); });
+            .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length))
+            .attr("height", (d) => this.height -this.cat_yScale(this.data.filter(el => el["object_category"] === d["object_category"]).length));
 
         // add the x Axis
         this.svg.append("g")
