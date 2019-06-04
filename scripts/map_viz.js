@@ -145,9 +145,9 @@ class MapViz extends Component {
                                                 })
                                                 .attr("transform", that.curr_transform)
                                                 .attr("r", (d) => {
-                                                  bool = newData.map(a => a.town).includes(d.town);
-                                                  if (bool === true) {return Math.sqrt(d["ct"]/2)};
-                                                  //return bool === true ? Math.sqrt(d["ct"]/2) : 0;
+                                                  // need to check if the current location is within the filtered locations
+                                                  // if so, return the count at the location
+                                                  if (newData.map(a => a.town).includes(d.town) === true) {return Math.sqrt(d["ct"]/2)};
                                                 })
                                                 .style("fill", "green")
                                                 .on("mouseover", (d) => that.tooltip.style("visibility", "visible")
