@@ -115,7 +115,7 @@ class MapViz extends Component {
                         .on("start brush end ", function() {
                                         var selection = d3.event.selection;
                                         if (selection === null) {
-                                        // that.handle.attr("display", "none");
+                                        //that.handle.attr("display", "none");
                                         //circle.classed("active", false);
                                         } else {
                                         var e = d3.brushSelection(this);
@@ -125,11 +125,10 @@ class MapViz extends Component {
                                         //console.log(e)
                                         //console.log(e)
                                         //console.log(this.data);
-                                        var newData = that.oh.data.filter( (d) => {
+                                        var newData = that.oh.locations.filter( (d) => {
                                                 var cx=that.true_projection([d["lon"], d["lat"]])[0]
                                                 var cy=that.true_projection([d["lon"], d["lat"]])[1]
                                                 //console.log(e)
-                                                //console.log(cx)
                                                 return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
                                         d3.selectAll('.foredot').remove(); // remove old foredots
 
@@ -145,8 +144,10 @@ class MapViz extends Component {
                                                 return that.true_projection([d["lon"], d["lat"]])[1];
                                                 })
                                                 .attr("transform", that.curr_transform)
-                                                .attr("r",  (d) => {
-                                                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
+                                                .attr("r", (d) => {
+                                                  bool = newData.map(a => a.town).includes(d.town);
+                                                  if (bool === true) {return Math.sqrt(d["ct"]/2)};
+                                                  //return bool === true ? Math.sqrt(d["ct"]/2) : 0;
                                                 })
                                                 .style("fill", "green")
                                                 .on("mouseover", (d) => that.tooltip.style("visibility", "visible")
@@ -193,82 +194,15 @@ class MapViz extends Component {
                 y = this.th.height / 2;
         return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
       };
+
+      gBrush.data([{ type: "w" }, { type: "e" }])
+            .enter().append("path")
+            .attr("cursor", "ew-resize")
+            .attr("d", brushResizePath);
+
       gBrush.call(brush.move, [0.3, 0.5].map(this.th.time_xScale));
 
     }
-
-
-    brushmoved() {
-        var selection = d3.event.selection;
-        if (selection == null) {
-            this.handle.attr("display", "none");
-            //circle.classed("active", false);
-        } else {
-            var e = d3.brushSelection(this);
-
-        //console.log(cx,cy)
-           // var e = d3.event.selection.map(xScale.invert, xScale);
-            //console.log(e)
-            //console.log(e)
-            //console.log(this.data);
-            var newData = this.data.filter( (d) => {
-                var cx=this.true_projection([d["lon"], d["lat"]])[0]
-                var cy=this.true_projection([d["lon"], d["lat"]])[1]
-                //console.log(e)
-                //console.log(cx)
-                return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
-            d3.selectAll('.foredot').remove(); // remove old foredots
-
-            this.svg.selectAll('.foredot')
-                .data(this.oh.locations)
-                .enter()
-                .append("circle")
-                .attr("class", "foredot")
-                .attr("cx",  (d) => {
-                    return this.true_projection([d["lon"], d["lat"]])[0];
-                })
-                .attr("cy",  (d) => {
-                    return this.true_projection([d["lon"], d["lat"]])[1];
-                })
-                .attr("transform", this.curr_transform)
-                .attr("r",  (d) => {
-                    return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
-                })
-                .style("fill", "green")
-                .on("mouseover", (d) => this.tooltip.style("visibility", "visible")
-                                                           .text(d["town"]))
-                .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
-                .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
-
-
-                  d3.selectAll('.forebar2').remove();
-                  var bins = this.th.histogram(newData);
-
-        var bar = this.th.svg.selectAll(".forebar2")
-        .data(bins)
-        .enter().append("g")
-        .attr("class", "forebar2")
-        .attr("transform",  (d) => { return "translate(" + this.th.time_xScale(d.x0) + "," + this.th.time_yScale(d.length) + ")"; })
-
-
-        var rects = bar.append("rect")
-        .attr("x", 1)
-        .attr("width",  (d) => { return this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1; })
-        .attr("height",  (d) => { return this.th.height - this.th.time_yScale(d.length); })
-        .style("fill","green");
-
-        d3.selectAll('.forebar').remove();
-        this.oh.svg.selectAll(".forebar")
-        .data(newData)
-        .enter().append("rect")
-        .attr("class", "forebar")
-        .attr("x", (d) => { return this.oh.cat_xScale(d.object_category); })
-        .attr("width", this.oh.cat_xScale.bandwidth())
-        .style("fill", "green")
-        .attr("y", (d) => { return this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length) })
-        .attr("height", (d) => { return this.oh.height -this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length); });
-        }
-    } //end brushmoved
 
     // function for zoomin'
     zoomed() {
