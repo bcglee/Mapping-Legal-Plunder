@@ -91,7 +91,8 @@ class ObjectHistogram extends Component {
                 // timeline histogram
                 var rects = bar.append("rect")
                 .attr("x", 1)
-                .attr("width",  (d) =>  that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1)
+                // for width, need to make sure to not return width with negative value
+                .attr("width",  (d) => { return that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1 > 0 ? that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1 : 0; })
                 .attr("height",  (d) => that.th.height - that.th.time_yScale(d.length))
                 .style("fill","green")
             })

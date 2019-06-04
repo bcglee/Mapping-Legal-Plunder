@@ -104,7 +104,8 @@ class TimelineHistogram extends Component {
 
         var rects = bar.append("rect")
                        .attr("x", 1)
-                       .attr("width", (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1)
+                       // ensure that the width is >= 0
+                       .attr("width",  (d) => { return this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0; })
                        .attr("height", (d) => this.height - this.time_yScale(d.length));
 
         //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
@@ -189,13 +190,13 @@ class TimelineHistogram extends Component {
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     make_x_gridlines(scale, tickNum) {
         return d3.axisBottom(scale)
-                 .ticks(tickNum)
+                 .ticks(tickNum);
         }
 
     // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     make_y_gridlines(scale) {
         return d3.axisLeft(scale)
-                 .ticks(10)
+                 .ticks(10);
         }
 }
 

@@ -125,7 +125,7 @@ class MapViz extends Component {
                                         //console.log(e)
                                         //console.log(e)
                                         //console.log(this.data);
-                                        var newData = that.oh.locations.filter( (d) => {
+                                        var newLocations = that.oh.locations.filter( (d) => {
                                                 var cx=that.true_projection([d["lon"], d["lat"]])[0]
                                                 var cy=that.true_projection([d["lon"], d["lat"]])[1]
                                                 //console.log(e)
@@ -147,7 +147,7 @@ class MapViz extends Component {
                                                 .attr("r", (d) => {
                                                   // need to check if the current location is within the filtered locations
                                                   // if so, return the count at the location
-                                                  if (newData.map(a => a.town).includes(d.town) === true) {return Math.sqrt(d["ct"]/2)};
+                                                  if (newLocations.map(a => a.town).includes(d.town) === true) {return Math.sqrt(d["ct"]/2)};
                                                 })
                                                 .style("fill", "green")
                                                 .on("mouseover", (d) => that.tooltip.style("visibility", "visible")
@@ -156,8 +156,14 @@ class MapViz extends Component {
                                                 .on("mouseout", () => that.tooltip.style("visibility", "hidden"));
 
 
-                                                d3.selectAll('.forebar2').remove();
-                                                var bins = that.th.histogram(newData);
+                                       var newData = that.oh.data.filter( (d) => {
+                                                        var cx=that.true_projection([d["lon"], d["lat"]])[0]
+                                                        var cy=that.true_projection([d["lon"], d["lat"]])[1]
+                                                        //console.log(e)
+                                                        return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
+
+                                        d3.selectAll('.forebar2').remove();
+                                        var bins = that.th.histogram(newData);
 
                                         var bar = that.th.svg.selectAll(".forebar2")
                                         .data(bins)
@@ -168,7 +174,8 @@ class MapViz extends Component {
 
                                         var rects = bar.append("rect")
                                         .attr("x", 1)
-                                        .attr("width",  (d) => { return that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1; })
+                                        // for height, need to make sure not to return negative width
+                                        .attr("width",  (d) => { return that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1 > 0 ? that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1 : 0; })
                                         .attr("height",  (d) => { return that.th.height - that.th.time_yScale(d.length); })
                                         .style("fill","green");
 
@@ -217,6 +224,10 @@ class MapViz extends Component {
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".foredot")
+                .attr('transform', d3.event.transform);
+
+        //transforms brush appropriately (with zoom)
+        this.svg.selectAll(".brush")
                 .attr('transform', d3.event.transform);
     }
 
