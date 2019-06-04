@@ -8,10 +8,6 @@ class TimelineHistogram extends Component {
         this.init();
     }
 
-    /*************
-    MAIN FUNCTIONS
-    *************/
-
     init() { // stuff we do BEFORE loading data
         this.svg = d3.select("body").append("svg")
                      .attr("class", "time_hist")
@@ -144,10 +140,6 @@ class TimelineHistogram extends Component {
         this.categories = categories;
         this.oh = obj_hist;
     }
-
-    /**************
-    OTHER FUNCTIONS
-    **************/
 
     brushmoved() {
         var selection = d3.event.selection;
