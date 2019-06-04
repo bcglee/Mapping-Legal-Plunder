@@ -132,8 +132,8 @@ class ObjectHistogram extends Component {
 
         // adds the title
         this.svg.append("text")
-                .attr("x", (width3 / 2))
-                .attr("y", 5 - (margin3.top / 2))
+                .attr("x", (this.width / 2))
+                .attr("y", 5 - (this.margin.top / 2))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
