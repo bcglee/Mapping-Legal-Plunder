@@ -129,15 +129,6 @@ class ObjectHistogram extends Component {
                 .tickSize(-this.width)
                 .tickFormat("")
                 );
-
-        // adds the title
-        this.svg.append("text")
-                .attr("x", (this.width / 2))
-                .attr("y", 5 - (this.margin.top / 2))
-                .attr("text-anchor", "middle")
-                .style("font-size", "16px")
-                .style("text-decoration", "underline")
-                .text("PLUNDERED ITEM CATEGORIES");
     }
 
     // stuff we can't include in constructor as they become available after

@@ -104,40 +104,103 @@ class MapViz extends Component {
                  .delay(this.load_transition_delay)
                  .duration(this.load_transition_duration)
                  .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
-                 .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1])
+                 .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
-                 //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
-                 var brush = d3.brush()
-                     .extent([[0, 0], [this.width+ this.margin.left + this.margin.right, this.height]])
-                     .on("start brush end ", this.brushmoved);
-                 var gBrush = this.svg.append("g")
-                     .attr("class", "brush")
-                     .call(brush);
-                 var brushResizePath =  (d) => {
-                     var e = +(d.type == "e"),
-                         x = e ? 1 : -1,
-                         y = this.th.height / 2;
-                     return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
-                 }
-                 var handle = gBrush.selectAll(".handle--custom")
-                     .data([{ type: "w" }, { type: "e" }])
-                     .enter().append("path")
-                     .attr("class", "handle--custom")
-                     .attr("stroke", "#000")
-                     .attr("cursor", "ew-resize")
-                     .attr("d", brushResizePath);
+        var that = this;
+        //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
+        var brush = d3.brush()
+                        .extent([[0, 0], [this.width+ this.margin.left + this.margin.right, this.height]])
+                        // .on("start brush end ", () => this.brushmoved());
+                        // .on("start brush end ", this.brushmoved);
+                        .on("start brush end ", function() {
+                                        var selection = d3.event.selection;
+                                        if (selection === null) {
+                                        // that.handle.attr("display", "none");
+                                        //circle.classed("active", false);
+                                        } else {
+                                        var e = d3.brushSelection(this);
+
+                                        //console.log(cx,cy)
+                                        // var e = d3.event.selection.map(xScale.invert, xScale);
+                                        //console.log(e)
+                                        //console.log(e)
+                                        //console.log(this.data);
+                                        var newData = that.oh.data.filter( (d) => {
+                                                var cx=that.true_projection([d["lon"], d["lat"]])[0]
+                                                var cy=that.true_projection([d["lon"], d["lat"]])[1]
+                                                //console.log(e)
+                                                //console.log(cx)
+                                                return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
+                                        d3.selectAll('.foredot').remove(); // remove old foredots
+                                        
+                                        that.svg.selectAll('.foredot')
+                                                .data(that.oh.locations)
+                                                .enter()
+                                                .append("circle")
+                                                .attr("class", "foredot")
+                                                .attr("cx",  (d) => {
+                                                return that.true_projection([d["lon"], d["lat"]])[0];
+                                                })
+                                                .attr("cy",  (d) => {
+                                                return that.true_projection([d["lon"], d["lat"]])[1];
+                                                })
+                                                .attr("transform", that.curr_transform)
+                                                .attr("r",  (d) => {
+                                                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
+                                                })
+                                                .style("fill", "green")
+                                                .on("mouseover", (d) => that.tooltip.style("visibility", "visible")
+                                                                                        .text(d["town"]))
+                                                .on("mousemove", () => that.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                                                .on("mouseout", () => that.tooltip.style("visibility", "hidden"));
+
+
+                                                d3.selectAll('.forebar2').remove();
+                                                var bins = that.th.histogram(newData);
+
+                                        var bar = that.th.svg.selectAll(".forebar2")
+                                        .data(bins)
+                                        .enter().append("g")
+                                        .attr("class", "forebar2")
+                                        .attr("transform",  (d) => { return "translate(" + that.th.time_xScale(d.x0) + "," + that.th.time_yScale(d.length) + ")"; })
+
+
+                                        var rects = bar.append("rect")
+                                        .attr("x", 1)
+                                        .attr("width",  (d) => { return that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1; })
+                                        .attr("height",  (d) => { return that.th.height - that.th.time_yScale(d.length); })
+                                        .style("fill","green");
+
+                                        d3.selectAll('.forebar').remove();
+                                        that.oh.svg.selectAll(".forebar")
+                                        .data(newData)
+                                        .enter().append("rect")
+                                        .attr("class", "forebar")
+                                        .attr("x", (d) => { return that.oh.cat_xScale(d.object_category); })
+                                        .attr("width", that.oh.cat_xScale.bandwidth())
+                                        .style("fill", "green")
+                                        .attr("y", (d) => { return that.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length) })
+                                        .attr("height", (d) => { return that.oh.height -that.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length); });
+                                        }
+
+                        });
+        var gBrush = this.svg.append("g")
+        .attr("class", "brush")
+        .call(brush);
+        var brushResizePath =  (d) => {
+        var e = +(d.type == "e"),
+                x = e ? 1 : -1,
+                y = this.th.height / 2;
+        return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+        }
 
     }
 
 
     brushmoved() {
-
-      console.log(this.data);
-       var that = this;
-
         var selection = d3.event.selection;
         if (selection == null) {
-            handle.attr("display", "none");
+            this.handle.attr("display", "none");
             //circle.classed("active", false);
         } else {
             var e = d3.brushSelection(this);
@@ -146,65 +209,63 @@ class MapViz extends Component {
            // var e = d3.event.selection.map(xScale.invert, xScale);
             //console.log(e)
             //console.log(e)
-            //console.log(that.data);
-            var newData = that.data.filter( (d) => {
-                var cx=true_projection([d["lon"], d["lat"]])[0]
-                var cy=true_projection([d["lon"], d["lat"]])[1]
+            //console.log(this.data);
+            var newData = this.data.filter( (d) => {
+                var cx=this.true_projection([d["lon"], d["lat"]])[0]
+                var cy=this.true_projection([d["lon"], d["lat"]])[1]
                 //console.log(e)
                 //console.log(cx)
                 return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
             d3.selectAll('.foredot').remove(); // remove old foredots
 
-            svg.selectAll('.foredot')
-                .data(that.oh.locations)
+            this.svg.selectAll('.foredot')
+                .data(this.oh.locations)
                 .enter()
                 .append("circle")
                 .attr("class", "foredot")
                 .attr("cx",  (d) => {
-                    return true_projection([d["lon"], d["lat"]])[0];
+                    return this.true_projection([d["lon"], d["lat"]])[0];
                 })
                 .attr("cy",  (d) => {
-                    return true_projection([d["lon"], d["lat"]])[1];
+                    return this.true_projection([d["lon"], d["lat"]])[1];
                 })
-                .attr("transform", curr_transform)
+                .attr("transform", this.curr_transform)
                 .attr("r",  (d) => {
                     return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
                 })
                 .style("fill", "green")
-                .on("mouseover", function(d){return tooltip.style("visibility", "visible")
-                                                           .text(d["town"]);})
-                //.on("mouseover", function(d){return tooltip.text("TEST");})
-                .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-                .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+                .on("mouseover", (d) => this.tooltip.style("visibility", "visible")
+                                                           .text(d["town"]))
+                .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
 
                   d3.selectAll('.forebar2').remove();
-                  var bins = histogram(newData);
+                  var bins = this.th.histogram(newData);
 
-        var bar = that.th.svg.selectAll(".forebar2")
+        var bar = this.th.svg.selectAll(".forebar2")
         .data(bins)
         .enter().append("g")
         .attr("class", "forebar2")
-        .attr("transform",  (d) => { return "translate(" + that.th.time_xScale(d.x0) + "," + that.th.time_yScale(d.length) + ")"; })
+        .attr("transform",  (d) => { return "translate(" + this.th.time_xScale(d.x0) + "," + this.th.time_yScale(d.length) + ")"; })
 
 
         var rects = bar.append("rect")
         .attr("x", 1)
-        .attr("width",  (d) => { return that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1; })
-        .attr("height",  (d) => { return that.th.height - that.th.time_yScale(d.length); })
-        .style("fill","green")
+        .attr("width",  (d) => { return this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1; })
+        .attr("height",  (d) => { return this.th.height - this.th.time_yScale(d.length); })
+        .style("fill","green");
 
-
-            d3.selectAll('.forebar').remove();
-            that.oh.svg.selectAll(".forebar")
+        d3.selectAll('.forebar').remove();
+        this.oh.svg.selectAll(".forebar")
         .data(newData)
         .enter().append("rect")
         .attr("class", "forebar")
-        .attr("x", (d) => { return x(d.object_category); })
-        .attr("width", x.bandwidth())
+        .attr("x", (d) => { return this.oh.cat_xScale(d.object_category); })
+        .attr("width", this.oh.cat_xScale.bandwidth())
         .style("fill", "green")
-        .attr("y", (d) => { return y(newData.filter(el => el["object_category"] === d["object_category"]).length) })
-        .attr("height", (d) => { return that.oh.height -y(newData.filter(el => el["object_category"] === d["object_category"]).length); });
+        .attr("y", (d) => { return this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length) })
+        .attr("height", (d) => { return this.oh.height -this.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length); });
         }
     } //end brushmoved
 
