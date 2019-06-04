@@ -44,8 +44,18 @@ class ObjectHistogram extends Component {
                 .attr("y", this.height + (2 * this.margin.bottom / 3))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .style("text-decoration", "underline")
                 .text("Item Category");
+
+        // text label for the y axis
+        // http://jsfiddle.net/manojmcet/g47hN/
+        // annoyingly subtle b/c defaults to rotating around origin (0,0)
+        this.svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - this.margin.left)
+                .attr("x", 0 - (this.height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Number of Items");
     }
 
     draw() { // stuff we do AFTER loading
