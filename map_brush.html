@@ -363,7 +363,7 @@
                // var e = d3.event.selection.map(xScale.invert, xScale);
                 //console.log(e)
                 //console.log(e)
-                var newData = data.filter(function (d) {
+                var newData = locations.filter(function (d) {
                     var cx=true_projection([d["lon"], d["lat"]])[0]
                     var cy=true_projection([d["lon"], d["lat"]])[1]
                     //console.log(e)
@@ -384,7 +384,9 @@
                     })
                     .attr("transform", curr_transform)
                     .attr("r", function(d) {
-                        return Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2);
+                      bool = newData.map(a => a.town).includes(d.town);
+                      if (bool === true) {return Math.sqrt(d["ct"]/2)};
+                      //return bool === true ? Math.sqrt(d["ct"]/2) : 0;
                     })
                     .style("fill", "green")
                     .on("mouseover", function(d){return tooltip.style("visibility", "visible")
