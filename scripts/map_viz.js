@@ -132,7 +132,7 @@ class MapViz extends Component {
                                                 //console.log(cx)
                                                 return e[0][0] <= cx && e[1][0] >= cx && e[0][1] <= cy && e[1][1] >= cy; });
                                         d3.selectAll('.foredot').remove(); // remove old foredots
-                                        
+
                                         that.svg.selectAll('.foredot')
                                                 .data(that.oh.locations)
                                                 .enter()
@@ -192,7 +192,8 @@ class MapViz extends Component {
                 x = e ? 1 : -1,
                 y = this.th.height / 2;
         return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
-        }
+      };
+      gBrush.call(brush.move, [0.3, 0.5].map(this.th.time_xScale));
 
     }
 
