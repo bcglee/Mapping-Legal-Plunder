@@ -42,21 +42,81 @@ class ObjectHistogram extends Component {
         // Scale the range of the data in the domains
         this.cat_xScale.domain(this.data.map((d) => d.object_category));
 
+        // we need to store the class variable as "that" beore calling the inline function for mouseover
+        // if we don't do this, we'll have a problem where the mouseover will recognize "this" as the class variable
+        var that = this;
+
         // append the rectangles for the bar chart
+        // here, "this" refers to the current rectangle that we're editing
         this.svg.selectAll(".bar")
-                .data(this.categories)
+                .data(that.categories)
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", (d) => this.cat_xScale(d["object category"]) )
                 .attr("width", this.cat_xScale.bandwidth())
                 .style("fill", "black")
                 .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
-                .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) );
+                .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
+                .on("mouseover", function(d) {
+                  d3.select(this)
+                  .style("fill", "green");
+
+                    var newData = that.data.filter(el => el["object_category"] === d["object category"]);
+
+                        that.map.svg.selectAll('.foredot')
+                        .data(newData)
+                        .enter()
+                        .append("circle")
+                        .attr("class", "foredot")
+                        .attr("cx", (d) => that.map.true_projection([d["lon"], d["lat"]])[0])
+                        .attr("cy", (d) => that.map.true_projection([d["lon"], d["lat"]])[1])
+                        .attr("transform", that.map.curr_transform)
+                        .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
+                        .style("fill", "green")
+                        .on("mouseover", (d) => tooltip.style("visibility", "visible")
+                                                                   .text(d["town"]) )
+                        //.on("mouseover", function(d){return tooltip.text("TEST");})
+                        //.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+                        //.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+                //timeline histogram
+                var bins = that.th.histogram(newData);
+
+                var bar = that.th.svg.selectAll(".forebar2")
+                .data(bins)
+                .enter().append("g")
+                .attr("class", "forebar2")
+                .attr("transform",  (d) => "translate(" + that.th.time_xScale(d.x0) + "," + that.th.time_yScale(d.length) + ")" )
+
+                // timeline histogram
+                var rects = bar.append("rect")
+                .attr("x", 1)
+                .attr("width",  (d) =>  that.th.time_xScale(d.x1) - that.th.time_xScale(d.x0) - 1)
+                .attr("height",  (d) => that.th.height - that.th.time_yScale(d.length))
+                .style("fill","green")
+            })
+            .on("mouseout", function(d) {
+                d3.select(this)
+                  .style("fill", "black");
+                    d3.selectAll('.foredot').remove();
+                    d3.selectAll('.forebar2').remove();
+
+            });
+
+
 
         // add the x Axis
         this.svg.append("g")
                 .attr("transform", "translate(0," + this.height + ")")
-                .call(d3.axisBottom(this.cat_xScale));
+                .call(d3.axisBottom(this.cat_xScale))
+                .selectAll("text")
+                    .style("text-anchor", "end")
+                    .style("color", "black")
+                    .attr("dx", "-.8em")
+                    .attr("dy", ".15em")
+                    .attr("transform", "rotate(-45)");          // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+
+
 
         // add the y Axis
         this.svg.append("g")
@@ -70,14 +130,14 @@ class ObjectHistogram extends Component {
                 .tickFormat("")
                 );
 
-
-        // rotates x-axis labels
-        // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
-        this.svg.selectAll("text")
-                .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", "rotate(-45)");
+        // adds the title
+        this.svg.append("text")
+                .attr("x", (width3 / 2))
+                .attr("y", 5 - (margin3.top / 2))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("text-decoration", "underline")
+                .text("PLUNDERED ITEM CATEGORIES");
     }
 
     // stuff we can't include in constructor as they become available after
