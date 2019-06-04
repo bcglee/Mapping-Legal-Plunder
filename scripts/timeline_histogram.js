@@ -89,7 +89,17 @@ class TimelineHistogram extends Component {
             .style("font-size", "16px")
             .style("text-decoration", "underline")
             .text("TIMELINE OF PLUNDER");
-    }
+
+    // text label for the x axis
+    // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
+    this.svg.append("text")
+            .attr("x", (this.width / 2))
+            .attr("y", this.height + (this.margin.bottom))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .text("Date");
+    };
 
     draw() { // stuff we do AFTER loading data
         // ---- apply data to histogram func -------------

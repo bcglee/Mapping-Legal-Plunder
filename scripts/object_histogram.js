@@ -27,7 +27,7 @@ class ObjectHistogram extends Component {
                      .attr("transform",
                      "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-        // adds title to timeline
+        // adds title to histogram
         // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
         this.svg.append("text")
                 .attr("x", (this.width / 2))
@@ -36,6 +36,16 @@ class ObjectHistogram extends Component {
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
                 .text("PLUNDERED ITEM CATEGORIES");
+
+        // text label for the x axis
+        // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
+        this.svg.append("text")
+                .attr("x", (this.width / 2))
+                .attr("y", this.height + (2 * this.margin.bottom / 3))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("text-decoration", "underline")
+                .text("Item Category");
     }
 
     draw() { // stuff we do AFTER loading
