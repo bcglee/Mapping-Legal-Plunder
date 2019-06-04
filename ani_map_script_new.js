@@ -1,4 +1,10 @@
 //
+// Visualization inspired by Flight Animation with d3.js 
+// Available at: http://www.tnoda.com/blog/2014-04-02
+//
+
+
+//
 // load data files
 //
 
