@@ -135,15 +135,18 @@ class TimelineHistogram extends Component {
         var brush = d3.brushX()
             .extent([[0, 0], [this.width, this.height]])
             .on("start brush end", () => this.brushmoved());
+
         var gBrush = this.svg.append("g")
             .attr("class", "brush")
             .call(brush);
+
         var brushResizePath = (d) => {
             var e = +(d.type === "e"),
                 x = e ? 1 : -1,
                 y = this.height / 2;
             return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
         }
+
         this.handle = gBrush.selectAll(".handle--custom")
             .data([{ type: "w" }, { type: "e" }])
             .enter().append("path")
@@ -192,7 +195,9 @@ class TimelineHistogram extends Component {
                 .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
+
             d3.selectAll('.forebar').remove();
+
             this.oh.svg.selectAll(".forebar")
                 .data(this.categories)
                 .enter().append("rect")

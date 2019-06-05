@@ -3,7 +3,7 @@ import TimelineHistogram from './timeline_histogram.js'
 import ObjectHistogram from './object_histogram.js';
 
 // initialize map visualization
-var map_margin = {right: 50, left: 50},
+var map_margin = { right: 50, left: 50 },
     map_width = 1000,
     map_height = 400;
 const map_viz = new MapViz(map_margin, map_width, map_height);
@@ -15,7 +15,7 @@ var th_margin = { top: 30, right: 30, bottom: 30, left: 55 },
 const th = new TimelineHistogram(th_margin, th_width, th_height);
 
 // initialize object histogram
-var oh_margin = {top: 20, right: 20, bottom: 100, left: 65 },
+var oh_margin = { top: 20, right: 20, bottom: 100, left: 65 },
     oh_width = 1000 - oh_margin.left - oh_margin.right,
     oh_height = 300 - oh_margin.top - oh_margin.bottom;
 const oh = new ObjectHistogram(oh_margin, oh_width, oh_height);

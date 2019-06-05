@@ -64,10 +64,6 @@ class MapViz extends Component {
             .attr('width', this.width + this.margin.left + this.margin.right)
             .attr('height', this.height)
             .attr('fill', 'lightBlue');
-
-        // // set up reset zoom button
-        // var reset_zoom_button = document.getElementById('reset');
-        // reset_zoom_button.onclick = this.resetzoom;
     }
 
     draw() {
@@ -111,6 +107,7 @@ class MapViz extends Component {
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
         var that = this;
+
         //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
         var brush = d3.brush()
             .extent([[0, 0], [this.width+ this.margin.left + this.margin.right, this.height]])
@@ -118,11 +115,7 @@ class MapViz extends Component {
             // .on("start brush end ", this.brushmoved);
             .on("start brush end ", function() {
                     var selection = d3.event.selection;
-                    if (selection === null) {
-                        //that.handle.attr("display", "none");
-                        //circle.classed("active", false);
-                    } 
-                    else {
+                    if (selection !== null) {
                         var e = d3.brushSelection(this);
 
                         var newLocations = that.oh.locations.filter( (d) => {
@@ -155,7 +148,6 @@ class MapViz extends Component {
                                 .style("left",(event.pageX+10)+"px"))
                             .on("mouseout", () => that.tooltip.style("visibility", "hidden"));
 
-
                         var newData = that.oh.data.filter( (d) => {
                             var cx=that.true_projection([d["lon"], d["lat"]])[0]
                             var cy=that.true_projection([d["lon"], d["lat"]])[1]
@@ -171,7 +163,6 @@ class MapViz extends Component {
                             .enter().append("g")
                             .attr("class", "forebar2")
                             .attr("transform",  (d) => "translate(" + that.th.time_xScale(d.x0) + "," + that.th.time_yScale(d.length) + ")");
-
 
                         var rects = bar.append("rect")
                             .attr("x", 1)
@@ -191,8 +182,8 @@ class MapViz extends Component {
                             .attr("y", (d) => that.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length))
                             .attr("height", (d) => that.oh.height -that.oh.cat_yScale(newData.filter(el => el["object_category"] === d["object_category"]).length));
                     }
-
             });
+
         var gBrush = this.svg.append("g")
             .attr("class", "brush")
             .call(brush);
@@ -209,12 +200,12 @@ class MapViz extends Component {
             .attr("d", brushResizePath);
 
         gBrush.call(brush.move, [0.3, 0.5].map(this.th.time_xScale));
-
     }
 
     // function for zoomin'
     zoomed() {
         this.curr_transform = d3.event.transform;
+
         //transforms the map appropriately (with zoom)
         this.svg.selectAll('path')
             .attr('transform', d3.event.transform);

@@ -119,8 +119,6 @@ class ObjectHistogram extends Component {
                 d3.selectAll('.forebar2').remove();
             });
 
-
-
         // add the x Axis
         this.svg.append("g")
             .attr("transform", "translate(0," + this.height + ")")
