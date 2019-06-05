@@ -28,6 +28,9 @@ Promise.all(promises).then(function(values) {
     unique_locations = values[2]
     console.log(values)
     
+    lucca_object = {town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "50"}
+    unique_locations.push(lucca_object)
+    
     //
     // define zoomed projection for lucca
     //
@@ -156,7 +159,7 @@ Promise.all(promises).then(function(values) {
         console.log(i)
       }
       i++;
-    }, 15); //150);
+    }, 75); //150);
     
     
 });
