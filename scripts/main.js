@@ -1,3 +1,4 @@
+// don't forget to use triple equals!
 import MapViz from './map_viz.js';
 import TimelineHistogram from './timeline_histogram.js'
 import ObjectHistogram from './object_histogram.js';
