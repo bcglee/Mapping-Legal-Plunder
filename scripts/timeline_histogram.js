@@ -62,15 +62,13 @@ class TimelineHistogram extends Component {
                 .attr("dy", "1.25em");
 
 
-    var time_yAxis = d3.axisLeft(this.time_yScale);
-
     // sets yScale
     // yScale.domain([0, d3.max(bins, function (d) { return d.length; })]); // can only set the domain of y scaling function once the data has been loaded
     this.time_yScale.domain([0, 300]);
 
     // adds axis to this.svg
     this.svg.append("g")
-            .call(time_yAxis);
+            .call(d3.axisLeft(this.time_yScale));
 
     // add the Y gridlines
     this.svg.append("g")
