@@ -24,19 +24,19 @@ const oh = new ObjectHistogram(oh_margin, oh_width, oh_height);
 function update_enabled() {
     enabled = document.querySelector('input[name= "interactivity"]:checked').value;
     if (enabled === 'int1') {
-        // map_viz.enable_interactivity();
-        // th.disable_interactivity();
-        // oh.disable_interactivity();
+        map_viz.enable_interactivity();
+        th.disable_interactivity();
+        oh.disable_interactivity();
     }
     else if (enabled === 'int2') {
-        // map_viz.disable_interactivity();
-        // th.enable_interactivity();
-        // oh.disable_interactivity();
+        map_viz.disable_interactivity();
+        th.enable_interactivity();
+        oh.disable_interactivity();
     }
     else if (enabled === 'int3') {
-        // map_viz.disable_interactivity();
-        // th.disable_interactivity();
-        // oh.enable_interactivity();
+        map_viz.disable_interactivity();
+        th.disable_interactivity();
+        oh.enable_interactivity();
     }
 }
 var enabled;
@@ -47,6 +47,10 @@ int1.onclick = update_enabled;
 int2.onclick = update_enabled;
 int3.onclick = update_enabled;
 update_enabled();
+
+// reset zoom
+var reset_zoom_button = document.getElementById('reset');
+reset_zoom_button.onclick = () => map_viz.resetzoom();
 
 // apply date format func to date value of each row of data
 // necessary for data read of lucca_debt_full_dates_cleaned.csv
