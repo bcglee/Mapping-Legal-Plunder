@@ -29,7 +29,6 @@ class ObjectHistogram extends Component {
         // adds title to histogram
         // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
         this.svg.append("text")
-<<<<<<< Updated upstream
                 .attr("x", (this.width / 2))
                 .attr("y", 10 - (this.margin.top / 2))
                 .attr("text-anchor", "middle")
@@ -56,14 +55,6 @@ class ObjectHistogram extends Component {
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("Number of Items");
-=======
-            .attr("x", (this.width / 2))
-            .attr("y", 10 - (this.margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text("PLUNDERED ITEM CATEGORIES");
->>>>>>> Stashed changes
     }
 
     draw() { // stuff we do AFTER loading
