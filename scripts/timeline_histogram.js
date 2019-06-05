@@ -80,7 +80,7 @@ class TimelineHistogram extends Component {
                 this.make_y_gridlines(this.time_yScale)
                     .tickSize(-this.width)
                     .tickFormat("")
-            );
+                  );
 
         // adds title to timeline
         // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html

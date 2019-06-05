@@ -55,6 +55,15 @@ class ObjectHistogram extends Component {
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("Number of Items");
+
+        // http://bl.ocks.org/biovisualize/1016860
+        // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
+        this.tooltip = d3.select("body")
+                         .append("div")
+                         .attr("class", "obj_tooltip")  // from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+                         .style("position", "absolute")
+                         .style("z-index", "10")
+                         .style("visibility", "hidden");
     }
 
     draw() { // stuff we do AFTER loading
@@ -80,7 +89,12 @@ class ObjectHistogram extends Component {
                 d3.select(this)
                     .style("fill", "green");
 
+                // filters data for category with mouseover event
                 var newData = that.data.filter(el => el["object_category"] === d["object category"]);
+
+                // adds tooltip on object category when mouseover the bar, giving count in bar
+                that.tooltip.style("visibility", "visible")
+                            .html(newData.length + " items");
 
                 that.map.svg.selectAll('.foredot')
                     .data(newData)
@@ -112,11 +126,13 @@ class ObjectHistogram extends Component {
                     .attr("height",  (d) => that.th.height - that.th.time_yScale(d.length))
                     .style("fill","green")
             })
+            .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
             .on("mouseout", function() {
                 d3.select(this)
                     .style("fill", "black");
                 d3.selectAll('.foredot').remove();
                 d3.selectAll('.forebar2').remove();
+                that.tooltip.style("visibility", "hidden");
             });
 
         // add the x Axis

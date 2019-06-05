@@ -54,7 +54,7 @@ class MapViz extends Component {
         // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
         this.tooltip = d3.select("body")
             .append("div")
-            .attr("class", "tooltip")  // from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+            .attr("class", "town_tooltip")  // from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
             .style("position", "absolute")
             .style("z-index", "10")
             .style("visibility", "hidden");
