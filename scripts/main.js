@@ -77,7 +77,7 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
         d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
             // TESTING DataProcessor: uncomment/edit below to test
             // DataProcessor
-            // const plunder = new DataProcessor(data, locations, categories);
+            const plunder = new DataProcessor(data, locations, categories);
             // console.log(plunder.filter_towns("Pisa", "Pieve di Calci", "Fucecchio"));
             // console.log(plunder.filter_categories("foodstuffs", "tools and implements"));
             // console.log(plunder.filter_time(new Date(1333, 1, 1), new Date(1336, 1, 1)));
@@ -85,8 +85,8 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
             // console.log(plunder.filter_categories());
             // console.log(plunder.filter_towns());
 
-            th.post_load(data, map_viz, locations, categories, oh);
-            oh.post_load(data, map_viz, locations, categories, th);
+            th.post_load(data, map_viz, locations, categories, oh, plunder);
+            oh.post_load(data, map_viz, locations, categories, th, plunder);
             th.draw();
             oh.draw();
         });

@@ -160,24 +160,30 @@ class TimelineHistogram extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, categories, obj_hist) {
+    post_load(data, map, locations, categories, obj_hist, plunder) {
         this.data = data;
         this.map = map;
         this.locations = locations;
         this.categories = categories;
         this.oh = obj_hist;
+        this.plunder = plunder;
     }
 
     brushmoved() {
         var selection = d3.event.selection;
         if (selection === null) {
             this.handle.attr("display", "none");
+            var newData = this.plunder.filter_time(new Date(1332, 10, 1), new Date(1343, 2, 1));
         }
         else {
+            // gets date range selected by brush
             var e = d3.event.selection.map(this.time_xScale.invert, this.time_xScale);
-            var newData = this.data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
+            var newData = this.plunder.filter_time(e[0], e[1]);
+            this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
+            //this.data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
+          }
+            
             d3.selectAll('.foredot').remove(); // remove old foredots
-
             this.map.svg.selectAll('.foredot')
                 .data(this.locations)
                 .enter()
@@ -193,8 +199,6 @@ class TimelineHistogram extends Component {
                 .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px")
                     .style("left",(event.pageX+10)+"px"))
                 .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
-
-            this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
 
             d3.selectAll('.forebar').remove();
 
@@ -215,7 +219,6 @@ class TimelineHistogram extends Component {
                     //logscale need to handle case of empty selection when brushing
                     return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
                 });
-            }
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218

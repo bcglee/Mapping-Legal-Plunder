@@ -90,7 +90,8 @@ class ObjectHistogram extends Component {
                     .style("fill", "green");
 
                 // filters data for category with mouseover event
-                var newData = that.data.filter(el => el["object_category"] === d["object category"]);
+                var newData = that.plunder.filter_categories(d["object category"]);
+                //var newData = that.data.filter(el => el["object_category"] === d["object category"]);
 
                 // adds tooltip on object category when mouseover the bar, giving count in bar
                 that.tooltip.style("visibility", "visible")
@@ -162,12 +163,13 @@ class ObjectHistogram extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, categories, timeline_hist) {
+    post_load(data, map, locations, categories, timeline_hist, plunder) {
         this.data = data;
         this.map = map;
         this.locations = locations;
         this.categories = categories;
         this.th = timeline_hist;
+        this.plunder = plunder;
     }
 }
 
