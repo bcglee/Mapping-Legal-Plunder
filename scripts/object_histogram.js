@@ -106,7 +106,8 @@ class ObjectHistogram extends Component {
                     .attr("transform", that.map.curr_transform)
                     .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
                     .style("fill", "green")
-                    .on("mouseover", (d) => tooltip.style("visibility", "visible") // TODO: what is this tooltip referencing?
+                    .on("mouseover", () => tooltip.style("visibility", "visible") // TODO: what is this tooltip referencing?
+                    // should it be that.map.tooltip?
                         .text(d["town"]))
 
                 //timeline histogram

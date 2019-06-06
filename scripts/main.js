@@ -2,6 +2,7 @@
 import MapViz from './map_viz.js';
 import TimelineHistogram from './timeline_histogram.js'
 import ObjectHistogram from './object_histogram.js';
+import DataProcessor from './data_processor.js';
 
 // initialize map visualization
 var map_margin = { right: 50, left: 50 },
@@ -74,10 +75,20 @@ d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(f
 d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
     d3.csv("data/unique_locations.csv").then(function (locations) {
         d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
-          th.post_load(data, map_viz, locations, categories, oh);
-          oh.post_load(data, map_viz, locations, categories, th);
-          th.draw();
-          oh.draw();
+            // TESTING DataProcessor: uncomment/edit below to test
+            // DataProcessor
+            // const plunder = new DataProcessor(data, locations, categories);
+            // console.log(plunder.filter_towns("Pisa", "Pieve di Calci", "Fucecchio"));
+            // console.log(plunder.filter_categories("foodstuffs", "tools and implements"));
+            // console.log(plunder.filter_time(new Date(1333, 1, 1), new Date(1336, 1, 1)));
+            // console.log(plunder.filter_time());
+            // console.log(plunder.filter_categories());
+            // console.log(plunder.filter_towns());
+
+            th.post_load(data, map_viz, locations, categories, oh);
+            oh.post_load(data, map_viz, locations, categories, th);
+            th.draw();
+            oh.draw();
         });
     });
 });
