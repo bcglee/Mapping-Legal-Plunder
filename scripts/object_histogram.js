@@ -95,7 +95,8 @@ class ObjectHistogram extends Component {
 
                 // adds tooltip on object category when mouseover the bar, giving count in bar
                 that.tooltip.style("visibility", "visible")
-                            .html(newData.length + " items");
+                            .html("Total: " + that.data.filter(el => el["object_category"] === d["object category"]).length + "\n" + "Filtered: " + newData.length);
+                            //.html(newData.length + " items");
 
                 that.map.svg.selectAll('.foredot')
                     .data(newData)
