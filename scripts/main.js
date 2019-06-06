@@ -79,7 +79,6 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
             // TESTING DataProcessor: uncomment/edit below to test
             // DataProcessor
             const plunder = new DataProcessor(data, locations, categories);
-            console.log(plunder.apply_filters());
             // console.log("Going down...")
             // plunder.filter_towns("Pisa");
             // plunder.filter_towns("Pieve di Calci");

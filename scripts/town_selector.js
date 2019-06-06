@@ -32,7 +32,7 @@ class TownSelector {
 
     filter() {
         var selected = document.querySelectorAll("input[name='townSelector']:checked");
-        console.log(selected);
+        // console.log(selected);
     }
 }
 
