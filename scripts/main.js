@@ -4,6 +4,8 @@ import TimelineHistogram from './timeline_histogram.js'
 import ObjectHistogram from './object_histogram.js';
 import DataProcessor from './data_processor.js';
 import TownSelector from './town_selector.js';
+import PlunderTable from './plunder_table.js';
+
 
 // initialize map visualization
 var map_margin = { right: 50, left: 50 },
@@ -55,5 +57,6 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
         });
 
         const ts = new TownSelector(locations, plunder);
+        const pt = new PlunderTable(plunder);
     });
 });
