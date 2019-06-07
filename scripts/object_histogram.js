@@ -13,6 +13,7 @@ class ObjectHistogram extends Component {
         this.cat_xScale = d3.scaleBand()
             .range([0, this.width])
             .padding(0.1);
+
         this.cat_yScale = d3.scaleLog()
             .domain([1, 2000])
             .range([this.height, 0]);
@@ -67,12 +68,13 @@ class ObjectHistogram extends Component {
     }
 
     draw() { // stuff we do AFTER loading
-        // Scale the range of the data in the domains
-        this.cat_xScale.domain(this.data.map((d) => d.object_category));
 
         // we need to store the class variable as "that" beore calling the inline function for mouseover
         // if we don't do this, we'll have a problem where the mouseover will recognize "this" as the class variable
         var that = this;
+
+        //need to set cat_xScale domain before plotting
+        this.cat_xScale.domain(this.data.map((d) => d.object_category));
 
         //this.svg.selectAll(".forebar").remove();
 
@@ -96,7 +98,7 @@ class ObjectHistogram extends Component {
             .on("mouseover", function(d) {
                 // adds tooltip on object category when mouseover the bar, giving count in bar
                 that.tooltip.style("visibility", "visible")
-                            .html("Total: " + that.data.filter(el => el["object_category"] === d["object category"]).length);
+                            .html("Total: " + that.data.filter(el => el["object_category"] === d["object category"]).length + "\nSelected: HELP!");
                             //.html(newData.length + " items");
 
             })

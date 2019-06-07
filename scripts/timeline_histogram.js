@@ -157,6 +157,12 @@ class TimelineHistogram extends Component {
 
         gBrush.call(brush.move, [0.3, 0.5].map(this.time_xScale));
 
+        //need to set cat_xScale domain before plotting
+        this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
+
+        console.log("IN DRAW");
+        console.log(this.oh.cat_xScale.bandwidth());
+
         this.oh.svg.selectAll(".forebar")
             .data(this.categories)
             .enter().append("rect")
@@ -223,8 +229,14 @@ class TimelineHistogram extends Component {
                          .attr("height",  (d) => this.height - this.time_yScale(d.length))
                          .style("fill","green");
 
-            // handles map
-            d3.selectAll('.foredot').remove(); // remove old foredots
+            console.log("IN BRUSHMOVED");
+            console.log(this.oh.cat_xScale.bandwidth());
+
+            //need to set cat_xScale domain before plotting
+            this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
+
+                        // handles map
+            //d3.selectAll('.foredot').remove(); // remove old foredots
             this.map.svg.selectAll('.foredot')
                 .data(this.locations)
                 .enter()

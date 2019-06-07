@@ -54,8 +54,9 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
 
             th.post_load(data, map_viz, locations, categories, oh, plunder);
             oh.post_load(data, map_viz, locations, categories, th, plunder);
-            th.draw();
             oh.draw();
+
+            th.draw();
         });
 
         const ts = new TownSelector(locations, plunder);
