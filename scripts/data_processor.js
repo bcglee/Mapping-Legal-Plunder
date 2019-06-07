@@ -1,5 +1,9 @@
 class DataProcessor {
-    constructor(data, locations, categories) {
+    constructor() {
+        
+    }
+
+    post_load(data, locations, categories) {
         // 
         // constants
         // 
