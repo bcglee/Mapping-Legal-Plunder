@@ -24,7 +24,7 @@ class MapViz extends Component {
             .translate([this.width / 2, this.height / 2]);
 
         this.true_projection = d3.geoAlbers() // zoomed in on Lucca
-            .center([-2, 44])
+            .center([-1.95, 44])
             .rotate([347.5, 0.125])
             .parallels([35, 45])
             .scale(50000)

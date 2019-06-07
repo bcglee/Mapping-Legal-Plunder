@@ -192,11 +192,26 @@ class TimelineHistogram extends Component {
     }
 
     brushmoved() {
+
         var selection = d3.event.selection;
+
+        //use this formatTime to print selected dates on plot
+        var formatTime = d3.timeFormat("%b, %Y");
+
         if (selection === null) {
             this.handle.attr("display", "none");
             var newData = this.plunder.filter_time(new Date(1332, 10, 1), new Date(1343, 2, 1));
-              //new Date(1332, 10, 1), new Date(1343, 2, 1));
+
+              //adds text of full date range on top-left of plot
+              d3.selectAll('.datetext').remove();
+              this.svg.append("text")
+                  .attr("class", "datetext")
+                  .attr("x", (this.margin.left + 107))
+                  .attr("y", 10 - (this.margin.top / 2))
+                  .attr("text-anchor", "middle")
+                  .style("font-size", "12px")
+                  .style("fill", "green")
+                  .html(formatTime(new Date(1332, 10, 1)) + " - " + formatTime(new Date(1343, 2, 1)));
         }
         else {
             // gets date range selected by brush
@@ -204,7 +219,28 @@ class TimelineHistogram extends Component {
             var newData = this.plunder.filter_time(e[0], e[1]);
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
             //this.data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
+
+            //adds text of selected date range on top-left of plot
+            d3.selectAll('.datetext').remove();
+            this.svg.append("text")
+                .attr("class", "datetext")
+                .attr("x", (this.margin.left + 107))
+                .attr("y", 10 - (this.margin.top / 2))
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .style("fill", "green")
+                .html(formatTime(e[0]) + " - " + formatTime(e[1]));
           }
+
+          //d3.selectAll('.datetext').remove();
+          this.svg.append("text")
+              .attr("class", "datetext")
+              .attr("x", (this.margin.left))
+              .attr("y", 10 - (this.margin.top / 2))
+              .attr("text-anchor", "middle")
+              .style("font-size", "12px")
+              .html("Selected date range: ");
+
 
           d3.selectAll('.forebar2').remove();
 

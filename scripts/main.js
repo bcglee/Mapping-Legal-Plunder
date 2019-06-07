@@ -7,7 +7,7 @@ import TownSelector from './town_selector.js';
 
 // initialize map visualization
 var map_margin = { right: 50, left: 50 },
-    map_width = 1000,
+    map_width = 800,
     map_height = 400;
 const map_viz = new MapViz(map_margin, map_width, map_height);
 
@@ -51,7 +51,6 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
             th.post_load(data, map_viz, locations, categories, oh, plunder);
             oh.post_load(data, map_viz, locations, categories, th, plunder);
             oh.draw();
-
             th.draw();
         });
 
