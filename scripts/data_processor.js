@@ -1,12 +1,12 @@
 class DataProcessor {
     constructor() {
-        
+
     }
 
     post_load(data, locations, categories) {
-        // 
+        //
         // constants
-        // 
+        //
 
         // store all data
         this.data = data;
@@ -45,7 +45,7 @@ class DataProcessor {
             // this.selected_towns = this.all_towns;
             this.selected_towns = this.reset_obj(this.selected_towns);
         }
-        this.th.brushmoved()
+        //this.th.brushmoved();
         return this.apply_filters();
     }
 
@@ -60,7 +60,7 @@ class DataProcessor {
         }
         return this.apply_filters();
     }
-    
+
     filter_time() {
         if (arguments.length) {
             this.selected_start = arguments[0];

@@ -160,9 +160,6 @@ class TimelineHistogram extends Component {
         //need to set cat_xScale domain before plotting
         this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
 
-        console.log("IN DRAW");
-        console.log(this.oh.cat_xScale.bandwidth());
-
         this.oh.svg.selectAll(".forebar")
             .data(this.categories)
             .enter().append("rect")
@@ -228,9 +225,6 @@ class TimelineHistogram extends Component {
                          .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
                          .attr("height",  (d) => this.height - this.time_yScale(d.length))
                          .style("fill","green");
-
-            console.log("IN BRUSHMOVED");
-            console.log(this.oh.cat_xScale.bandwidth());
 
             //need to set cat_xScale domain before plotting
             this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
