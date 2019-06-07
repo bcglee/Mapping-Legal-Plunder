@@ -9,7 +9,8 @@ class TimelineHistogram extends Component {
     }
 
     init() { // stuff we do BEFORE loading data
-        this.svg = d3.select("body").append("svg")
+        this.div = d3.select("#timelineContainer")
+        this.svg = this.div.append("svg")
             .attr("class", "time_hist")
             .attr("width", this.width + this.margin.left + this.margin.right)
             .attr("height", this.height + this.margin.top + this.margin.bottom)

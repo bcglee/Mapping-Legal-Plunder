@@ -26,10 +26,6 @@ const oh = new ObjectHistogram(oh_margin, oh_width, oh_height);
 // initialize plunder DataProcessor
 const plunder = new DataProcessor();
 
-// reset zoom
-var reset_zoom_button = document.getElementById('reset');
-reset_zoom_button.onclick = () => map_viz.resetzoom();
-
 // apply date format func to date value of each row of data
 // necessary for data read of lucca_debt_full_dates_cleaned.csv
 var parseDate = d3.isoParse,

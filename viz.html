@@ -1,71 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- <style>
-    :root {
-        --selector-height: 50%;
-        /* --selector-height: 250px; */
-    }
-
-    html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        font-family: 'News Cycle' sans-serif;
-    }
-
-    .bar rect {
-        fill: lightgray;
-    }
-
-    .bar text {
-        fill: #fff;
-        font: 10px sans-serif;
-    }
-
-    div.town_tooltip {
-        position: absolute;
-        text-align: center;
-        width: 150px;
-        height: 15px;
-        padding: 2px;
-        font: 12px sans-serif;
-        background: lightsteelblue;
-        border: 0px;
-        border-radius: 8px;
-        pointer-events: none;
-    }
-
-    div.obj_tooltip {
-        position: absolute;
-        text-align: center;
-        width: 80px;
-        height: 30px;
-        padding: 2px;
-        font: 12px sans-serif;
-        background: lightsteelblue;
-        border: 0px;
-        border-radius: 8px;
-        pointer-events: none;
-    }
-
-    /* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
-    .grid line {
-      stroke: lightgrey;
-      stroke-opacity: 0.7;
-      shape-rendering: crispEdges;
-    }
-
-    #townSelectorContainer{
-        font-family: inherit;
-        float: left;
-        height: var(--selector-height);
-    }
-    
-    #townSelector {
-        height: 100%;
-        overflow: auto;
-    }
-</style> -->
 
 <head>
     <meta charset="utf-8">
@@ -79,14 +13,13 @@
 </head>
 
 <body>
-    <div id="reset">
-        <input name="reset" type="button" value="Reset Zoom"/>
-    </div>
-    <div class="townSelectorContainer">
+    <div class="dataView" id="townContainer">
         <p>Towns</p>
-        <div class="townSelector"></div>
+        <div id="townSelector"></div>
     </div>
-    <svg width="1000" height="450"></svg>
+    <div class="dataView" id="mapContainer"></div>
+    <div class="dataView" id="timelineContainer"></div>
+    <div class="dataView" id="categoryContainer"></div>
     <script type="module" src="scripts/main.js"></script>
 </body>
 

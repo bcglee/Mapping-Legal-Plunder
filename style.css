@@ -38,7 +38,7 @@ div.obj_tooltip {
     text-align: center;
     width: 80px;
     height: 30px;
-    padding: 2px;.
+    padding: 2px;
     font: 12px sans-serif;
     background: lightsteelblue;
     border: 0px;
@@ -53,22 +53,29 @@ div.obj_tooltip {
     shape-rendering: crispEdges;
 }
 
-.townSelectorContainer{
+#townContainer{
     float: left;
     height: var(--selector-height);
-    /* width: 15%; */
 }
 
-.townSelectorContainer p {
+#townContainer p {
     font-family: var(--header-font);
-    font-size: 1.5em;
+    font-size: medium;
     font-weight: bold;
     margin-bottom: 0px;
 }
 
-.townSelector {
+#townSelector {
     font-family: var(--body-font);
-    font-weight: 400;
+    font-size: x-small;
     height: 100%;
     overflow: auto;
+}
+
+/* #mapContainer {
+    height:
+} */
+
+#mapContainer button {
+    float: right;
 }

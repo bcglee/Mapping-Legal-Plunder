@@ -11,7 +11,8 @@ class MapViz extends Component {
 
     init() {
         // create svg element
-        this.svg = d3.select("svg")
+        this.div = d3.select("#mapContainer")
+        this.svg = this.div.append("svg")
             .attr("width", this.width - this.margin.left - this.margin.right)
             .attr("height", this.height);
 
@@ -64,6 +65,14 @@ class MapViz extends Component {
             .attr('width', this.width + this.margin.left + this.margin.right)
             .attr('height', this.height)
             .attr('fill', 'lightBlue');
+
+        // reset zoom
+        var button = document.createElement("button");
+        var button_text = document.createTextNode("Reset Zoom");
+        button.appendChild(button_text);
+        button.addEventListener("click", () => this.resetzoom());
+        this.div.node().appendChild(document.createElement("br"));
+        this.div.node().appendChild(button);
     }
 
     draw() {

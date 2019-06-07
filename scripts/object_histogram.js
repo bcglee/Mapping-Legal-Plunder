@@ -21,7 +21,8 @@ class ObjectHistogram extends Component {
         // append the svg object to the body of the page
         // append a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
-        this.svg = d3.select("body").append("svg")
+        this.div = d3.select("#categoryContainer")
+        this.svg = this.div.append("svg")
             .attr("width", this.width + this.margin.left + this.margin.right)
             .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")

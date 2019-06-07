@@ -9,7 +9,7 @@ class TownSelector {
         var cbox;
         var label;
         var id;
-        var div = document.querySelector(".townSelector");
+        var div = document.querySelector("#townSelector");
         for (var i=0; i < this.locations.length; i++) {
             id = "town" + i;
 
