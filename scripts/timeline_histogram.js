@@ -252,6 +252,7 @@ class TimelineHistogram extends Component {
                 .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
                 .attr("width", this.oh.cat_xScale.bandwidth())
                 .style("fill", "green")
+                .style("pointer-events", "none")
                 .attr("y", (d) => {
                     const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                     //logscale need to handle case of empty selection when brushing
