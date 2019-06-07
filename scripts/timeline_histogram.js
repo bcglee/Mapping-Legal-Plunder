@@ -156,6 +156,24 @@ class TimelineHistogram extends Component {
             .attr("d", brushResizePath);
 
         gBrush.call(brush.move, [0.3, 0.5].map(this.time_xScale));
+
+        this.oh.svg.selectAll(".forebar")
+            .data(this.categories)
+            .enter().append("rect")
+            .attr("class", "forebar")
+            .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
+            .attr("width", this.oh.cat_xScale.bandwidth())
+            .style("fill", "green")
+            .attr("y", (d) => {
+                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                //logscale need to handle case of empty selection when brushing
+                return count !== 0 ? this.oh.cat_yScale(count) : 0;
+            })
+            .attr("height", (d) => {
+                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                //logscale need to handle case of empty selection when brushing
+                return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
+            });
     }
 
     // stuff we can't include in constructor as they become available after
@@ -174,6 +192,7 @@ class TimelineHistogram extends Component {
         if (selection === null) {
             this.handle.attr("display", "none");
             var newData = this.plunder.filter_time(new Date(1332, 10, 1), new Date(1343, 2, 1));
+              //new Date(1332, 10, 1), new Date(1343, 2, 1));
         }
         else {
             // gets date range selected by brush
@@ -182,7 +201,29 @@ class TimelineHistogram extends Component {
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
             //this.data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
           }
-            
+
+          d3.selectAll('.forebar2').remove();
+
+          // handles the coloring of the bars
+          var bins = this.histogram(newData);
+
+          //timeline histogram
+          var bar = this.svg.selectAll(".forebar2")
+                               .data(bins)
+                               .enter()
+                               .append("g")
+                               .attr("class", "forebar2")
+                               .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
+
+          // timeline histogram
+          var rects = bar.append("rect")
+                         .attr("x", 1)
+                         // for width, need to make sure to not return width with negative value
+                         .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
+                         .attr("height",  (d) => this.height - this.time_yScale(d.length))
+                         .style("fill","green");
+
+            // handles map
             d3.selectAll('.foredot').remove(); // remove old foredots
             this.map.svg.selectAll('.foredot')
                 .data(this.locations)
@@ -200,6 +241,8 @@ class TimelineHistogram extends Component {
                     .style("left",(event.pageX+10)+"px"))
                 .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
+
+            // handles category histogram
             d3.selectAll('.forebar').remove();
 
             this.oh.svg.selectAll(".forebar")
