@@ -39,7 +39,7 @@ init() {
           // append rows with rowTemplate
           const rows = table.append("tbody")
             .selectAll("tr")
-            .data(data)
+            .data(plunder)
             .enter()
             .append("tr")
             .html(rowTemplate);
