@@ -235,11 +235,11 @@ class TimelineHistogram extends Component {
                 .attr("transform", () => this.map.curr_transform)
                 .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
                 .style("fill", "green")
-                .on("mouseover", (d) => this.tooltip.style("visibility", "visible")
+                .on("mouseover", (d) => this.map.tooltip.style("visibility", "visible")
                     .text(d["town"]))
-                .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px")
+                .on("mousemove", () => this.map.tooltip.style("top", (event.pageY-10)+"px")
                     .style("left",(event.pageX+10)+"px"))
-                .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
+                .on("mouseout", () => this.map.tooltip.style("visibility", "hidden"));
 
 
             // handles category histogram

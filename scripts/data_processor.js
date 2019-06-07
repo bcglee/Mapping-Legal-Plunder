@@ -45,6 +45,7 @@ class DataProcessor {
             // this.selected_towns = this.all_towns;
             this.selected_towns = this.reset_obj(this.selected_towns);
         }
+        this.th.brushmoved()
         return this.apply_filters();
     }
 
