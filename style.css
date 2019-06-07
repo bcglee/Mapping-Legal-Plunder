@@ -1,0 +1,74 @@
+:root {
+    --selector-height: 50%;
+    /* --selector-height: 250px; */
+    --header-font: 'Proza Libre', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.bar rect {
+    fill: lightgray;
+}
+
+.bar text {
+    fill: #fff;
+    font: 10px sans-serif;
+}
+
+div.town_tooltip {
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    height: 15px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+div.obj_tooltip {
+    position: absolute;
+    text-align: center;
+    width: 80px;
+    height: 30px;
+    padding: 2px;.
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+/* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
+.grid line {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+
+.townSelectorContainer{
+    float: left;
+    height: var(--selector-height);
+    /* width: 15%; */
+}
+
+.townSelectorContainer p {
+    font-family: var(--header-font);
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.townSelector {
+    font-family: var(--body-font);
+    font-weight: 400;
+    height: 100%;
+    overflow: auto;
+}

@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
+<!-- <style>
+    :root {
+        --selector-height: 50%;
+        /* --selector-height: 250px; */
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        font-family: 'News Cycle' sans-serif;
+    }
+
     .bar rect {
         fill: lightgray;
     }
@@ -35,16 +47,32 @@
         border-radius: 8px;
         pointer-events: none;
     }
+
     /* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
     .grid line {
       stroke: lightgrey;
       stroke-opacity: 0.7;
       shape-rendering: crispEdges;
     }
-</style>
+
+    #townSelectorContainer{
+        font-family: inherit;
+        float: left;
+        height: var(--selector-height);
+    }
+    
+    #townSelector {
+        height: 100%;
+        overflow: auto;
+    }
+</style> -->
 
 <head>
     <meta charset="utf-8">
+    <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans|Proza+Libre:400,700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Lucca Debt</title>
     <script type="application/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
@@ -53,6 +81,10 @@
 <body>
     <div id="reset">
         <input name="reset" type="button" value="Reset Zoom"/>
+    </div>
+    <div class="townSelectorContainer">
+        <p>Towns</p>
+        <div class="townSelector"></div>
     </div>
     <svg width="1000" height="450"></svg>
     <script type="module" src="scripts/main.js"></script>

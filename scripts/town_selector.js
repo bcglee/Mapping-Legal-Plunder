@@ -9,6 +9,7 @@ class TownSelector {
         var cbox;
         var label;
         var id;
+        var div = document.querySelector(".townSelector");
         for (var i=0; i < this.locations.length; i++) {
             id = "town" + i;
 
@@ -31,9 +32,9 @@ class TownSelector {
             label.setAttribute("for", id);
             label.appendChild(document.createTextNode(this.locations[i]));
             
-            document.body.appendChild(document.createElement("br"));
-            document.body.appendChild(cbox);
-            document.body.appendChild(label);
+            div.appendChild(cbox);
+            div.appendChild(label);
+            div.appendChild(document.createElement("br"));
         }
     }
 }
