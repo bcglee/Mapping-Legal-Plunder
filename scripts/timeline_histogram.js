@@ -242,6 +242,7 @@ class TimelineHistogram extends Component {
         this.update_all(newData);
     }
 
+    // updates all views
     update_all(newData) {
         // timeline histogram
         d3.selectAll('.forebar2').remove();
@@ -250,18 +251,18 @@ class TimelineHistogram extends Component {
         var bins = this.histogram(newData);
 
         var bar = this.svg.selectAll(".forebar2")
-                            .data(bins)
-                            .enter()
-                            .append("g")
-                            .attr("class", "forebar2")
-                            .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
+            .data(bins)
+            .enter()
+            .append("g")
+            .attr("class", "forebar2")
+            .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
 
         var rects = bar.append("rect")
-                        .attr("x", 1)
-                        // for width, need to make sure to not return width with negative value
-                        .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
-                        .attr("height",  (d) => this.height - this.time_yScale(d.length))
-                        .style("fill","green");
+            .attr("x", 1)
+            // for width, need to make sure to not return width with negative value
+            .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
+            .attr("height",  (d) => this.height - this.time_yScale(d.length))
+            .style("fill","green");
 
         //need to set cat_xScale domain before plotting
         this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
@@ -283,9 +284,8 @@ class TimelineHistogram extends Component {
                 .style("left",(event.pageX+10)+"px"))
             .on("mouseout", () => this.map.tooltip.style("visibility", "hidden"));
 
-
         // object histogram
-        d3.selectAll('.forebar').remove(); // TODO: wait why is this here
+        this.oh.svg.selectAll('.forebar').remove();
 
         this.oh.svg.selectAll(".forebar")
             .data(this.categories)
@@ -304,7 +304,7 @@ class TimelineHistogram extends Component {
                 return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
             });
 
-        // update data table
+        // data table
         this.plunder_table.table.remove();
         this.plunder_table.init();
     }
