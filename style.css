@@ -83,7 +83,8 @@ div.obj_tooltip {
     margin-top: var(--top-margin);
 }
 
-#mapContainer button {
+/* #mapContainer button { */
+button {
     float: right;
     font-family: var(--body-font);
     font-style: italic;
@@ -93,8 +94,9 @@ div.obj_tooltip {
     border: none;
 }
 
-#mapContainer button:hover {
-    transition: color 0.2s;
+/* #mapContainer button:hover { */
+button:hover {
+    transition: color 0.4s;
     color: steelblue;
 }
 
