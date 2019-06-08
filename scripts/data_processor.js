@@ -38,8 +38,11 @@ class DataProcessor {
     // to reset a filter, pass no arguments
     filter_towns() {
         if (arguments.length) {
-            var arg = arguments[0];
-            this.selected_towns[arg] = this.flip(this.selected_towns[arg]);
+            // var arg = arguments[0];
+            // this.selected_towns[arg] = this.flip(this.selected_towns[arg]);
+            var town = arguments[0];
+            var state = arguments[1];
+            this.selected_towns[town] = state;
         }
         else { // no arguments passed, reset to default
             // this.selected_towns = this.all_towns;
