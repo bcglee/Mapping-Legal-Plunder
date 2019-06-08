@@ -142,9 +142,18 @@ class MapViz extends Component {
             .attr('transform', d3.event.transform);
 
         // hide zoom button when already at default zoom
-        if (this.curr_transform !== d3.zoomIdentity) {
-            this.button.className = "visible";
-        }
+        // if (this.curr_transform !== d3.zoomIdentity) {
+        //     // console.log(this.curr_transform);
+        //     // console.log(d3.zoomIdentity);
+        //     // console.log(this.curr_transform === d3.zoomIdentity)
+        //     console.log(this.curr_transform.x);
+        //     this.button.className = "visible";
+        // }
+        if (this.curr_transform.k !== d3.zoomIdentity.k ||
+            this.curr_transform.x !== d3.zoomIdentity.x ||
+            this.curr_transform.y !== d3.zoomIdentity.y) {
+                this.button.className = "visible";
+            }
         else {
             this.button.className = "hidden";
         }

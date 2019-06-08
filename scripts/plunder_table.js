@@ -1,3 +1,5 @@
+// TODO: alternating background on table (css)
+
 class PlunderTable {
     constructor (plunder) {
         this.plunder = plunder;

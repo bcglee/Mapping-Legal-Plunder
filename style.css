@@ -77,6 +77,30 @@ div.obj_tooltip {
     overflow: auto;
 }
 
+#townSelector input {
+    position: absolute;
+    left: -9999px;
+}
+
+#townSelector label {
+    display: block;
+    width: 100%;
+    transition-duration: 0.1s;
+}
+
+#townSelector label:hover {
+    background-color: #ccdcea;
+    /* transition-duration: 0.1s; */
+    transition-duration: inherit;
+}
+
+#townSelector input[type="checkbox"]:checked + label {
+    background-color: #6798c1;
+    color: white;
+    /* transition-duration: 0.1s; */
+    transition-duration: inherit;
+}
+
 #mapContainer {
     width: 700px;
     float: left;
@@ -117,7 +141,7 @@ button.hidden {
 button.visible {
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s linear 0s, opacity 400ms;
+    transition: visibility 0s linear 0s, opacity 400ms, color 0.4s;
 }
 
 #tableContainer{

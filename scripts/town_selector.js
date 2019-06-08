@@ -35,7 +35,7 @@ class TownSelector {
             
             selector_div.appendChild(cbox);
             selector_div.appendChild(label);
-            selector_div.appendChild(document.createElement("br"));
+            // selector_div.appendChild(document.createElement("br"));
             this.checkboxes.push(cbox);
         }
         
