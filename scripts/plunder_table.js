@@ -5,6 +5,7 @@ class PlunderTable {
     }
 
 init() {
+        console.log("HERE");
         var ptable;
 
         //https://codepen.io/pj_/pen/aVEBOm
@@ -20,16 +21,14 @@ init() {
           `;
         };
 
-        // read data from the url
-        d3.csv(url, (data, err) => {
 
-          var plunder = this.plunder.apply_filters();
+          var p = this.plunder.apply_filters();
 
           // select viz and append table
           const table = d3.select("#plunderTable").append("table");
 
           // append headers
-          const header = table.append("thead")
+        const header = table.append("thead")
             .selectAll('th')
             .data(["Object", "Object Category", "Town"])
             .enter()
@@ -39,16 +38,15 @@ init() {
           // append rows with rowTemplate
           const rows = table.append("tbody")
             .selectAll("tr")
-            .data(plunder)
+            .data(p)
             .enter()
             .append("tr")
             .html(rowTemplate);
 
-        })
+        }
 
           //  div.appendChild(ptable);
           //  div.appendChild(document.createElement("br"));
-        }
 }
 
 export default PlunderTable;
