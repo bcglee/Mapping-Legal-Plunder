@@ -268,7 +268,7 @@ class TimelineHistogram extends Component {
             this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
 
                         // handles map
-            //d3.selectAll('.foredot').remove(); // remove old foredots
+            d3.selectAll('.foredot').remove(); // remove old foredots
             this.map.svg.selectAll('.foredot')
                 .data(this.locations)
                 .enter()
