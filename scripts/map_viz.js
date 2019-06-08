@@ -69,7 +69,7 @@ class MapViz extends Component {
         // reset zoom button
         this.button = document.createElement("button");
         this.button.className = "hidden";
-        var button_text = document.createTextNode("reset zoom");
+        var button_text = document.createTextNode("default view");
         this.button.appendChild(button_text);
         this.button.addEventListener("click", () => this.resetzoom());
         this.div.node().appendChild(document.createElement("br"));
