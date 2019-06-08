@@ -5,7 +5,6 @@ class PlunderTable {
     }
 
 init() {
-    console.log("HERE");
     var ptable;
 
     //https://codepen.io/pj_/pen/aVEBOm
@@ -23,10 +22,10 @@ init() {
         var p = this.plunder.apply_filters();
 
         // select viz and append table
-        const table = d3.select("#tableViewer").append("table");
+        this.table = d3.select("#tableViewer").append("table");
 
         // append headers
-        const header = table.append("thead")
+        const header = this.table.append("thead")
         .selectAll('th')
         .data(["Object", "Object Category", "Town"])
         .enter()
@@ -34,8 +33,9 @@ init() {
         .text(d => d);
 
         // append rows with rowTemplate
-        const rows = table.append("tbody")
+        const rows = this.table.append("tbody")
         .selectAll("tr")
+        .attr("class", ".tr")
         .data(p)
         .enter()
         .append("tr")

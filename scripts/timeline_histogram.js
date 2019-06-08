@@ -308,8 +308,11 @@ class TimelineHistogram extends Component {
                     return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
                 });
 
-          console.log(this.plunder_table)
-          this.plunder_table.svg.selectAll('.tr').remove();
+          // console.log(this.plunder_table.table)
+          this.plunder_table.table.remove();
+          this.plunder_table.init();
+
+
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
