@@ -163,3 +163,13 @@ button.visible {
     height: 100%;
     overflow: auto;
 }
+
+.foredot {
+    fill: green;
+    pointer-events: none;
+}
+
+.forebar {
+    fill: green;
+    pointer-events: none;
+}
