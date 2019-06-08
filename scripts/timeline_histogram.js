@@ -279,6 +279,7 @@ class TimelineHistogram extends Component {
                 .attr("transform", () => this.map.curr_transform)
                 .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
                 .style("fill", "green")
+                .style("pointer-events", "none") //makes pointer events go to the background gray dots
                 .on("mouseover", (d) => this.map.tooltip.style("visibility", "visible")
                     .text(d["town"]))
                 .on("mousemove", () => this.map.tooltip.style("top", (event.pageY-10)+"px")
@@ -296,7 +297,7 @@ class TimelineHistogram extends Component {
                 .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
                 .attr("width", this.oh.cat_xScale.bandwidth())
                 .style("fill", "green")
-                .style("pointer-events", "none")
+                .style("pointer-events", "none") //makes pointer events go to the background gray bars
                 .attr("y", (d) => {
                     const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                     //logscale need to handle case of empty selection when brushing

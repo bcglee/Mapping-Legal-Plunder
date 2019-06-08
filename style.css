@@ -25,8 +25,8 @@ html, body {
 div.town_tooltip {
     position: absolute;
     text-align: center;
-    width: 150px;
-    height: 15px;
+    width: 200px;
+    height: 40px;
     padding: 2px;
     font: 12px sans-serif;
     background: lightsteelblue;
