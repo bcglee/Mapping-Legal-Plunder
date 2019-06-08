@@ -8,7 +8,7 @@
 // load data files
 //
 
-var files = ["maps/italy.json", "towns.json", "data/unique_locations.csv"];
+var files = ["maps/italy.json", "towns.json", "data/unique_locations.csv", "data/DALME_datasets_2/lucca_people/lucca_ownership_change.csv"];
 var promises = [];
 files.forEach(function(url, i) {
   if (i < 2) {
@@ -26,9 +26,22 @@ Promise.all(promises).then(function(values) {
     map = values[0]
     connections = values[1]
     unique_locations = values[2]
+    lucca_ownership_change = values[3]
     console.log(values)
     
-    lucca_object = {town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "50"}
+    // PREPROCESS DATA
+    var pared_lucca_ownership_change = []
+    for (i = 0; i < lucca_ownership_change.length; i++) { 
+      if ( (lucca_ownership_change[i].former_owner_residence !== "") && (lucca_ownership_change[i].new_owner_residence !== "") && (lucca_ownership_change[i].new_owner_residence !== lucca_ownership_change[i].former_owner_residence) ){
+        pared_lucca_ownership_change.push(lucca_ownership_change[i])
+      }
+    }
+    
+    console.log(pared_lucca_ownership_change)
+    
+    
+    
+    lucca_object = {town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}
     unique_locations.push(lucca_object)
     
     //
@@ -115,59 +128,99 @@ Promise.all(promises).then(function(values) {
               return Math.sqrt(10);
               })
         .attr("fill","red")
+        .style("stroke", "black")
         .attr("fill-opacity", 1.);
+        
+    
+      var dist = get_path_length(origin_obj,destination_obj);
                     
-
-      transition(red_dot, route, destination_obj);
+	  console.log(dist)
+      transition(red_dot, route, destination_obj,dist);
     }
     
-    function transition(red_dot, route,destination_obj) {
+    function get_path_length(origin_obj,destination_obj) {
+      var dest_x = true_projection([destination_obj["lon"], destination_obj["lat"]])[0];
+      var dest_y = true_projection([destination_obj["lon"], destination_obj["lat"]])[1];
+      var source_x = true_projection([origin_obj["lon"], origin_obj["lat"]])[0];
+      var source_y = true_projection([origin_obj["lon"], origin_obj["lat"]])[1];
+      
+      return Math.sqrt(Math.pow(source_x - dest_x,2) + Math.pow(source_y - dest_y,2))
+    }
+    
+    function transition(red_dot, route,destination_obj,dist) {
       var l = route.node().getTotalLength();
       red_dot.transition()
-        .duration(5000)
+        .duration(50*dist)
         .attr("cx", function (d) {
               return true_projection([destination_obj["lon"], destination_obj["lat"]])[0];
               })
         .attr("cy", function (d) {
               return true_projection([destination_obj["lon"], destination_obj["lat"]])[1];
               })
-        .attr("fill","#1da1f2")
+//         .attr("fill","#1da1f2")
         .on("end", function() { route.remove(); })
         .remove();
     }
-    
-    function translateAlong(route) {
-    var l = route.getTotalLength();
-    return function (d) {
-      return function (t) {
-        var p = route.getPointAtLength(t * l);
-        return "translate(" + p.x + "," + p.y + ")";//Move marker
-      }
-    }
-  }
-    
-    var i = 1;
+
+    var i = 0;
     setInterval(function() {
-      if (i > connections.links.length - 1) {
-        i = 1;
+      if (i > lucca_ownership_change.length - 1) {
+        i = 0;
       }
-      var od = connections.links[i];
-      const origin_obj = unique_locations.find(obj => obj.town === od.source);
-      const destination_obj = unique_locations.find(obj => obj.town === od.target);
+      var od = lucca_ownership_change[i];
+      const origin_obj = unique_locations.find(obj => obj.town === od.former_owner_residence);
+      const destination_obj = unique_locations.find(obj => obj.town === od.new_owner_residence);
       if (origin_obj && destination_obj){
-        fly(od.source, od.target);
-        console.log(i)
+        fly(od.former_owner_residence, od.new_owner_residence);
+        reformatted_date = od.date_plunder.split(" ")[1] + " " + od.date_plunder.split(" ")[2]
+        d3.select('p#value-simple').text(reformatted_date);
+//         console.log(i)
       }
       i++;
-    }, 75); //150);
+    }, 50);//125); //150);
+    
+    // Simple Slider
+  	var data = [25, 50, 75, 100, 125, 150];
+
+  	var sliderSimple = d3
+      .sliderBottom()
+      .min(d3.min(data))
+      .max(d3.max(data))
+      .width(300)
+//       .tickFormat(d3.format('.2%'))
+      .ticks(5)
+      .default(75)
+      .on('onchange', val => {
+//         d3.select('p#value-simple').text(d3.format(',d')(val));
+        // var i = 0;
+//     	setInterval(function() {
+//       	  if (i > lucca_ownership_change.length - 1) {
+//         	i = 0;
+//       	  }
+//       	  var od = lucca_ownership_change[i];
+//       	  const origin_obj = unique_locations.find(obj => obj.town === od.former_owner_residence);
+//      	  const destination_obj = unique_locations.find(obj => obj.town === od.new_owner_residence);
+//       	  if (origin_obj && destination_obj){
+//         	fly(od.former_owner_residence, od.new_owner_residence);
+// //         console.log(i)
+//       	  }
+//       	  i++;
+//     	}, val);
+      });
+
+    var gSimple = d3
+      .select('div#slider-simple')
+      .append('svg')
+      .attr('width', 500)
+      .attr('height', 100)
+      .append('g')
+      .attr('transform', 'translate(30,30)');
+
+    gSimple.call(sliderSimple);
+    
+//     console.log(sliderSimple.value())
+
+//     d3.select('p#value-simple').text(d3.format(',d')(sliderSimple.value()));
     
     
 });
-
-
-
-// TO DO LIST:
-// 1. Make the transition length scale with the distance between the two points
-// 2. Find the geographical coordinates for missing cities
-// 3. Remove self-connections (e.g. Lucca to Lucca) from the data set
-// 4. Randomly sample from connections rather than looping through them
