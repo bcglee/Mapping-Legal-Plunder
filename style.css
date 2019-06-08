@@ -90,15 +90,13 @@ div.obj_tooltip {
 
 #townSelector label:hover {
     background-color: #ccdcea;
-    /* transition-duration: 0.1s; */
     transition-duration: inherit;
 }
 
 #townSelector input[type="checkbox"]:checked + label {
     background-color: #6798c1;
     color: white;
-    /* transition-duration: 0.1s; */
-    transition-duration: inherit;
+    transition-duration: 0.1s;
 }
 
 #mapContainer {
