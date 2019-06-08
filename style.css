@@ -115,6 +115,7 @@ button {
     color: #979797;
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 /* #mapContainer button:hover { */
@@ -161,4 +162,14 @@ button.visible {
     font-size: small;
     height: 100%;
     overflow: auto;
+}
+
+.foredot {
+    fill: green;
+    pointer-events: none;
+}
+
+.forebar {
+    fill: green;
+    pointer-events: none;
 }

@@ -40,11 +40,12 @@ function type(d) {
 // show map
 d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function (map) {
     d3.csv("../data/unique_locations.csv", d3.autoType).then(function (data) {
-        map_viz.post_load(data, map, th, oh);
+        map_viz.post_load(data, map, th);
         map_viz.draw();
     });
 });
-// show histograms
+
+// show other views
 d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(function (data) {
     d3.csv("data/unique_locations.csv").then(function (locations) {
         d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
@@ -52,11 +53,12 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
             const plunder_table = new PlunderTable(plunder);
 
             th.post_load(data, map_viz, locations, categories, oh, plunder, plunder_table);
-            oh.post_load(data, map_viz, locations, categories, th, plunder, plunder_table);
+            oh.post_load(data, locations, categories, th, plunder);
             oh.draw();
             th.draw();
         });
 
-        const ts = new TownSelector(locations, plunder);
+        const ts = new TownSelector(locations, plunder, th);
+
     });
 });

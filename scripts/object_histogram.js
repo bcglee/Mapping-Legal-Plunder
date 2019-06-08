@@ -1,8 +1,8 @@
 import Component from './component.js';
 
 class ObjectHistogram extends Component {
-    constructor (margin, width, height, data, map) {
-        super(margin, width, height, data, map);
+    constructor (margin, width, height) {
+        super(margin, width, height);
 
         // init object histogram
         this.init();
@@ -135,77 +135,41 @@ class ObjectHistogram extends Component {
     }
 
     onclick(d, bar){
-                                    // filters data for category with click event
-                                    var newData = this.plunder.filter_categories(d["object category"]);
-                                    //var newData = that.data.filter(el => el["object_category"] === d["object category"]);
+        // filters data for category with click event
+        var newData = this.plunder.filter_categories(d["object category"]);
+        //var newData = that.data.filter(el => el["object_category"] === d["object category"]);
 
-                                    // boolean for determining if the clicked category is selected
-                                    var selected = this.plunder.selected_categories[d["object category"]];
+        // boolean for determining if the clicked category is selected
+        var selected = this.plunder.selected_categories[d["object category"]];
 
-                                    //d3.select(this)
-                                    //  .style("fill", "gray");
-                                    d3.selectAll('.foredot').remove();
-                                    d3.selectAll('.forebar2').remove();
+        //d3.select(this)
+        //  .style("fill", "gray");
+        d3.selectAll('.foredot').remove();
+        d3.selectAll('.forebar2').remove();
 
-                                    if (selected === true) {
-                                                  //changes current bar
-                                                  d3.select(bar)
-                                                    .style("stroke", "red");
+        if (selected === true) {
+            //changes current bar
+            d3.select(bar)
+            .style("stroke", "red");
 
-                                    }  else{
-                                      d3.select(bar)
-                                        .style("stroke", "gray");
-                                      };
-                                                      //changes map
-                                                      this.map.svg.selectAll('.foredot')
-                                                          .data(newData)
-                                                          .enter()
-                                                          .append("circle")
-                                                          .attr("class", "foredot")
-                                                          .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
-                                                          .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
-                                                          .attr("transform", this.map.curr_transform)
-                                                          .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
-                                                          .style("fill", "green")
-                                                          .on("mouseover", () => tooltip.style("visibility", "visible")
-                                                          .text(d["town"]));
+        }
+        else {
+            d3.select(bar)
+                .style("stroke", "gray");
+        }
 
-                                                      //timeline histogram
-                                                      var bins = this.th.histogram(newData);
-
-                                                      //timeline histogram
-                                                      var bar = this.th.svg.selectAll(".forebar2")
-                                                                           .data(bins)
-                                                                           .enter()
-                                                                           .append("g")
-                                                                           .attr("class", "forebar2")
-                                                                           .attr("transform",  (d) => "translate(" + this.th.time_xScale(d.x0) + "," + this.th.time_yScale(d.length) + ")" )
-
-                                                      // timeline histogram
-                                                      var rects = bar.append("rect")
-                                                                     .attr("x", 1)
-                                                                     // for width, need to make sure to not return width with negative value
-                                                                     .attr("width",  (d) => this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1 > 0 ? this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1 : 0)
-                                                                     .attr("height",  (d) => this.th.height - this.th.time_yScale(d.length))
-                                                                     .style("fill","green");
-
-
-                                                      // update data table
-                                                      this.plunder_table.table.remove();
-                                                      this.plunder_table.init();
-
+        this.th.update_all(newData);
      }
+
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, categories, timeline_hist, plunder, plunder_table) {
+    post_load(data, locations, categories, timeline_hist, plunder) {
         this.data = data;
-        this.map = map;
         this.locations = locations;
         this.categories = categories;
         this.th = timeline_hist;
         this.plunder = plunder;
-        this.plunder_table = plunder_table;
     }
 }
 

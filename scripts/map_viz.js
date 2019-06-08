@@ -69,7 +69,7 @@ class MapViz extends Component {
         // reset zoom button
         this.button = document.createElement("button");
         this.button.className = "hidden";
-        var button_text = document.createTextNode("reset zoom");
+        var button_text = document.createTextNode("default view");
         this.button.appendChild(button_text);
         this.button.addEventListener("click", () => this.resetzoom());
         this.div.node().appendChild(document.createElement("br"));
@@ -218,12 +218,10 @@ class MapViz extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, timeline_hist, object_hist, plunder_table) {
+    post_load(data, map, th) {
         this.data = data;
         this.map = map;
-        this.th = timeline_hist;
-        this.oh = object_hist;
-        this.plunder_table = plunder_table;
+        this.th = th;
     }
 
     resetzoom() {
