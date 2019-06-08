@@ -66,13 +66,14 @@ class MapViz extends Component {
             .attr('height', this.height)
             .attr('fill', 'lightBlue');
 
-        // reset zoom
-        var button = document.createElement("button");
-        var button_text = document.createTextNode("Reset Zoom");
-        button.appendChild(button_text);
-        button.addEventListener("click", () => this.resetzoom());
+        // reset zoom button
+        this.button = document.createElement("button");
+        this.button.className = "hidden";
+        var button_text = document.createTextNode("reset zoom");
+        this.button.appendChild(button_text);
+        this.button.addEventListener("click", () => this.resetzoom());
         this.div.node().appendChild(document.createElement("br"));
-        this.div.node().appendChild(button);
+        this.div.node().appendChild(this.button);
     }
 
     draw() {
@@ -139,6 +140,14 @@ class MapViz extends Component {
         //transforms brush appropriately (with zoom)
         this.svg.selectAll(".brush")
             .attr('transform', d3.event.transform);
+
+        // hide zoom button when already at default zoom
+        if (this.curr_transform !== d3.zoomIdentity) {
+            this.button.className = "visible";
+        }
+        else {
+            this.button.className = "hidden";
+        }
     }
 
     // stuff we can't include in constructor as they become available after

@@ -1,8 +1,8 @@
 :root {
-    --selector-height: 50%;
-    /* --selector-height: 250px; */
+    --selector-height: 40%;
     --header-font: 'Proza Libre', sans-serif;
     --body-font: 'Open Sans', sans-serif;
+    --top-margin: 2%;
 }
 
 html, body {
@@ -57,6 +57,7 @@ div.obj_tooltip {
 #townContainer{
     float: left;
     height: var(--selector-height);
+    margin-right: 50px;
 }
 
 #townContainer p {
@@ -73,10 +74,35 @@ div.obj_tooltip {
     overflow: auto;
 }
 
-/* #mapContainer {
-    height:
-} */
+#mapContainer {
+    width: 700px;
+    float: left;
+    margin-top: var(--top-margin);
+}
 
 #mapContainer button {
     float: right;
+    font-family: var(--body-font);
+    font-style: italic;
+    text-decoration: underline;
+    color: #979797;
+    background-color: transparent;
+    border: none;
+}
+
+button.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 400ms, opacity 400ms;
+}
+
+button.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 400ms;
+}
+
+#mapContainer button:hover {
+    transition: color 0.2s;
+    color: steelblue;
 }
