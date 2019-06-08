@@ -308,7 +308,7 @@ class TimelineHistogram extends Component {
                     return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
                 });
 
-          // console.log(this.plunder_table.table)
+          // update data table
           this.plunder_table.table.remove();
           this.plunder_table.init();
 

@@ -189,6 +189,11 @@ class ObjectHistogram extends Component {
                                                                      .attr("height",  (d) => this.th.height - this.th.time_yScale(d.length))
                                                                      .style("fill","green");
 
+
+                                                      // update data table
+                                                      this.plunder_table.table.remove();
+                                                      this.plunder_table.init();
+
      }
 
     // stuff we can't include in constructor as they become available after
