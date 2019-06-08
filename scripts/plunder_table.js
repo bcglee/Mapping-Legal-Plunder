@@ -5,11 +5,9 @@ class PlunderTable {
     }
 
 init() {
-        console.log("HERE");
         var ptable;
 
-        //https://codepen.io/pj_/pen/aVEBOm
-
+        // https://codepen.io/pj_/pen/aVEBOm
         // use es6 string templates to populate rows
         const rowTemplate = (d) => {
           return `

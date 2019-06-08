@@ -152,11 +152,12 @@ class MapViz extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, timeline_hist, object_hist) {
+    post_load(data, map, timeline_hist, object_hist, plunder_table) {
         this.data = data;
         this.map = map;
         this.th = timeline_hist;
         this.oh = object_hist;
+        this.plunder_table = plunder_table;
     }
 
     resetzoom() {

@@ -193,13 +193,14 @@ class ObjectHistogram extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, categories, timeline_hist, plunder) {
+    post_load(data, map, locations, categories, timeline_hist, plunder, plunder_table) {
         this.data = data;
         this.map = map;
         this.locations = locations;
         this.categories = categories;
         this.th = timeline_hist;
         this.plunder = plunder;
+        this.plunder_table = plunder_table;
     }
 }
 

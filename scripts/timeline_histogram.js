@@ -182,13 +182,14 @@ class TimelineHistogram extends Component {
 
     // stuff we can't include in constructor as they become available after
     // loading data
-    post_load(data, map, locations, categories, obj_hist, plunder) {
+    post_load(data, map, locations, categories, obj_hist, plunder, plunder_table) {
         this.data = data;
         this.map = map;
         this.locations = locations;
         this.categories = categories;
         this.oh = obj_hist;
         this.plunder = plunder;
+        this.plunder_table = plunder_table;
     }
 
     brushmoved() {
@@ -306,6 +307,9 @@ class TimelineHistogram extends Component {
                     //logscale need to handle case of empty selection when brushing
                     return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
                 });
+
+          console.log(this.plunder_table)
+          this.plunder_table.svg.selectAll('.tr').remove();
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
