@@ -115,6 +115,7 @@ button {
     color: #979797;
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 /* #mapContainer button:hover { */
