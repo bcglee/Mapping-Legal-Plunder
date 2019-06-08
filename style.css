@@ -1,8 +1,10 @@
 :root {
     --selector-height: 40%;
+    --table-height: 100%;
     --header-font: 'Proza Libre', sans-serif;
     --body-font: 'Open Sans', sans-serif;
     --top-margin: 2%;
+    --side-margin: 30px;
 }
 
 html, body {
@@ -38,7 +40,7 @@ div.obj_tooltip {
     text-align: center;
     width: 105px;
     height: 35px;
-    padding: 2px;.
+    padding: 2px;
     font: 12px sans-serif;
     background: lightsteelblue;
     border: 0px;
@@ -58,6 +60,7 @@ div.obj_tooltip {
     float: left;
     height: var(--selector-height);
     margin-right: 50px;
+    margin-left: var(--side-margin);
 }
 
 #townContainer p {
@@ -90,6 +93,19 @@ div.obj_tooltip {
     border: none;
 }
 
+#mapContainer button:hover {
+    transition: color 0.2s;
+    color: steelblue;
+}
+
+#timelineContainer {
+    float: left;
+}
+
+#categoryContainer {
+    float: left;
+}
+
 button.hidden {
     visibility: hidden;
     opacity: 0;
@@ -102,7 +118,22 @@ button.visible {
     transition: visibility 0s linear 0s, opacity 400ms;
 }
 
-#mapContainer button:hover {
-    transition: color 0.2s;
-    color: steelblue;
+#tableContainer{
+    float: right;
+    height: var(--table-height);
+    margin-right: var(--side-margin);
+}
+
+#tableContainer p {
+    font-family: var(--header-font);
+    font-size: x-large;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+#tableViewer {
+    font-family: var(--body-font);
+    font-size: small;
+    height: 100%;
+    overflow: auto;
 }
