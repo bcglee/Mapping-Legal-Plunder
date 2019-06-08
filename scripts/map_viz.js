@@ -98,7 +98,16 @@ class MapViz extends Component {
                     })
             .attr("fill","gray")
             .attr("fill-opacity", .75)
-            .on("mouseover", (d) => this.tooltip.style("visibility", "visible").text(d["town"]))
+            .on("mouseover", function(d) {
+                //need to use that.th.data, that.th.plunder b/c map_viz doesn't have access to these in post_load
+                var total_num = that.th.data.filter(el => el["town"] === d["town"]).length;
+                var selected_num = that.th.plunder.apply_filters().filter(el => el["town"] === d["town"]).length;
+                // adds tooltip on town when mouseover the bar, giving town name, as well as counts for town
+                that.tooltip.style("visibility", "visible")
+                            .html('Town: ' + d["town"] + "<br>Total: " + total_num + "<br>Selected: " + selected_num);
+
+            })
+            //.on("mouseover", (d) => this.tooltip.style("visibility", "visible").text(d["town"]))
             .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
             .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
