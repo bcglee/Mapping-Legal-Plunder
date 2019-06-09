@@ -182,7 +182,7 @@ class TimelineHistogram extends Component {
         //         return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
         //     });
     }
-    
+
     resize() {
         this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
         this.width = this.width - this.margin.left - this.margin.right;
