@@ -129,7 +129,7 @@ class MapViz extends Component {
         const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
 
         var legend = this.svg.append("g")
-            .attr("transform", `translate(${30},${this.height + 10})`)
+            .attr("transform", `translate(${this.width-50},${this.height + 10})`)
             .attr("text-anchor", "middle")
             .style("font", "10px sans-serif")
           .selectAll("g")
@@ -139,14 +139,14 @@ class MapViz extends Component {
           legend.append("circle")
           .attr("fill", "#609f60")
           .attr("stroke", "#609f60")
-          .attr("cy", d => -1*d)
+          .attr("cy", d => -1.25*d)
           .attr("class","legenddot")
           .attr("r", radius);
 
       legend.append("text")
       .attr("class","legendtext")
-          .attr("y", d => -1*d)
-          .attr("dx", "2.3em")
+          .attr("y", d => -1.25*d + 4)
+          .attr("fill","white")
           .text(d3.format(".2s"));
 
         var that = this;
@@ -166,11 +166,13 @@ class MapViz extends Component {
             .attr('transform', d3.event.transform);
         
             this.svg.selectAll(".legenddot").remove();
+            this.svg.selectAll(".legendtext").remove();
+
 
             var radius = d3.scaleSqrt().domain([0, 200]).range([0, 10*d3.event.transform.k]);
     
             var legend = this.svg.append("g")
-                .attr("transform", `translate(${30},${this.height + 10})`)
+                .attr("transform", `translate(${this.width-50},${this.height + 10})`)
                 .attr("text-anchor", "middle")
                 .style("font", "10px sans-serif")
               .selectAll("g")
@@ -180,9 +182,15 @@ class MapViz extends Component {
             legend.append("circle")
             .attr("fill", "#609f60")
             .attr("stroke", "#609f60")
-            .attr("cy", d => -1*d)
+            .attr("cy", d => -1.25*d)
             .attr("class","legenddot")
             .attr("r", radius);
+
+            legend.append("text")
+        .attr("class","legendtext")
+          .attr("y", d => -1.25*d + 4)
+          .attr("fill","white")
+          .text(d3.format(".2s"));
     
 
         //transforms the dots appropriately (with zoom)
