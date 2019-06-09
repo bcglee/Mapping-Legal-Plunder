@@ -165,15 +165,12 @@ class MapViz extends Component {
             var that=this
             var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
             var luccadot = luccadot.enter()
-                //.append("polygon")
                 .append("rect")
                 .attr("class", "luccadot")
                 .attr("x", (d) => this.true_projection([d["lon"], d["lat"]])[0])
                 .attr("y", (d) => this.true_projection([d["lon"], d["lat"]])[1])
                 .attr("width", 9)
                 .attr("height", 9)
-                //.attr("d", d3.symbol().type(d3.symbolStar).size(200))
-                //.attr("transform", function(d) { return "translate(" + (that.true_projection([d["lon"], d["lat"]])[0]) + "," + (that.true_projection([d["lon"], d["lat"]])[1]) + ")"; })
                 .attr("fill","#FFFFFF")
                 .on("mouseover", function(d) {
                     that.lucca_tooltip.style("visibility", "visible")
