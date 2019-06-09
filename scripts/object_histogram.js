@@ -87,9 +87,7 @@ class ObjectHistogram extends Component {
             .attr("class", "bar")
             .attr("x", (d) => this.cat_xScale(d["object category"]) )
             .attr("width", this.cat_xScale.bandwidth())
-            .style("fill", "black")
-            .style("stroke-width", 4)
-            .style("stroke", "red")
+            .style("fill", "lightgray")
             .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
             .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
             .on("click",  function(d) {
@@ -150,12 +148,12 @@ class ObjectHistogram extends Component {
         if (selected === true) {
             //changes current bar
             d3.select(bar)
-            .style("stroke", "red");
+            .style("fill", "lightgray")
 
         }
         else {
             d3.select(bar)
-                .style("stroke", "gray");
+            .style("fill", "lightblue")
         }
 
         this.th.update_all(newData);
