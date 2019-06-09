@@ -30,7 +30,17 @@ html, body {
 }
 
 .bar.deselected {
-    fill: lightblue;
+    /* color: white; */
+    /* fill: transparent; */
+    /* background: repeating-linear-gradient(
+        45deg,
+        darkgray,
+        darkgray 10px,
+        dimgray 10px,
+        dimgray 20px
+    ); */
+    /* fill: lightblue; */
+    fill: url(#pattern_yziv)
 }
 
 .bar rect {
@@ -171,6 +181,10 @@ button:hover {
     margin-right: var(--mid-margin);
 }
 
+.timeline.selected {
+    fill: #609f60;
+}
+
 .time_hist {
     height: 100%;
     width: 100%;
@@ -224,12 +238,14 @@ button.visible {
 }
 
 .foredot {
-    fill: green;
+    /* fill: green; */
+    fill: #609f60;
     pointer-events: none;
 }
 
 .forebar {
-    fill: green;
+    /* fill: green; */
+    fill: #609f60;
     pointer-events: none;
 }
 

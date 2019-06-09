@@ -12,8 +12,6 @@ class TimelineHistogram extends Component {
         this.div = d3.select("#timelineContainer")
         this.svg = this.div.append("svg")
             .attr("class", "time_hist")
-            // .attr("width", this.width + this.margin.left + this.margin.right)
-            // .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
@@ -69,7 +67,6 @@ class TimelineHistogram extends Component {
         var time_yAxis = d3.axisLeft(this.time_yScale);
 
         // sets yScale
-        // yScale.domain([0, d3.max(bins, function (d) { return d.length; })]); // can only set the domain of y scaling function once the data has been loaded
         this.time_yScale.domain([0, 300]);
 
         // adds axis to this.svg
@@ -231,7 +228,6 @@ class TimelineHistogram extends Component {
             var e = d3.event.selection.map(this.time_xScale.invert, this.time_xScale);
             var newData = this.plunder.filter_time(e[0], e[1]);
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
-            //this.data.filter(function (d) {return e[0] <= d.date_full && e[1] >= d.date_full; });
 
             //adds text of selected date range on top-left of plot
             d3.selectAll('.datetext').remove();
@@ -273,10 +269,10 @@ class TimelineHistogram extends Component {
 
         var rects = bar.append("rect")
             .attr("x", 1)
+            .attr("class", "timeline selected")
             // for width, need to make sure to not return width with negative value
             .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
-            .attr("height",  (d) => this.height - this.time_yScale(d.length))
-            .style("fill","green");
+            .attr("height",  (d) => this.height - this.time_yScale(d.length));
 
         //need to set cat_xScale domain before plotting
         this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
@@ -305,6 +301,7 @@ class TimelineHistogram extends Component {
             .data(this.categories)
             .enter().append("rect")
             .attr("class", "forebar")
+            .attr("id", d => d["object category"])
             .attr("x", (d) => this.oh.cat_xScale(d["object category"]))
             .attr("width", this.oh.cat_xScale.bandwidth())
             .attr("y", (d) => {
