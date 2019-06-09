@@ -162,32 +162,32 @@ class TimelineHistogram extends Component {
 
         gBrush.call(brush.move, [0.3, 0.5].map(this.time_xScale));
 
-        //need to set cat_xScale domain before plotting
-        this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
+        // //need to set cat_xScale domain before plotting
+        // this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
 
-        this.oh.svg.selectAll(".forebar")
-            .data(this.categories)
-            .enter().append("rect")
-            .attr("class", "forebar")
-            .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
-            .attr("width", this.oh.cat_xScale.bandwidth())
-            .attr("y", (d) => {
-                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                //logscale need to handle case of empty selection when brushing
-                return count !== 0 ? this.oh.cat_yScale(count) : 0;
-            })
-            .attr("height", (d) => {
-                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                //logscale need to handle case of empty selection when brushing
-                return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
-            });
+        // this.oh.svg.selectAll(".forebar")
+        //     .data(this.categories)
+        //     .enter().append("rect")
+        //     .attr("class", "forebar")
+        //     .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
+        //     .attr("width", this.oh.cat_xScale.bandwidth())
+        //     .attr("y", (d) => {
+        //         const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+        //         //logscale need to handle case of empty selection when brushing
+        //         return count !== 0 ? this.oh.cat_yScale(count) : 0;
+        //     })
+        //     .attr("height", (d) => {
+        //         const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+        //         //logscale need to handle case of empty selection when brushing
+        //         return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
+        //     });
     }
     
     resize() {
         this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
         this.width = this.width - this.margin.left - this.margin.right;
         this.height = parseInt(d3.select("#timelineContainer").style("height"), 10);
-        this.height = this.height - this.margin.left - this.margin.right;
+        this.height = this.height - this.margin.top - this.margin.bottom;
 
         this.time_xScale.rangeRound([0, this.width]);
         this.time_yScale.range([this.height, 0]);

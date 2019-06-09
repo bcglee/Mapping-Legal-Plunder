@@ -13,19 +13,12 @@ class DataProcessor {
 
         // default state for each filter
         var town_array = locations.map(d => d.town); // get array of town names
-        this.all_towns = {}; // create Object (js equiv of python Dictionary) of towns
-        this.create_obj(town_array, this.all_towns);
+        this.selected_towns = {}; // create Object (js equiv of python Dictionary) of towns
+        this.create_obj(town_array, this.selected_towns);
         var category_array = categories.map(d => d['object category']); // brackets needed here due to space
-        this.all_categories = {};
-        this.create_obj(category_array, this.all_categories);
+        this.selected_categories = {};
+        this.create_obj(category_array, this.selected_categories);
         [this.earliest, this.latest] = d3.extent(data, d => d.date_full);
-
-        //
-        // current filters
-        //
-
-        this.selected_towns = this.all_towns;
-        this.selected_categories = this.all_categories;
         [this.selected_start, this.selected_end] = [this.earliest, this.latest];
     }
 

@@ -92,17 +92,17 @@ class ObjectHistogram extends Component {
         //need to set cat_xScale domain before plotting
         this.cat_xScale.domain(this.data.map((d) => d.object_category));
 
-        //this.svg.selectAll(".forebar").remove();
+        // this.svg.selectAll(".forebar").remove();
 
         // append the rectangles for the bar chart
         // here, "this" refers to the current rectangle that we're editing
         this.svg.selectAll(".bar")
             .data(that.categories)
             .enter().append("rect")
-            .attr("class", "bar")
+            .attr("class", "bar selected")
+            .attr("id", d => d["object category"])
             .attr("x", (d) => this.cat_xScale(d["object category"]) )
             .attr("width", this.cat_xScale.bandwidth())
-            .style("fill", "lightgray")
             .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
             .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
             .on("click",  function(d) {
@@ -159,7 +159,7 @@ class ObjectHistogram extends Component {
         d3.selectAll('.foredot').remove();
         d3.selectAll('.forebar2').remove();
 
-        if (selected === true) {
+        if (!selected) {
             //changes current bar
             d3.select(bar)
                 .attr("class", "bar selected");
@@ -185,13 +185,13 @@ class ObjectHistogram extends Component {
     }
 
     resize() {
-        this.width = parseInt(d3.select("#categoryContainer").style("width"), 10);
+        this.width = parseInt(d3.select("#categoryHist").style("width"), 10);
         this.width = this.width - this.margin.left - this.margin.right;
-        this.height = parseInt(d3.select("#categoryContainer").style("height"), 10);
-        this.height = this.height - this.margin.left - this.margin.right;
+        this.height = parseInt(d3.select("#categoryHist").style("height"), 10);
+        this.height = this.height - this.margin.top - this.margin.bottom;
 
         this.cat_xScale.range([0, this.width]);
-        this.cat_yScale.range([0, this.height]);
+        this.cat_yScale.range([this.height, 0]);
     }
 
     select_all() {
