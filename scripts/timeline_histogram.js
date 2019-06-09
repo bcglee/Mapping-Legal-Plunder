@@ -182,7 +182,7 @@ class TimelineHistogram extends Component {
         //         return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
         //     });
     }
-    
+
     resize() {
         this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
         this.width = this.width - this.margin.left - this.margin.right;
@@ -305,8 +305,8 @@ class TimelineHistogram extends Component {
             .data(this.categories)
             .enter().append("rect")
             .attr("class", "forebar")
-            .attr("x", (d) => this.oh.cat_xScale(d["object category"]) + 2.5 )
-            .attr("width", this.oh.cat_xScale.bandwidth() - 5 )
+            .attr("x", (d) => this.oh.cat_xScale(d["object category"]))
+            .attr("width", this.oh.cat_xScale.bandwidth())
             .attr("y", (d) => {
                 const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                 //logscale need to handle case of empty selection when brushing
