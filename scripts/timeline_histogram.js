@@ -284,6 +284,7 @@ class TimelineHistogram extends Component {
             .enter()
             .append("circle")
             .attr("class", "foredot")
+            .attr("opacity", "0.7")
             .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
             .attr("transform", () => this.map.curr_transform)

@@ -129,25 +129,45 @@ class MapViz extends Component {
         const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
 
         var legend = this.svg.append("g")
-            .attr("transform", `translate(${this.width-50},${this.height + 10})`)
-            .attr("text-anchor", "middle")
-            .style("font", "10px sans-serif")
-          .selectAll("g")
-          .data([50,100,150,200])
-          .join("g");
+                             .attr("transform", `translate(${this.width-50},${this.height + 10})`)
+                             .attr("text-anchor", "middle")
+                             .style("font", "10px sans-serif")
+                             .selectAll("g")
+                             .data([50,100,150,200])
+                             .join("g");
 
           legend.append("circle")
-          .attr("fill", "#609f60")
-          .attr("stroke", "#609f60")
-          .attr("cy", d => -1.25*d)
-          .attr("class","legenddot")
-          .attr("r", radius);
+                .attr("fill", "#609f60")
+                .attr("stroke", "#609f60")
+                .attr("cy", d => -1.25*d)
+                .attr("class","legenddot")
+                .attr("r", radius);
 
       legend.append("text")
-      .attr("class","legendtext")
-          .attr("y", d => -1.25*d + 4)
-          .attr("fill","white")
-          .text(d3.format(".2s"));
+            .attr("class","legendtext")
+            .attr("y", d => -1.25*d + 4)
+            .attr("fill","white")
+            .text(d3.format(".2s"));
+
+
+            var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
+            var luccadot = luccadot.enter()
+                //.append("polygon")
+                .append("rect")
+                .attr("class", "luccadot")
+                .attr("x", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
+                .attr("y", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
+                .attr("width", 10)
+                .attr("height", 10)
+                //.attr("r", function(d) {
+                //        return Math.sqrt(d["ct"]/2);
+                //        })
+                .attr("size", 100)
+                .attr("fill","orange")
+                .attr("fill-opacity", .75)
+                //.attr('d', d3.symbol().type("d3.symbolStar").size(100));
+
+
 
         var that = this;
 
@@ -163,14 +183,18 @@ class MapViz extends Component {
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".backdot")
-            .attr('transform', d3.event.transform);
-        
+                .attr('transform', d3.event.transform);
+
+        //transforms the dots appropriately (with zoom)
+        this.svg.selectAll(".luccadot")
+                .attr('transform', d3.event.transform);
+
             this.svg.selectAll(".legenddot").remove();
             this.svg.selectAll(".legendtext").remove();
 
 
             var radius = d3.scaleSqrt().domain([0, 200]).range([0, 10*d3.event.transform.k]);
-    
+
             var legend = this.svg.append("g")
                 .attr("transform", `translate(${this.width-50},${this.height + 10})`)
                 .attr("text-anchor", "middle")
@@ -178,7 +202,7 @@ class MapViz extends Component {
               .selectAll("g")
               .data([50,100,150,200])
               .join("g");
-    
+
             legend.append("circle")
             .attr("fill", "#609f60")
             .attr("stroke", "#609f60")
@@ -191,7 +215,7 @@ class MapViz extends Component {
           .attr("y", d => -1.25*d + 4)
           .attr("fill","white")
           .text(d3.format(".2s"));
-    
+
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".foredot")
