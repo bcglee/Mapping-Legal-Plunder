@@ -156,14 +156,10 @@ class ObjectHistogram extends Component {
         // filters data for category with click event
         var newData = this.plunder.filter_categories(d["object category"], !selected);
 
-        d3.selectAll('.foredot').remove();
-        d3.selectAll('.forebar2').remove();
-
         if (!selected) {
             //changes current bar
             d3.select(bar)
                 .attr("class", "bar selected");
-
         }
         else {
             d3.select(bar)
