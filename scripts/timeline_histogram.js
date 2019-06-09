@@ -7,16 +7,6 @@ class TimelineHistogram extends Component {
         // draw timeline histogram
         this.init();
     }
-    
-    resize() {
-        this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
-        this.width = this.width - this.margin.left - this.margin.right;
-        this.height = parseInt(d3.select("#timelineContainer").style("height"), 10);
-        this.height = this.height - this.margin.left - this.margin.right;
-
-        this.time_xScale.rangeRound([0, this.width]);
-        this.time_yScale.range([this.height, 0]);
-    }
 
     init() { // stuff we do BEFORE loading data
         this.div = d3.select("#timelineContainer")
@@ -191,6 +181,16 @@ class TimelineHistogram extends Component {
                 //logscale need to handle case of empty selection when brushing
                 return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
             });
+    }
+    
+    resize() {
+        this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
+        this.width = this.width - this.margin.left - this.margin.right;
+        this.height = parseInt(d3.select("#timelineContainer").style("height"), 10);
+        this.height = this.height - this.margin.left - this.margin.right;
+
+        this.time_xScale.rangeRound([0, this.width]);
+        this.time_yScale.range([this.height, 0]);
     }
 
     // stuff we can't include in constructor as they become available after

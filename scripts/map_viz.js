@@ -13,23 +13,23 @@ class MapViz extends Component {
         // create svg element
         this.div = d3.select("#mapContainer")
         this.svg = this.div.append("svg")
-            .attr("class", "map");
-            // .attr("width", this.width - this.margin.left - this.margin.right)
             // .attr("height", this.height);
+
+        // now getting width and height via css
+        this.width = parseInt(this.svg.style("width"), 10);
+        this.height = parseInt(this.svg.style("height"), 10);
 
         this.initial_projection = d3.geoAlbers() // zoomed out overview of Italy
             .center([0, 42])
             .rotate([347, 0])
             .parallels([35, 45])
-            .scale(2750)
-            .translate([this.width / 2, this.height / 2]);
+            .scale(2750);
 
         this.true_projection = d3.geoAlbers() // zoomed in on Lucca
-            .center([-1.95, 44])
+            .center([-2, 44])
             .rotate([347.5, 0.125])
             .parallels([35, 45])
-            .scale(50000)
-            .translate([this.width / 2, this.height / 2]);
+            .scale(60000);
 
         // define path generators
         this.initial_path = d3.geoPath()
@@ -41,7 +41,7 @@ class MapViz extends Component {
         // defines the zoom function
         this.zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
             .scaleExtent([1, 8])
-            .translateExtent([[0, 0], [this.width + this.margin.left + this.margin.right, this.height]])
+            .translateExtent([[0, 0], [this.width, this.height]])
             .on("zoom", () => this.zoomed());
 
         // calls the zoom function
@@ -64,9 +64,6 @@ class MapViz extends Component {
         // adds blue background in order to make water blue
         this.svg.append('rect')
             .attr("class", "water");
-            // .attr('width', this.width + this.margin.left + this.margin.right)
-            // .attr('height', this.height)
-            // .attr('fill', 'lightBlue');
 
         // reset zoom button
         this.button = document.createElement("button");
@@ -128,31 +125,6 @@ class MapViz extends Component {
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
-
-        const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
-
-        var legend = this.svg.append("g")
-            .attr("transform", `translate(${30},${this.height + 10})`)
-            .attr("text-anchor", "middle")
-            .style("font", "10px sans-serif")
-          .selectAll("g")
-          .data([50,100,150,200])
-          .join("g");
-      
-          legend.append("circle")
-          .attr("fill", "green")
-          .attr("stroke", "green")
-          .attr("cy", d => -1*d)
-          .attr("class","legenddot")
-          .attr("r", radius);
-    
-      legend.append("text")
-      .attr("class","legendtext")
-          .attr("y", d => -1*d)
-          .attr("dx", "2.3em")
-          .text(d3.format(".2s"));
-          
-
         var that = this;
 
     }
@@ -169,29 +141,6 @@ class MapViz extends Component {
         this.svg.selectAll(".backdot")
             .attr('transform', d3.event.transform);
 
-        this.svg.selectAll(".legenddot").remove();
-
-        var radius = d3.scaleSqrt().domain([0, 200]).range([0, 10*d3.event.transform.k]);
-
-        var legend = this.svg.append("g")
-            .attr("transform", `translate(${30},${this.height + 10})`)
-            .attr("text-anchor", "middle")
-            .style("font", "10px sans-serif")
-          .selectAll("g")
-          .data([50,100,150,200])
-          .join("g");
-
-        legend.append("circle")
-        .attr("fill", "green")
-        .attr("stroke", "green")
-        .attr("cy", d => -1*d)
-        .attr("class","legenddot")
-        .attr("r", radius);
-
-
-        //this.svg.selectAll(".legenddot")
-        //    .attr('scale', d3.event.transform.k);
-
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".foredot")
             .attr('transform', d3.event.transform);
@@ -201,13 +150,6 @@ class MapViz extends Component {
             .attr('transform', d3.event.transform);
 
         // hide zoom button when already at default zoom
-        // if (this.curr_transform !== d3.zoomIdentity) {
-        //     // console.log(this.curr_transform);
-        //     // console.log(d3.zoomIdentity);
-        //     // console.log(this.curr_transform === d3.zoomIdentity)
-        //     console.log(this.curr_transform.x);
-        //     this.button.className = "visible";
-        // }
         if (this.curr_transform.k !== d3.zoomIdentity.k ||
             this.curr_transform.x !== d3.zoomIdentity.x ||
             this.curr_transform.y !== d3.zoomIdentity.y) {
