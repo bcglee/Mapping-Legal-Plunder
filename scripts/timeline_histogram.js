@@ -7,13 +7,23 @@ class TimelineHistogram extends Component {
         // draw timeline histogram
         this.init();
     }
+    
+    resize() {
+        this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
+        this.width = this.width - this.margin.left - this.margin.right;
+        this.height = parseInt(d3.select("#timelineContainer").style("height"), 10);
+        this.height = this.height - this.margin.left - this.margin.right;
+
+        this.time_xScale.rangeRound([0, this.width]);
+        this.time_yScale.range([this.height, 0]);
+    }
 
     init() { // stuff we do BEFORE loading data
         this.div = d3.select("#timelineContainer")
         this.svg = this.div.append("svg")
             .attr("class", "time_hist")
-            .attr("width", this.width + this.margin.left + this.margin.right)
-            .attr("height", this.height + this.margin.top + this.margin.bottom)
+            // .attr("width", this.width + this.margin.left + this.margin.right)
+            // .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
@@ -29,6 +39,8 @@ class TimelineHistogram extends Component {
 
         this.time_yScale = d3.scaleLinear()
             .range([this.height, 0]);
+
+        this.resize();
 
         this.histogram = d3.histogram()
             // histogram func only use date value from each row of dataset
@@ -93,26 +105,28 @@ class TimelineHistogram extends Component {
             .style("text-decoration", "underline")
             .text("TIMELINE OF PLUNDER");
 
-    // text label for the x axis
-    // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
-    this.svg.append("text")
-        .attr("x", (this.width / 2))
-        .attr("y", this.height + (this.margin.bottom))
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("text-decoration", "underline")
-        .text("Date");
+        // text label for the x axis
+        // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
+        this.svg.append("text")
+            .attr("x", (this.width / 2))
+            .attr("y", this.height + (this.margin.bottom))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .text("Date");
 
-   // text label for the y axis
-   // http://jsfiddle.net/manojmcet/g47hN/
-   // annoyingly subtle b/c defaults to rotating around origin (0,0)
-   this.svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - this.margin.left)
-        .attr("x", 0 - (this.height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Number of Items");
+        // text label for the y axis
+        // http://jsfiddle.net/manojmcet/g47hN/
+        // annoyingly subtle b/c defaults to rotating around origin (0,0)
+        this.svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - this.margin.left)
+                .attr("x", 0 - (this.height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Number of Items");
+
+        d3.select(window).on('resize', () => this.resize());
     }
 
     draw() { // stuff we do AFTER loading data

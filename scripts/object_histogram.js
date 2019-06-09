@@ -8,6 +8,16 @@ class ObjectHistogram extends Component {
         this.init();
     }
 
+    resize() {
+        this.width = parseInt(d3.select("#categoryContainer").style("width"), 10);
+        this.width = this.width - this.margin.left - this.margin.right;
+        this.height = parseInt(d3.select("#categoryContainer").style("height"), 10);
+        this.height = this.height - this.margin.left - this.margin.right;
+
+        this.cat_xScale.range([0, this.width]);
+        this.cat_yScale.range([0, this.height]);
+    }
+
     init() { // stuff we do BEFORE loading data
         // set the ranges
         this.cat_xScale = d3.scaleBand()
@@ -17,14 +27,16 @@ class ObjectHistogram extends Component {
         this.cat_yScale = d3.scaleLog()
             .domain([1, 2000])
             .range([this.height, 0]);
+        this.resize();
 
         // append the svg object to the body of the page
         // append a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
         this.div = d3.select("#categoryContainer")
         this.svg = this.div.append("svg")
-            .attr("width", this.width + this.margin.left + this.margin.right)
-            .attr("height", this.height + this.margin.top + this.margin.bottom)
+            .attr("class", "obj_hist")
+            // .attr("width", this.width + this.margin.left + this.margin.right)
+            // .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
@@ -66,6 +78,8 @@ class ObjectHistogram extends Component {
                          .style("position", "absolute")
                          .style("z-index", "10")
                          .style("visibility", "hidden");
+
+        // d3.select(window).on('resize', () => this.resize());
     }
 
     draw() { // stuff we do AFTER loading
@@ -112,6 +126,7 @@ class ObjectHistogram extends Component {
 
         // add the x Axis
         this.svg.append("g")
+            .attr("class", "x axis")
             .attr("transform", "translate(0," + this.height + ")")
             .call(d3.axisBottom(this.cat_xScale))
             .selectAll("text")
@@ -123,6 +138,7 @@ class ObjectHistogram extends Component {
 
         // add the y Axis
         this.svg.append("g")
+            .attr("class", "y axis")
             .call(d3.axisLeft(this.cat_yScale));
 
         // adds horizontal grid lines

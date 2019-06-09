@@ -13,8 +13,9 @@ class MapViz extends Component {
         // create svg element
         this.div = d3.select("#mapContainer")
         this.svg = this.div.append("svg")
-            .attr("width", this.width - this.margin.left - this.margin.right)
-            .attr("height", this.height);
+            .attr("class", "map");
+            // .attr("width", this.width - this.margin.left - this.margin.right)
+            // .attr("height", this.height);
 
         this.initial_projection = d3.geoAlbers() // zoomed out overview of Italy
             .center([0, 42])
@@ -62,9 +63,10 @@ class MapViz extends Component {
 
         // adds blue background in order to make water blue
         this.svg.append('rect')
-            .attr('width', this.width + this.margin.left + this.margin.right)
-            .attr('height', this.height)
-            .attr('fill', 'lightBlue');
+            .attr("class", "water");
+            // .attr('width', this.width + this.margin.left + this.margin.right)
+            // .attr('height', this.height)
+            // .attr('fill', 'lightBlue');
 
         // reset zoom button
         this.button = document.createElement("button");

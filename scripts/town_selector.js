@@ -1,3 +1,4 @@
+// TODO: add search box
 class TownSelector {
     constructor (locations, plunder, th) {
         this.locations = locations.map(d => d.town);

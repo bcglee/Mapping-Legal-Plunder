@@ -1,16 +1,28 @@
 :root {
     --selector-height: 40%;
-    --table-height: 100%;
+    --selector-width: 10%;
+    --table-height: 60%;
+    --table-width: 30%;
+    --map-height: 60%;
+    --map-width: 55%;
     --header-font: 'Proza Libre', sans-serif;
     --body-font: 'Open Sans', sans-serif;
     --top-margin: 2%;
-    --side-margin: 30px;
+    --side-margin: 1%;
+    --mid-margin: 1%;
+    /* --histogram-width: calc(var(--mid-margin) + var(--selector-width) + var(--map-width)); */
+    --histogram-width: calc((100% - 2 * var(--side-margin))/2 - var(--mid-margin));
+    --histogram-height: 35%;
 }
 
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+}
+
+.bar {
+    cursor: pointer;
 }
 
 .bar rect {
@@ -58,9 +70,12 @@ div.obj_tooltip {
 }
 
 #townContainer{
+    display: flex;
+    flex-direction: column;
     float: left;
     height: var(--selector-height);
-    margin-right: 50px;
+    width: var(--selector-width);
+    margin-right: var(--mid-margin);
     margin-left: var(--side-margin);
 }
 
@@ -72,9 +87,9 @@ div.obj_tooltip {
 }
 
 #townSelector {
+    flex-grow: 1;
     font-family: var(--body-font);
     font-size: x-small;
-    height: 100%;
     overflow: auto;
 }
 
@@ -100,10 +115,29 @@ div.obj_tooltip {
     transition-duration: 0.1s;
 }
 
+#townSelector input[type="checkbox"]:checked + label:hover {
+    color: initial;
+    background-color: #ccdcea;
+    transition-duration: inherit;
+}
+
 #mapContainer {
-    width: 700px;
+    height: var(--map-height);
+    width: var(--map-width);
     float: left;
     margin-top: var(--top-margin);
+    margin-right: var(--mid-margin);
+}
+
+.map {
+    height: 90%;
+    width: 100%;
+}
+
+.water {
+    height: 100%;
+    width: 100%;
+    fill: lightblue;
 }
 
 /* #mapContainer button { */
@@ -126,10 +160,21 @@ button:hover {
 
 #timelineContainer {
     float: left;
+    margin-right: var(--mid-margin);
+}
+
+.time_hist {
+    height: 100%;
+    width: 100%;
 }
 
 #categoryContainer {
-    float: left;
+    float: right;
+}
+
+.obj_hist {
+    height: 100%;
+    width: 100%;
 }
 
 button.hidden {
@@ -145,9 +190,12 @@ button.visible {
 }
 
 #tableContainer{
+    display: flex;
+    flex-direction: column;
     float: right;
     height: var(--table-height);
     margin-right: var(--side-margin);
+    width: var(--table-width);
 }
 
 #tableContainer p {
@@ -158,6 +206,7 @@ button.visible {
 }
 
 #tableViewer {
+    flex-grow: 1;
     font-family: var(--body-font);
     font-size: small;
     height: 100%;
@@ -172,4 +221,17 @@ button.visible {
 .forebar {
     fill: green;
     pointer-events: none;
+}
+
+
+#timelineContainer {
+    width: var(--histogram-width);
+    height: var(--histogram-height);
+    margin-left: var(--side-margin);
+}
+
+#categoryContainer {
+    width: var(--histogram-width);
+    height: var(--histogram-height);
+    margin-left: var(--side-margin);
 }
