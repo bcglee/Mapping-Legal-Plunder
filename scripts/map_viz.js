@@ -41,7 +41,7 @@ class MapViz extends Component {
 
         // defines the zoom function
         this.zoom = d3.zoom()   //https://bl.ocks.org/iamkevinv/0a24e9126cd2fa6b283c6f2d774b69a2
-            .scaleExtent([1, 8])
+            .scaleExtent([1, 3])
             .translateExtent([[0, 0], [this.width, this.height]])
             .on("zoom", () => this.zoomed());
 
