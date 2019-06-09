@@ -220,7 +220,7 @@ class TimelineHistogram extends Component {
               d3.selectAll('.datetext').remove();
               this.svg.append("text")
                   .attr("class", "datetext")
-                  .attr("x", (this.margin.left + 107))
+                  .attr("x", (this.margin.left + 10))  //107
                   .attr("y", 10 - (this.margin.top / 2))
                   .attr("text-anchor", "middle")
                   .style("font-size", "12px")
@@ -237,21 +237,21 @@ class TimelineHistogram extends Component {
             d3.selectAll('.datetext').remove();
             this.svg.append("text")
                 .attr("class", "datetext")
-                .attr("x", (this.margin.left + 107))
+                .attr("x", (this.margin.left + 10))  //107
                 .attr("y", 10 - (this.margin.top / 2))
                 .attr("text-anchor", "middle")
                 .style("font-size", "12px")
                 .html(formatTime(e[0]) + " - " + formatTime(e[1]));
           }
 
-          //d3.selectAll('.datetext').remove();
-          this.svg.append("text")
-              .attr("class", "datetext")
-              .attr("x", (this.margin.left))
-              .attr("y", 10 - (this.margin.top / 2))
-              .attr("text-anchor", "middle")
-              .style("font-size", "12px")
-              .html("Selected date range: ");
+          // //d3.selectAll('.datetext').remove();
+          // this.svg.append("text")
+          //     .attr("class", "datetext")
+          //     .attr("x", (this.margin.left))
+          //     .attr("y", 10 - (this.margin.top / 2))
+          //     .attr("text-anchor", "middle")
+          //     .style("font-size", "12px")
+          //     .html("Selected date range: ");
 
         this.update_all(newData);
     }
