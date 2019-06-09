@@ -62,6 +62,15 @@ class MapViz extends Component {
             .style("z-index", "10")
             .style("visibility", "hidden");
 
+            // http://bl.ocks.org/biovisualize/1016860
+            // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
+            this.lucca_tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "lucca_tooltip")  // from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden");
+
         // adds blue background in order to make water blue
         this.svg.append('rect')
             .attr("class", "water");
@@ -126,6 +135,50 @@ class MapViz extends Component {
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
+        const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
+
+        var legend = this.svg.append("g")
+                             .attr("transform", `translate(${this.width-50},${this.height + 10})`)
+                             .attr("text-anchor", "middle")
+                             .style("font", "10px sans-serif")
+                             .selectAll("g")
+                             .data([50,100,150,200])
+                             .join("g");
+
+          legend.append("circle")
+                .attr("fill", "#609f60")
+                .attr("stroke", "#609f60")
+                .attr("cy", d => -1.25*d)
+                .attr("class","legenddot")
+                .attr("r", radius);
+
+      legend.append("text")
+            .attr("class","legendtext")
+            .attr("y", d => -1.25*d + 4)
+            .attr("fill","white")
+            .text(d3.format(".2s"));
+
+
+            // added star for Lucca
+            // https://stackoverflow.com/questions/43174396/how-to-draw-the-triangle-symbol/43174450
+            // https://gist.github.com/mbostock/3244058
+            var that=this
+            var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
+            var luccadot = luccadot.enter()
+                .append("rect")
+                .attr("class", "luccadot")
+                .attr("x", (d) => this.true_projection([d["lon"], d["lat"]])[0])
+                .attr("y", (d) => this.true_projection([d["lon"], d["lat"]])[1])
+                .attr("width", 9)
+                .attr("height", 9)
+                .attr("fill","#FFFFFF")
+                .on("mouseover", function(d) {
+                    that.lucca_tooltip.style("visibility", "visible")
+                                .html(d["town"] + ' (city center)');
+                })
+                .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
+
         var that = this;
 
     }
@@ -140,7 +193,38 @@ class MapViz extends Component {
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".backdot")
-            .attr('transform', d3.event.transform);
+                .attr('transform', d3.event.transform);
+
+        //transforms the dots appropriately (with zoom)
+        this.svg.selectAll(".luccadot")
+                .attr('transform', d3.event.transform);
+
+            this.svg.selectAll(".legenddot").remove();
+            this.svg.selectAll(".legendtext").remove();
+
+
+            var radius = d3.scaleSqrt().domain([0, 200]).range([0, 10*d3.event.transform.k]);
+
+            var legend = this.svg.append("g")
+                .attr("transform", `translate(${this.width-50},${this.height + 10})`)
+                .attr("text-anchor", "middle")
+                .style("font", "10px sans-serif")
+              .selectAll("g")
+              .data([50,100,150,200])
+              .join("g");
+
+            legend.append("circle")
+            .attr("fill", "#609f60")
+            .attr("stroke", "#609f60")
+            .attr("cy", d => -1.25*d)
+            .attr("class","legenddot")
+            .attr("r", radius);
+
+            legend.append("text")
+        .attr("class","legendtext")
+          .attr("y", d => -1.25*d + 4)
+          .attr("fill","white")
+          .text(d3.format(".2s"));
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".foredot")
