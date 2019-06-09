@@ -29,7 +29,6 @@ class TownSelector {
             
             selector_div.appendChild(cbox);
             selector_div.appendChild(label);
-            // selector_div.appendChild(document.createElement("br"));
             this.checkboxes.push(cbox);
         }
         
@@ -71,41 +70,7 @@ class TownSelector {
         }
         var newData = this.plunder.apply_filters();
         // now, update other views...
-        // map
         this.th.update_all(newData);
-        // this.map.svg.selectAll('.foredot')
-        //     .data(newData)
-        //     .enter()
-        //     .append("circle")
-        //     .attr("class", "foredot")
-        //     .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
-        //     .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
-        //     .attr("transform", this.map.curr_transform)
-        //     .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2));
-
-        // //timeline histogram
-        // var bins = this.th.histogram(newData);
-
-        // //timeline histogram
-        // var bar = this.th.svg.selectAll(".forebar2")
-        //     .data(bins)
-        //     .enter()
-        //     .append("g")
-        //     .attr("class", "forebar2")
-        //     .attr("transform",  (d) => "translate(" + this.th.time_xScale(d.x0) + "," + this.th.time_yScale(d.length) + ")" )
-
-        // // timeline histogram
-        // var rects = bar.append("rect")
-        //     .attr("x", 1)
-        //     // for width, need to make sure to not return width with negative value
-        //     .attr("width",  (d) => this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1 > 0 ? this.th.time_xScale(d.x1) - this.th.time_xScale(d.x0) - 1 : 0)
-        //     .attr("height",  (d) => this.th.height - this.th.time_yScale(d.length))
-        //     .style("fill","green");
-
-
-        // // update data table
-        // this.plunder_table.table.remove();
-        // this.plunder_table.init();
     }
 }
 

@@ -25,6 +25,14 @@ html, body {
     cursor: pointer;
 }
 
+.bar.selected {
+    fill: lightgray;
+}
+
+.bar.deselected {
+    fill: lightblue;
+}
+
 .bar rect {
     fill: lightgray;
 }
@@ -169,6 +177,8 @@ button:hover {
 }
 
 #categoryContainer {
+    display: flex;
+    flex-direction: column;
     float: right;
 }
 
@@ -234,4 +244,8 @@ button.visible {
     width: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);
+}
+
+#categoryHist {
+    flex-grow: 1;
 }

@@ -15,15 +15,9 @@ class DataProcessor {
         var town_array = locations.map(d => d.town); // get array of town names
         this.all_towns = {}; // create Object (js equiv of python Dictionary) of towns
         this.create_obj(town_array, this.all_towns);
-        // for (const town of town_array) {
-        //     this.all_towns[town] = true; // value (default: true) tells us whether town is selected
-        // }
         var category_array = categories.map(d => d['object category']); // brackets needed here due to space
         this.all_categories = {};
         this.create_obj(category_array, this.all_categories);
-        // for (const cat of category_array) {
-        //     this.all_categories[cat] = true;
-        // }
         [this.earliest, this.latest] = d3.extent(data, d => d.date_full);
 
         //
@@ -38,30 +32,30 @@ class DataProcessor {
     // to reset a filter, pass no arguments
     filter_towns() {
         if (arguments.length) {
-            // var arg = arguments[0];
-            // this.selected_towns[arg] = this.flip(this.selected_towns[arg]);
             var town = arguments[0];
             var state = arguments[1];
             this.selected_towns[town] = state;
         }
         else { // no arguments passed, reset to default
-            // this.selected_towns = this.all_towns;
             this.selected_towns = this.reset_obj(this.selected_towns);
         }
-        //this.th.brushmoved();
         return this.apply_filters();
     }
 
+    // first argument category, second argument state (boolean), third
+    // argument don't apply filters (boolean)
     filter_categories() {
         if (arguments.length) {
-            var arg = arguments[0];
-            this.selected_categories[arg] = this.flip(this.selected_categories[arg]);
+            var cat = arguments[0];
+            var state = arguments[1];
+            this.selected_categories[cat] = state;
         }
         else { // no arguments passed, reset to default
-            // this.selected_categories = this.all_categories;
             this.selected_categories = this.reset_obj(this.selected_categories);
         }
-        return this.apply_filters();
+        if (!arguments[2]) {
+            return this.apply_filters();
+        }
     }
 
     filter_time() {

@@ -8,16 +8,6 @@ class ObjectHistogram extends Component {
         this.init();
     }
 
-    resize() {
-        this.width = parseInt(d3.select("#categoryContainer").style("width"), 10);
-        this.width = this.width - this.margin.left - this.margin.right;
-        this.height = parseInt(d3.select("#categoryContainer").style("height"), 10);
-        this.height = this.height - this.margin.left - this.margin.right;
-
-        this.cat_xScale.range([0, this.width]);
-        this.cat_yScale.range([0, this.height]);
-    }
-
     init() { // stuff we do BEFORE loading data
         // set the ranges
         this.cat_xScale = d3.scaleBand()
@@ -32,11 +22,9 @@ class ObjectHistogram extends Component {
         // append the svg object to the body of the page
         // append a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
-        this.div = d3.select("#categoryContainer")
+        this.div = d3.select("#categoryHist")
         this.svg = this.div.append("svg")
             .attr("class", "obj_hist")
-            // .attr("width", this.width + this.margin.left + this.margin.right)
-            // .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
@@ -79,7 +67,20 @@ class ObjectHistogram extends Component {
                          .style("z-index", "10")
                          .style("visibility", "hidden");
 
-        // d3.select(window).on('resize', () => this.resize());
+        // buttons
+        var buttons_div = document.querySelector("#categoryButtons");
+
+        var deselect_all = document.createElement("button");
+        var deselect_all_text = document.createTextNode("deselect all");
+        deselect_all.appendChild(deselect_all_text);
+        deselect_all.addEventListener("click", () => this.deselect_all());
+        buttons_div.appendChild(deselect_all);
+        
+        var select_all = document.createElement("button");
+        var select_all_text = document.createTextNode("select all");
+        select_all.appendChild(select_all_text);
+        select_all.addEventListener("click", () => this.select_all());
+        buttons_div.appendChild(select_all);
     }
 
     draw() { // stuff we do AFTER loading
@@ -149,27 +150,24 @@ class ObjectHistogram extends Component {
     }
 
     onclick(d, bar){
-        // filters data for category with click event
-        var newData = this.plunder.filter_categories(d["object category"]);
-        //var newData = that.data.filter(el => el["object_category"] === d["object category"]);
-
         // boolean for determining if the clicked category is selected
         var selected = this.plunder.selected_categories[d["object category"]];
 
-        //d3.select(this)
-        //  .style("fill", "gray");
+        // filters data for category with click event
+        var newData = this.plunder.filter_categories(d["object category"], !selected);
+
         d3.selectAll('.foredot').remove();
         d3.selectAll('.forebar2').remove();
 
         if (selected === true) {
             //changes current bar
             d3.select(bar)
-            .style("fill", "lightgray")
+                .attr("class", "bar selected");
 
         }
         else {
             d3.select(bar)
-            .style("fill", "lightblue")
+                .attr("class", "bar deselected");
         }
 
         this.th.update_all(newData);
@@ -184,6 +182,32 @@ class ObjectHistogram extends Component {
         this.categories = categories;
         this.th = timeline_hist;
         this.plunder = plunder;
+    }
+
+    resize() {
+        this.width = parseInt(d3.select("#categoryContainer").style("width"), 10);
+        this.width = this.width - this.margin.left - this.margin.right;
+        this.height = parseInt(d3.select("#categoryContainer").style("height"), 10);
+        this.height = this.height - this.margin.left - this.margin.right;
+
+        this.cat_xScale.range([0, this.width]);
+        this.cat_yScale.range([0, this.height]);
+    }
+
+    select_all() {
+        for (var i = 0; i < this.categories.length; i++) {
+            this.plunder.filter_categories(this.categories[i]["object category"], true, true);
+        }
+        var newData = this.plunder.apply_filters();
+        this.th.update_all(newData);
+    }
+
+    deselect_all() {
+        for (var i = 0; i < this.categories.length; i++) {
+            this.plunder.filter_categories(this.categories[i]["object category"], false, true);
+        }
+        var newData = this.plunder.apply_filters();
+        this.th.update_all(newData);
     }
 }
 
