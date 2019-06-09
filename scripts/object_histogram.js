@@ -24,9 +24,9 @@ class ObjectHistogram extends Component {
             .range([0, this.width])
             .padding(0.1);
 
-        this.cat_yScale = d3.scaleLog()
-            .domain([1, 2000])
-            .range([this.height, 0]);
+        this.cat_yScale = d3.scaleLinear()
+            .domain([2000,0])
+            .range([0,this.height]);
         this.resize();
 
         // append the svg object to the body of the page
@@ -95,7 +95,7 @@ class ObjectHistogram extends Component {
 
         // append the rectangles for the bar chart
         // here, "this" refers to the current rectangle that we're editing
-        this.svg.selectAll(".bar")
+        var view = this.svg.selectAll(".bar")
             .data(that.categories)
             .enter().append("rect")
             .attr("class", "bar")
@@ -123,8 +123,12 @@ class ObjectHistogram extends Component {
 
 
         // add the x Axis
-        this.svg.append("g")
-            .attr("class", "x axis")
+        //var xAxis=d3.axisBottom(this.cat_xScale)
+        var xAxis = g => g
+    .attr("transform", `translate(0,${this.height - this.margin.bottom})`)
+    .call(d3.axisBottom(this.cat_xScale).tickSizeOuter(0))
+        var gX=this.svg.append("g")
+            .attr("class", "xaxis")
             .attr("transform", "translate(0," + this.height + ")")
             .call(d3.axisBottom(this.cat_xScale))
             .selectAll("text")
@@ -135,9 +139,38 @@ class ObjectHistogram extends Component {
             .attr("transform", "rotate(-45)");          // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
 
         // add the y Axis
-        this.svg.append("g")
-            .attr("class", "y axis")
+        //var yAxis=d3.axisLeft(this.cat_yScale)
+        var yAxis = g => g
+    .attr("transform", `translate(${this.margin.left},0)`)
+    .call(d3.axisLeft(this.cat_yScale))
+    .call(g => g.select(".domain").remove())
+
+
+        var gY= this.svg.append("g")
+            .attr("class", "yaxis")
             .call(d3.axisLeft(this.cat_yScale));
+        
+
+            const extent = [[this.margin.left, this.margin.top], [this.width - this.margin.right, this.height - this.margin.top]];
+  
+            this.svg.call(d3.zoom()
+                .scaleExtent([1, 8])
+                .translateExtent(extent)
+                .extent(extent)
+                .on("zoom", zoomed));
+
+        function zoomed() {
+            //view.attr("transform", d3.event.transform);
+            //that.svg.selectAll(".forebar").attr("transform", d3.event.transform);
+            //that.svg.selectAll(".yaxis").attr("transform", d3.event.transform);
+              //gX.call(xAxis.scale(d3.event.transform.rescaleX(that.cat_xScale)));
+
+               that.cat_xScale.range([that.margin.left, that.width - that.margin.right].map(d => d3.event.transform.applyX(d)));
+               that.svg.selectAll(".bar").attr("x", (d) => that.cat_xScale(d["object category"]) ).attr("width", that.cat_xScale.bandwidth());
+               that.svg.selectAll(".forebar").attr("x", (d) => that.cat_xScale(d["object category"]) ).attr("width", that.cat_xScale.bandwidth());
+               that.svg.selectAll(".xaxis").call(xAxis);
+               //that.svg.selectAll(".yaxis").call(yAxis);
+            }
 
         // adds horizontal grid lines
         this.svg.append("g")
