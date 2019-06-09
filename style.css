@@ -69,8 +69,8 @@ div.town_tooltip {
 div.lucca_tooltip {
     position: absolute;
     text-align: center;
-    width: 70px;
-    height: 12px;
+    width: 120px;
+    height: 14px;
     padding: 2px;
     font: 12px sans-serif;
     background: lightsteelblue;

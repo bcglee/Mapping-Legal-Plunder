@@ -176,7 +176,7 @@ class MapViz extends Component {
                 .attr("fill-opacity", .75)
                 .on("mouseover", function(d) {
                     that.lucca_tooltip.style("visibility", "visible")
-                                .html('City: ' + d["town"]);
+                                .html(d["town"] + ' (city center)');
                 })
                 //.on("mouseover", (d) => this.tooltip.style("visibility", "visible").text(d["town"]))
                 .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
