@@ -150,19 +150,30 @@ class MapViz extends Component {
             .text(d3.format(".2s"));
 
 
+        //     svg.selectAll(".point")
+        //     .data(data)
+        //   .enter().append("path")
+        //     .attr("class", "point")
+        //     .attr("d", d3.svg.symbol().type("triangle-up"))
+        //     .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+
+            var that=this
             var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
             var luccadot = luccadot.enter()
                 //.append("polygon")
-                .append("rect")
+                .append("path")
                 .attr("class", "luccadot")
-                .attr("x", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
-                .attr("y", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
-                .attr("width", 10)
-                .attr("height", 10)
+                //.attr("x", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
+                //.attr("y", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
+                //.attr("width", 10)
+                //.attr("height", 10)
                 //.attr("r", function(d) {
                 //        return Math.sqrt(d["ct"]/2);
                 //        })
-                .attr("size", 100)
+                //.attr("size", 100)
+                .attr("d", d3.symbol().type(d3.symbolStar))
+            .attr("transform", function(d) { return "translate(" + (that.initial_projection([d["lon"], d["lat"]])[0]) + "," + (that.initial_projection([d["lon"], d["lat"]])[1]) + ")"; })
                 .attr("fill","orange")
                 .attr("fill-opacity", .75)
                 //.attr('d', d3.symbol().type("d3.symbolStar").size(100));
