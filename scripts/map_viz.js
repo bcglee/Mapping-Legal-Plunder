@@ -126,6 +126,29 @@ class MapViz extends Component {
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
+        const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
+
+        var legend = this.svg.append("g")
+            .attr("transform", `translate(${30},${this.height + 10})`)
+            .attr("text-anchor", "middle")
+            .style("font", "10px sans-serif")
+          .selectAll("g")
+          .data([50,100,150,200])
+          .join("g");
+
+          legend.append("circle")
+          .attr("fill", "#609f60")
+          .attr("stroke", "#609f60")
+          .attr("cy", d => -1*d)
+          .attr("class","legenddot")
+          .attr("r", radius);
+
+      legend.append("text")
+      .attr("class","legendtext")
+          .attr("y", d => -1*d)
+          .attr("dx", "2.3em")
+          .text(d3.format(".2s"));
+
         var that = this;
 
     }
@@ -141,6 +164,26 @@ class MapViz extends Component {
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".backdot")
             .attr('transform', d3.event.transform);
+        
+            this.svg.selectAll(".legenddot").remove();
+
+            var radius = d3.scaleSqrt().domain([0, 200]).range([0, 10*d3.event.transform.k]);
+    
+            var legend = this.svg.append("g")
+                .attr("transform", `translate(${30},${this.height + 10})`)
+                .attr("text-anchor", "middle")
+                .style("font", "10px sans-serif")
+              .selectAll("g")
+              .data([50,100,150,200])
+              .join("g");
+    
+            legend.append("circle")
+            .attr("fill", "#609f60")
+            .attr("stroke", "#609f60")
+            .attr("cy", d => -1*d)
+            .attr("class","legenddot")
+            .attr("r", radius);
+    
 
         //transforms the dots appropriately (with zoom)
         this.svg.selectAll(".foredot")
