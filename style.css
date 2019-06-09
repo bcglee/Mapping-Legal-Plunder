@@ -94,6 +94,11 @@ div.obj_tooltip {
     opacity: 0.9;
 }
 
+.legend rect {
+    fill:white;
+    stroke:black;
+    opacity:0.8;}
+
 /* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
 .grid line {
     stroke: lightgrey;
