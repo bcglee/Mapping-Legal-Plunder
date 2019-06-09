@@ -13,6 +13,9 @@
     /* --histogram-width: calc(var(--mid-margin) + var(--selector-width) + var(--map-width)); */
     --histogram-width: calc((100% - 2 * var(--side-margin))/2 - var(--mid-margin));
     --histogram-height: 35%;
+
+    --green: #609f60;
+    --hover-blue: #ccdcea;
 }
 
 html, body {
@@ -21,26 +24,73 @@ html, body {
     margin: 0;
 }
 
-.bar {
+.clickbar {
     cursor: pointer;
+    fill: darkgray;
+    opacity: 0;
+    transition-duration: 0.2s;
 }
 
-.bar.selected {
-    fill: lightgray;
+.clickbar.selected {
+    /* opacity: 0;
+    transition: opacity 0.5s; */
 }
 
-.bar.deselected {
-    /* color: white; */
+.clickbar:hover, .clickbar.deselected:hover {
+    fill: var(--hover-blue);
+    opacity: 0.5;
+    transition-duration: 0.1s;
+}
+
+.clickbar.deselected {
+    opacity: 0.2;
+    transition-duration: 0.2s;
+}
+
+.backbar {
+    fill: url(#pattern);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.backbar.selected {
     /* fill: transparent; */
-    /* background: repeating-linear-gradient(
-        45deg,
-        darkgray,
-        darkgray 10px,
-        dimgray 10px,
-        dimgray 20px
-    ); */
-    /* fill: lightblue; */
-    fill: url(#pattern_yziv)
+    transition-duration: 0.2s;
+    /* transition: opacity 0.5s; */
+    opacity: 0;
+}
+
+.backbar.deselected {
+    /* fill: url(#pattern); */
+    transition-duration: 0.2s;
+    /* transition: opacity 0.5s; */
+    opacity: 0.25;
+}
+
+.forebar.selected {
+    color: var(--green);
+    visibility: visible;
+    transition-duration: 0.2s;
+}
+
+.forebar.deselected {
+    visibility: hidden;
+    transition-duration: 0.2s;
+}
+
+.allbar {
+    pointer-events: none;
+}
+
+.allbar.selected {
+    opacity: 1;
+    transition-duration: 0.2s;
+}
+
+.allbar.deselected {
+    opacity: 0.2;
+    transition-duration: 0.2s;
 }
 
 .bar rect {
@@ -123,7 +173,7 @@ div.obj_tooltip {
 }
 
 #townSelector label:hover {
-    background-color: #ccdcea;
+    background-color: var(--hover-blue);
     transition-duration: inherit;
 }
 
@@ -135,7 +185,7 @@ div.obj_tooltip {
 
 #townSelector input[type="checkbox"]:checked + label:hover {
     color: initial;
-    background-color: #ccdcea;
+    background-color: var(--hover-blue);
     transition-duration: inherit;
 }
 
@@ -182,7 +232,7 @@ button:hover {
 }
 
 .timeline.selected {
-    fill: #609f60;
+    fill: var(--green);
 }
 
 .time_hist {
@@ -239,13 +289,13 @@ button.visible {
 
 .foredot {
     /* fill: green; */
-    fill: #609f60;
+    fill: var(--green);
     pointer-events: none;
 }
 
 .forebar {
     /* fill: green; */
-    fill: #609f60;
+    fill: var(--green);
     pointer-events: none;
 }
 

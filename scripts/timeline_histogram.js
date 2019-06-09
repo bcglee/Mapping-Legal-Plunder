@@ -297,27 +297,42 @@ class TimelineHistogram extends Component {
         // object histogram
         this.oh.svg.selectAll('.forebar').remove();
 
+        // update forebars
         this.oh.svg.selectAll(".forebar")
             .data(this.categories)
             .enter().append("rect")
-            .attr("class", "forebar")
+            .attr("class", (d) => {
+                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
+                return count !== 0 ? "forebar selected" : "forebar deselected";})
             .attr("id", d => d["object category"])
             .attr("x", (d) => this.oh.cat_xScale(d["object category"]))
             .attr("width", this.oh.cat_xScale.bandwidth())
             .attr("y", (d) => {
                 const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                //logscale need to handle case of empty selection when brushing
-                return count !== 0 ? this.oh.cat_yScale(count) : 0;
+                //logscale need to handle case of empty selection when
+                //brushing
+                // return this.oh.cat_yScale(count)-2;
+                return count === 0 ? 0 : this.oh.cat_yScale(count) - 2;
             })
-            .attr("height", (d) => {
+            .attr("height", 2);
+        
+        // update allbars
+        this.oh.svg.selectAll(".allbar")
+            .attr("class", (d) => {
                 const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                //logscale need to handle case of empty selection when brushing
-                return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
-            });
-
-        // data table
-        this.plunder_table.table.remove();
-        this.plunder_table.init();
+                return count !== 0 ? "allbar selected" : "allbar deselected";});
+        
+        // update clickbars
+        this.oh.svg.selectAll(".clickbar")
+            .attr("class", (d) => {
+                const selected = this.plunder.selected_categories[d["object category"]];
+                return selected ? "clickbar selected" : "clickbar deselected";});
+        
+        // update backbars
+        this.oh.svg.selectAll(".backbar")
+            .attr("class", (d) => {
+                const selected = this.plunder.selected_categories[d["object category"]];
+                return selected ? "backbar selected" : "backbar deselected";});
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218

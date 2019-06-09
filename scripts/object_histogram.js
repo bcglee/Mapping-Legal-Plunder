@@ -12,7 +12,13 @@ class ObjectHistogram extends Component {
         // set the ranges
         this.cat_xScale = d3.scaleBand()
             .range([0, this.width])
-            .padding(0.1);
+            // .padding(0.1);
+            .paddingOuter(0.05)
+            .paddingInner(0.1);
+
+        this.click_xScale = d3.scaleBand()
+            .range([0, this.width])
+            .padding(0.0);
 
         this.cat_yScale = d3.scaleLog()
             .domain([1, 2000])
@@ -89,26 +95,37 @@ class ObjectHistogram extends Component {
         // if we don't do this, we'll have a problem where the mouseover will recognize "this" as the class variable
         var that = this;
 
-        //need to set cat_xScale domain before plotting
+        //need to set xScale domains before plotting
         this.cat_xScale.domain(this.data.map((d) => d.object_category));
+        this.click_xScale.domain(this.data.map((d) => d.object_category));
 
         // this.svg.selectAll(".forebar").remove();
 
-        // append the rectangles for the bar chart
-        // here, "this" refers to the current rectangle that we're editing
-        this.svg.selectAll(".bar")
+        
+        // background bar used for deselect effect
+        this.svg.selectAll(".backbar")
             .data(that.categories)
             .enter().append("rect")
-            .attr("class", "bar selected")
+            .attr("class", "backbar selected")
             .attr("id", d => d["object category"])
-            .attr("x", (d) => this.cat_xScale(d["object category"]) )
-            .attr("width", this.cat_xScale.bandwidth())
-            .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
-            .attr("height", (d) => this.height - this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) )
+            .attr("x", (d) => this.click_xScale(d["object category"]) )
+            .attr("width", this.click_xScale.bandwidth())
+            .attr("y", 0)
+            .attr("height", this.height);
+
+        // bars user can click (invisible except when deselected)
+        this.svg.selectAll(".clickbar")
+            .data(that.categories)
+            .enter().append("rect")
+            .attr("class", "clickbar selected")
+            .attr("id", d => d["object category"])
+            .attr("x", (d) => this.click_xScale(d["object category"]) )
+            .attr("width", this.click_xScale.bandwidth())
+            .attr("y", 0)
+            .attr("height", this.height)
             .on("click",  function(d) {
               that.onclick(d, this);
             })
-            //(d, this) => that.onclick(d, this))
             .on("mouseover", function(d) {
                 var total_num = that.data.filter(el => el["object_category"] === d["object category"]).length;
                 var selected_num = that.plunder.apply_filters().filter(el => el["object_category"] === d["object category"]).length;
@@ -122,6 +139,17 @@ class ObjectHistogram extends Component {
                 that.tooltip.style("visibility", "hidden");
             });
 
+        // append the rectangles for the bar chart
+        // here, "this" refers to the current rectangle that we're editing
+        this.svg.selectAll(".allbar")
+            .data(that.categories)
+            .enter().append("rect")
+            .attr("class", "allbar selected")
+            .attr("id", d => d["object category"])
+            .attr("x", (d) => this.cat_xScale(d["object category"]) )
+            .attr("width", this.cat_xScale.bandwidth())
+            .attr("y", (d) => this.cat_yScale(this.data.filter(el => el["object_category"] === d["object category"]).length) - 2)
+            .attr("height", 2);
 
         // add the x Axis
         this.svg.append("g")
@@ -156,16 +184,6 @@ class ObjectHistogram extends Component {
         // filters data for category with click event
         var newData = this.plunder.filter_categories(d["object category"], !selected);
 
-        if (!selected) {
-            //changes current bar
-            d3.select(bar)
-                .attr("class", "bar selected");
-        }
-        else {
-            d3.select(bar)
-                .attr("class", "bar deselected");
-        }
-
         this.th.update_all(newData);
      }
 
@@ -187,6 +205,7 @@ class ObjectHistogram extends Component {
         this.height = this.height - this.margin.top - this.margin.bottom;
 
         this.cat_xScale.range([0, this.width]);
+        this.click_xScale.range([0, this.width]);
         this.cat_yScale.range([this.height, 0]);
     }
 
