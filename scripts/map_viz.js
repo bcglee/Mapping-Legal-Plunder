@@ -62,6 +62,15 @@ class MapViz extends Component {
             .style("z-index", "10")
             .style("visibility", "hidden");
 
+            // http://bl.ocks.org/biovisualize/1016860
+            // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
+            this.lucca_tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "lucca_tooltip")  // from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden");
+
         // adds blue background in order to make water blue
         this.svg.append('rect')
             .attr("class", "water");
@@ -165,6 +174,13 @@ class MapViz extends Component {
                 .attr("size", 100)
                 .attr("fill","orange")
                 .attr("fill-opacity", .75)
+                .on("mouseover", function(d) {
+                    that.lucca_tooltip.style("visibility", "visible")
+                                .html('City: ' + d["town"]);
+                })
+                //.on("mouseover", (d) => this.tooltip.style("visibility", "visible").text(d["town"]))
+                .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
                 //.attr('d', d3.symbol().type("d3.symbolStar").size(100));
 
 
