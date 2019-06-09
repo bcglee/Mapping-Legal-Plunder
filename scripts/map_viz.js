@@ -13,6 +13,7 @@ class MapViz extends Component {
         // create svg element
         this.div = d3.select("#mapContainer")
         this.svg = this.div.append("svg")
+            .attr("class", "map");
             // .attr("height", this.height);
 
         // now getting width and height via css
