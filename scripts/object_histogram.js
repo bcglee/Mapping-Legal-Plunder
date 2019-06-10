@@ -153,7 +153,7 @@ class ObjectHistogram extends Component {
 
         // add the x Axis
         this.svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", "xAxis")
             .attr("transform", "translate(0," + this.height + ")")
             .call(d3.axisBottom(this.cat_xScale))
             .selectAll("text")
@@ -162,6 +162,13 @@ class ObjectHistogram extends Component {
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", "rotate(-45)");          // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+
+        // update x axis tick class so we can change it when category
+        // deselected
+        this.svg.select(".xAxis")
+            .selectAll("g")
+            .attr("opacity", null)
+            .attr("class", "tick xTick selected");
 
         // add the y Axis
         this.svg.append("g")

@@ -312,7 +312,6 @@ class TimelineHistogram extends Component {
                 const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                 //logscale need to handle case of empty selection when
                 //brushing
-                // return this.oh.cat_yScale(count)-2;
                 return count === 0 ? 0 : this.oh.cat_yScale(count) - 2;
             })
             .attr("height", 2);
@@ -320,8 +319,8 @@ class TimelineHistogram extends Component {
         // update allbars
         this.oh.svg.selectAll(".allbar")
             .attr("class", (d) => {
-                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                return count !== 0 ? "allbar selected" : "allbar deselected";});
+                const selected = this.plunder.selected_categories[d["object category"]];
+                return selected ? "allbar selected" : "allbar deselected";});
         
         // update clickbars
         this.oh.svg.selectAll(".clickbar")
@@ -334,6 +333,12 @@ class TimelineHistogram extends Component {
             .attr("class", (d) => {
                 const selected = this.plunder.selected_categories[d["object category"]];
                 return selected ? "backbar selected" : "backbar deselected";});
+                
+        // update ticks
+        this.oh.svg.selectAll(".xTick")
+            .attr("class", (d) => {
+                const selected = this.plunder.selected_categories[d];
+                return selected ? "tick xTick selected" : "tick xTick deselected";});
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
