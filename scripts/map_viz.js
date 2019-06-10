@@ -96,6 +96,8 @@ class MapViz extends Component {
             .join("path")
             .attr("fill", "#3d3d3d")
             .attr("d", this.initial_path);
+        
+        var initial_load=true
 
         // show dots
         var dots = this.svg.selectAll(".backdot").data(this.data); // selection should be empty...
@@ -122,6 +124,18 @@ class MapViz extends Component {
             .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
             .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
+            var enterdots2 = dots.enter()
+            .append("circle")
+            .attr("class", "foredot")
+            .attr("cx", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
+            .attr("cy", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
+            .attr("r", function(d) {
+                    return Math.sqrt(d["ct"]/2);
+                    })
+        
+    
+       
+
         // zoom in on load
         this.svg.selectAll("path")
             .data(topojson.feature(this.map, this.map.objects.custom).features)
@@ -132,6 +146,12 @@ class MapViz extends Component {
             .attr("d", this.true_path);
 
         enterdots.transition("dot_zoom")
+            .delay(this.load_transition_delay)
+            .duration(this.load_transition_duration)
+            .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
+            .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
+
+            enterdots2.transition("dot_zoom")
             .delay(this.load_transition_delay)
             .duration(this.load_transition_duration)
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])

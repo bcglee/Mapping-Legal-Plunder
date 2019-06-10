@@ -207,6 +207,7 @@ class ObjectHistogram extends Component {
         var newData = this.plunder.filter_categories(d["object category"], !selected);
 
         this.th.update_all(newData);
+        
      }
 
 
