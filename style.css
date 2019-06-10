@@ -183,6 +183,7 @@ div.obj_tooltip {
 }
 
 #townSelector {
+    position: relative;
     flex-grow: 1;
     font-family: var(--body-font);
     font-size: x-small;
@@ -217,6 +218,17 @@ div.obj_tooltip {
     transition-duration: inherit;
 }
 
+#animateButton {
+    position: absolute;
+    float:left;
+    top: 45%;
+    left: var(--side-margin);
+}
+
+#animateButton a {
+    font-size: xx-large;
+}
+
 #mapContainer {
     height: var(--map-height);
     width: var(--map-width);
@@ -237,7 +249,7 @@ div.obj_tooltip {
 }
 
 /* #mapContainer button { */
-button {
+button, a {
     float: right;
     font-family: var(--body-font);
     font-style: italic;
@@ -249,7 +261,7 @@ button {
 }
 
 /* #mapContainer button:hover { */
-button:hover {
+button:hover, a:hover {
     transition: color 0.4s;
     color: steelblue;
 }
