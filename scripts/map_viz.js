@@ -124,6 +124,19 @@ class MapViz extends Component {
             .on("mousemove", () => this.tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
             .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
+            var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]);
+            luccadot = luccadot.enter()
+                .append("rect")
+                .attr("class", "luccadot")
+                .attr("x", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
+                .attr("y", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
+                .attr("width", 9)
+                .attr("height", 9)
+                .attr("fill","#FFFFFF")
+                .on("mouseover", (d) => this.lucca_tooltip.style("visibility", "visible") .html(d["town"] + ' (city center)'))
+                .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
+
         // zoom in on load
         this.svg.selectAll("path")
             .data(topojson.feature(this.map, this.map.objects.custom).features)
@@ -143,6 +156,12 @@ class MapViz extends Component {
             .attr("fill-opacity", 0.2)
 
         enterdots.transition("dot_zoom")
+            .delay(this.load_transition_delay)
+            .duration(this.load_transition_duration)
+            .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
+            .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
+            
+        luccadot.transition("luccadot_zoom")
             .delay(this.load_transition_delay)
             .duration(this.load_transition_duration)
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
@@ -179,22 +198,22 @@ class MapViz extends Component {
             // added rectangle for Lucca
             // https://stackoverflow.com/questions/43174396/how-to-draw-the-triangle-symbol/43174450
             // https://gist.github.com/mbostock/3244058
-            var that=this;
-            var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
-            var luccadot = luccadot.enter()
-                .append("rect")
-                .attr("class", "luccadot")
-                .attr("x", (d) => this.true_projection([d["lon"], d["lat"]])[0])
-                .attr("y", (d) => this.true_projection([d["lon"], d["lat"]])[1])
-                .attr("width", 9)
-                .attr("height", 9)
-                .attr("fill","#FFFFFF")
-                .on("mouseover", function(d) {
-                    that.lucca_tooltip.style("visibility", "visible")
-                                .html(d["town"] + ' (city center)');
-                })
-                .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
-                .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
+        //     var that=this;
+        //     var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
+        //     var luccadot = luccadot.enter()
+        //         .append("rect")
+        //         .attr("class", "luccadot")
+        //         .attr("x", (d) => this.true_projection([d["lon"], d["lat"]])[0])
+        //         .attr("y", (d) => this.true_projection([d["lon"], d["lat"]])[1])
+        //         .attr("width", 9)
+        //         .attr("height", 9)
+        //         .attr("fill","#FFFFFF")
+        //         .on("mouseover", function(d) {
+        //             that.lucca_tooltip.style("visibility", "visible")
+        //                         .html(d["town"] + ' (city center)');
+        //         })
+        //         .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+        //         .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
 
         var that = this;
     }

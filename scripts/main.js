@@ -13,7 +13,7 @@ var map_margin = { right: 50, left: 50 },
 const map_viz = new MapViz(map_margin, map_width, map_height);
 
 // initialize timeline histogram
-var th_margin = { top: 30, right: 30, bottom: 30, left: 55 },
+var th_margin = { top: 20, right: 30, bottom: 100, left: 55 },
     th_width = 1000 - th_margin.left - th_margin.right,
     th_height = 250 - th_margin.top - th_margin.bottom;
 const th = new TimelineHistogram(th_margin, th_width, th_height);

@@ -87,10 +87,10 @@ class TimelineHistogram extends Component {
         this.svg.append("text")
             .attr("class", "axisLabel")
             .attr("x", (this.width / 2))
-            .attr("y", this.height + (this.margin.bottom))
+            // .attr("y", this.height + (this.margin.bottom))
+            .attr("y", this.height + (2 * this.margin.bottom / 5))
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
-            .style("text-decoration", "underline")
             .text("Date");
 
         // text label for the y axis
@@ -110,27 +110,10 @@ class TimelineHistogram extends Component {
         this.svg.append("text")
             .attr("class", "dateText")
             .attr("x", (this.margin.left + 10))  //107
-            .attr("y", 10 - (this.margin.top / 2))
+            .attr("y", 10 - (this.margin.top / 1.5))
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
             .html(this.formatTime(new Date(1332, 10, 1)) + " - " + this.formatTime(new Date(1343, 2, 1)));
-
-        // buttons (placeholders)
-        // var buttons_div = document.querySelector("#timelineButtons");
-
-        // var deselect_all = document.createElement("button");
-        // var deselect_all_text = document.createTextNode("deselect all");
-        // deselect_all.appendChild(deselect_all_text);
-        // deselect_all.addEventListener("click", () => this.deselect_all());
-        // deselect_all.classList.add("hidden");
-        // buttons_div.appendChild(deselect_all);
-        
-        // var select_all = document.createElement("button");
-        // var select_all_text = document.createTextNode("select all");
-        // select_all.appendChild(select_all_text);
-        // select_all.addEventListener("click", () => this.select_all());
-        // select_all.classList.add("hidden");
-        // buttons_div.appendChild(select_all);
     }
 
     draw() { // stuff we do AFTER loading data
