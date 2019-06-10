@@ -111,7 +111,7 @@ class TimelineHistogram extends Component {
                 .attr("x", 0 - (this.height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .text("Number of Items");
+                .text("Number of Objects");
 
         d3.select(window).on('resize', () => this.resize());
     }

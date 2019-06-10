@@ -42,7 +42,7 @@ class ObjectHistogram extends Component {
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
-                .text("PLUNDERED ITEM CATEGORIES");
+                .text("PLUNDERED OBJECT CATEGORIES");
 
         // text label for the x axis
         // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
@@ -51,7 +51,7 @@ class ObjectHistogram extends Component {
                 .attr("y", this.height + (2 * this.margin.bottom / 3))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Item Category");
+                .text("Object Category");
 
         // text label for the y axis
         // http://jsfiddle.net/manojmcet/g47hN/
@@ -62,7 +62,7 @@ class ObjectHistogram extends Component {
                 .attr("x", 0 - (this.height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .text("Number of Items");
+                .text("Number of Objects");
 
         // http://bl.ocks.org/biovisualize/1016860
         // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
