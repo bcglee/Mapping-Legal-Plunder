@@ -159,10 +159,10 @@ class MapViz extends Component {
             .text(d3.format(".2s"));
 
 
-            // added star for Lucca
+            // added rectangle for Lucca
             // https://stackoverflow.com/questions/43174396/how-to-draw-the-triangle-symbol/43174450
             // https://gist.github.com/mbostock/3244058
-            var that=this
+            var that=this;
             var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]); // selection should be empty...
             var luccadot = luccadot.enter()
                 .append("rect")
