@@ -37,7 +37,7 @@ function type(d) {
 }
 
 // show map
-d3.json("https://homes.cs.washington.edu/~akintilo/cse512/a3/italy.json").then(function (map) {
+d3.json("../maps/italy.json").then(function (map) {
     d3.csv("../data/unique_locations.csv", d3.autoType).then(function (data) {
         map_viz.post_load(data, map, th);
         map_viz.draw();
