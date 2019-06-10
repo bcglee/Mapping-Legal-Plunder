@@ -121,41 +121,41 @@ class TimelineHistogram extends Component {
         // meaning: regroup all data into different bins
         var that=this
         setTimeout(function draw_t(){
-        var bins = that.histogram(that.data);
+            var bins = that.histogram(that.data);
 
-        this.svg.selectAll(".timeline_backbar")
-            .data(bins)
-            .enter().append("rect")
-            .attr("class", "timeline_backbar")
-            .attr("transform", (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")")
-            .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
-            .attr("height", (d) => this.height - this.time_yScale(d.length));
+            that.svg.selectAll(".timeline_backbar")
+                .data(bins)
+                .enter().append("rect")
+                .attr("class", "timeline_backbar")
+                .attr("transform", (d) => "translate(" + that.time_xScale(d.x0) + "," + that.time_yScale(d.length) + ")")
+                .attr("width",  (d) => that.time_xScale(d.x1) - that.time_xScale(d.x0) - 1 > 0 ? that.time_xScale(d.x1) - that.time_xScale(d.x0) - 1 : 0)
+                .attr("height", (d) => that.height - that.time_yScale(d.length));
 
-        //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
-        var brush = d3.brushX()
-            .extent([[0, 0], [that.width, that.height]])
-            .on("start brush end", () => that.brushmoved());
+            //https://bl.ocks.org/Fil/2d43867ba1f36a05459c7113c7f6f98a
+            var brush = d3.brushX()
+                .extent([[0, 0], [that.width, that.height]])
+                .on("start brush end", () => that.brushmoved());
 
-        var gBrush = that.svg.append("g")
-            .attr("class", "brush")
-            .call(brush);
+            var gBrush = that.svg.append("g")
+                .attr("class", "brush")
+                .call(brush);
 
-        var brushResizePath = (d) => {
-            var e = +(d.type === "e"),
-                x = e ? 1 : -1,
-                y = that.height / 2;
-            return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
-        }
+            var brushResizePath = (d) => {
+                var e = +(d.type === "e"),
+                    x = e ? 1 : -1,
+                    y = that.height / 2;
+                return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+            }
 
-        that.handle = gBrush.selectAll(".handle--custom")
-            .data([{ type: "w" }, { type: "e" }])
-            .enter().append("path")
-            .attr("class", "handle--custom")
-            .attr("stroke", "#000")
-            .attr("cursor", "ew-resize")
-            .attr("d", brushResizePath);
+            that.handle = gBrush.selectAll(".handle--custom")
+                .data([{ type: "w" }, { type: "e" }])
+                .enter().append("path")
+                .attr("class", "handle--custom")
+                .attr("stroke", "#000")
+                .attr("cursor", "ew-resize")
+                .attr("d", brushResizePath);
 
-        gBrush.call(brush.move, [0.3, 0.5].map(that.time_xScale));
+            gBrush.call(brush.move, [0.3, 0.5].map(that.time_xScale));
     },4000)
     }
 
