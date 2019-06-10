@@ -180,8 +180,8 @@ Promise.all(promises).then(function(values) {
         .attr("r", function(d) {
               return Math.sqrt(10);
               })
-        .attr("fill","red")
-        .style("stroke", "red")
+        .attr("fill","#609f60")
+        .style("stroke", "#609f60")
         .attr("fill-opacity", 1.);
 
 
