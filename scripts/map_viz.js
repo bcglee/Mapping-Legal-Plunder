@@ -74,6 +74,8 @@ class MapViz extends Component {
         // adds blue background in order to make water blue
         this.svg.append('rect')
             .attr("class", "water");
+        
+        
 
         // reset zoom button
         this.button = document.createElement("button");
@@ -136,7 +138,6 @@ class MapViz extends Component {
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
         const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
-
         var legend = this.svg.append("g")
                              .attr("transform", `translate(${this.width-50},${this.height + 10})`)
                              .attr("text-anchor", "middle")
@@ -144,6 +145,17 @@ class MapViz extends Component {
                              .selectAll("g")
                              .data([50,100,150,200])
                              .join("g");
+
+        var legend_box=this.svg.append("rect")
+            .attr("fill", "white")
+            .attr("stroke", "white")
+            .attr("x", this.width-90)
+            .attr("y",this.height-280)
+            .attr("width", 80)
+            .attr("height", 250)
+            .attr("fill-opacity", 0.2)
+        
+            
 
           legend.append("circle")
                 .attr("fill", "#609f60")
