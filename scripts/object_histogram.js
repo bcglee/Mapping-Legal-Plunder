@@ -42,7 +42,7 @@ class ObjectHistogram extends Component {
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
-                .text("PLUNDERED ITEM CATEGORIES");
+                .text("PLUNDERED OBJECT CATEGORIES");
 
         // text label for the x axis
         // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
@@ -51,7 +51,7 @@ class ObjectHistogram extends Component {
                 .attr("y", this.height + (2 * this.margin.bottom / 3))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Item Category");
+                .text("Object Category");
 
         // text label for the y axis
         // http://jsfiddle.net/manojmcet/g47hN/
@@ -62,7 +62,7 @@ class ObjectHistogram extends Component {
                 .attr("x", 0 - (this.height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .text("Number of Items");
+                .text("Number of Objects");
 
         // http://bl.ocks.org/biovisualize/1016860
         // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
@@ -153,7 +153,7 @@ class ObjectHistogram extends Component {
 
         // add the x Axis
         this.svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", "xAxis")
             .attr("transform", "translate(0," + this.height + ")")
             .call(d3.axisBottom(this.cat_xScale))
             .selectAll("text")
@@ -162,6 +162,13 @@ class ObjectHistogram extends Component {
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", "rotate(-45)");          // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+
+        // update x axis tick class so we can change it when category
+        // deselected
+        this.svg.select(".xAxis")
+            .selectAll("g")
+            .attr("opacity", null)
+            .attr("class", "tick xTick selected");
 
         // add the y Axis
         this.svg.append("g")
