@@ -23,6 +23,7 @@ class ObjectHistogram extends Component {
         this.cat_yScale = d3.scaleLog()
             .domain([1, 2000])
             .range([this.height, 0]);
+
         this.resize();
 
         // append the svg object to the body of the page
@@ -161,10 +162,17 @@ class ObjectHistogram extends Component {
             .attr("opacity", null)
             .attr("class", "tick xTick selected");
 
+        const yAxis = d3.axisLeft(this.cat_yScale)
+            .ticks(null, d => `${+d.toFixed(6)}`)
+            // .tickValues(d3.scaleLinear().domain(this.cat_yScale.domain()).ticks(3));
+            .tickValues([1, 50, 100, 500, 1000, 2000]);
+            // .tickValues(this.cat_yScale.ticks(3));
+
         // add the y Axis
         this.svg.append("g")
             .attr("class", "y axis")
-            .call(d3.axisLeft(this.cat_yScale));
+            // .call(d3.axisLeft(this.cat_yScale));
+            .call(yAxis);
 
         // adds horizontal grid lines
         this.svg.append("g")
