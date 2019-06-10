@@ -255,8 +255,29 @@ button:hover {
 }
 
 #timelineContainer {
+    display: flex;
+    flex-direction: column;
     float: left;
+    width: var(--histogram-width);
+    height: var(--histogram-height);
+    margin-left: var(--side-margin);
     margin-right: var(--mid-margin);
+}
+
+#timelineContainer p {
+    font-family: var(--header-font);
+    font-size: x-large;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#timelineHist {
+    flex-grow: 1;
+}
+
+.dateText {
+    font-family: var(--body-font);
 }
 
 .timeline.selected {
@@ -266,12 +287,6 @@ button:hover {
 .time_hist {
     height: 100%;
     width: 100%;
-}
-
-#categoryContainer {
-    display: flex;
-    flex-direction: column;
-    float: right;
 }
 
 .obj_hist {
@@ -333,13 +348,10 @@ button.visible {
     margin-bottom: 0px;
 }
 
-#timelineContainer {
-    width: var(--histogram-width);
-    height: var(--histogram-height);
-    margin-left: var(--side-margin);
-}
-
 #categoryContainer {
+    display: flex;
+    flex-direction: column;
+    float: right;
     width: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);

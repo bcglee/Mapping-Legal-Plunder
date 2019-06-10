@@ -116,7 +116,7 @@ class ObjectHistogram extends Component {
             .attr("y", 0)
             .attr("height", this.height)
             .on("click",  function(d) {
-              that.onclick(d, this);
+              that.onclick(d);
             })
             .on("mouseover", function(d) {
                 var total_num = that.data.filter(el => el["object_category"] === d["object category"]).length;
@@ -207,7 +207,7 @@ class ObjectHistogram extends Component {
         })
     }
 
-    onclick(d, bar){
+    onclick(d){
         // boolean for determining if the clicked category is selected
         var selected = this.plunder.selected_categories[d["object category"]];
 

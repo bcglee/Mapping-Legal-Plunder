@@ -9,7 +9,7 @@ class TimelineHistogram extends Component {
     }
 
     init() { // stuff we do BEFORE loading data
-        this.div = d3.select("#timelineContainer")
+        this.div = d3.select("#timelineHist")
         this.svg = this.div.append("svg")
             .attr("class", "time_hist")
             .append("g")
@@ -82,19 +82,10 @@ class TimelineHistogram extends Component {
                     .tickFormat("")
                   );
 
-        // adds title to timeline
-        // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
-        this.svg.append("text")
-            .attr("x", (this.width / 2))
-            .attr("y", 10 - (this.margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text("TIMELINE OF PLUNDER");
-
         // text label for the x axis
         // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
         this.svg.append("text")
+            .attr("class", "axisLabel")
             .attr("x", (this.width / 2))
             .attr("y", this.height + (this.margin.bottom))
             .attr("text-anchor", "middle")
@@ -106,14 +97,40 @@ class TimelineHistogram extends Component {
         // http://jsfiddle.net/manojmcet/g47hN/
         // annoyingly subtle b/c defaults to rotating around origin (0,0)
         this.svg.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - this.margin.left)
-                .attr("x", 0 - (this.height / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Number of Objects");
+            .attr("class", "axisLabel")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - this.margin.left)
+            .attr("x", 0 - (this.height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Number of Objects");
 
-        d3.select(window).on('resize', () => this.resize());
+        //adds text of full date range on top-left of plot
+        this.formatTime = d3.timeFormat("%b, %Y");
+        this.svg.append("text")
+            .attr("class", "dateText")
+            .attr("x", (this.margin.left + 10))  //107
+            .attr("y", 10 - (this.margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .html(this.formatTime(new Date(1332, 10, 1)) + " - " + this.formatTime(new Date(1343, 2, 1)));
+
+        // buttons (placeholders)
+        // var buttons_div = document.querySelector("#timelineButtons");
+
+        // var deselect_all = document.createElement("button");
+        // var deselect_all_text = document.createTextNode("deselect all");
+        // deselect_all.appendChild(deselect_all_text);
+        // deselect_all.addEventListener("click", () => this.deselect_all());
+        // deselect_all.classList.add("hidden");
+        // buttons_div.appendChild(deselect_all);
+        
+        // var select_all = document.createElement("button");
+        // var select_all_text = document.createTextNode("select all");
+        // select_all.appendChild(select_all_text);
+        // select_all.addEventListener("click", () => this.select_all());
+        // select_all.classList.add("hidden");
+        // buttons_div.appendChild(select_all);
     }
 
     draw() { // stuff we do AFTER loading data
@@ -158,32 +175,12 @@ class TimelineHistogram extends Component {
             .attr("d", brushResizePath);
 
         gBrush.call(brush.move, [0.3, 0.5].map(this.time_xScale));
-
-        // //need to set cat_xScale domain before plotting
-        // this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
-
-        // this.oh.svg.selectAll(".forebar")
-        //     .data(this.categories)
-        //     .enter().append("rect")
-        //     .attr("class", "forebar")
-        //     .attr("x", (d) => this.oh.cat_xScale(d["object category"]) )
-        //     .attr("width", this.oh.cat_xScale.bandwidth())
-        //     .attr("y", (d) => {
-        //         const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-        //         //logscale need to handle case of empty selection when brushing
-        //         return count !== 0 ? this.oh.cat_yScale(count) : 0;
-        //     })
-        //     .attr("height", (d) => {
-        //         const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-        //         //logscale need to handle case of empty selection when brushing
-        //         return count !== 0 ? this.oh.height - this.oh.cat_yScale(count) : 0;
-        //     });
     }
 
     resize() {
-        this.width = parseInt(d3.select("#timelineContainer").style("width"), 10);
+        this.width = parseInt(d3.select("#timelineHist").style("width"), 10);
         this.width = this.width - this.margin.left - this.margin.right;
-        this.height = parseInt(d3.select("#timelineContainer").style("height"), 10);
+        this.height = parseInt(d3.select("#timelineHist").style("height"), 10);
         this.height = this.height - this.margin.top - this.margin.bottom;
 
         this.time_xScale.rangeRound([0, this.width]);
@@ -203,25 +200,15 @@ class TimelineHistogram extends Component {
     }
 
     brushmoved() {
-
         var selection = d3.event.selection;
-
-        //use this formatTime to print selected dates on plot
-        var formatTime = d3.timeFormat("%b, %Y");
 
         if (selection === null) {
             this.handle.attr("display", "none");
             var newData = this.plunder.filter_time(new Date(1332, 10, 1), new Date(1343, 2, 1));
 
-              //adds text of full date range on top-left of plot
-              d3.selectAll('.datetext').remove();
-              this.svg.append("text")
-                  .attr("class", "datetext")
-                  .attr("x", (this.margin.left + 10))  //107
-                  .attr("y", 10 - (this.margin.top / 2))
-                  .attr("text-anchor", "middle")
-                  .style("font-size", "12px")
-                  .html(formatTime(new Date(1332, 10, 1)) + " - " + formatTime(new Date(1343, 2, 1)));
+            // update date text
+            d3.selectAll(".dateText")
+                .html(this.formatTime(new Date(1332, 10, 1)) + " - " + this.formatTime(new Date(1343, 2, 1)));
         }
         else {
             // gets date range selected by brush
@@ -229,25 +216,10 @@ class TimelineHistogram extends Component {
             var newData = this.plunder.filter_time(e[0], e[1]);
             this.handle.attr("display", null).attr("transform", (d, i) => "translate(" + [selection[i], - this.height / 4] + ")");
 
-            //adds text of selected date range on top-left of plot
-            d3.selectAll('.datetext').remove();
-            this.svg.append("text")
-                .attr("class", "datetext")
-                .attr("x", (this.margin.left + 10))  //107
-                .attr("y", 10 - (this.margin.top / 2))
-                .attr("text-anchor", "middle")
-                .style("font-size", "12px")
-                .html(formatTime(e[0]) + " - " + formatTime(e[1]));
+            // update date text
+            d3.selectAll(".dateText")
+                .html(this.formatTime(e[0]) + " - " + this.formatTime(e[1]));
           }
-
-          // //d3.selectAll('.datetext').remove();
-          // this.svg.append("text")
-          //     .attr("class", "datetext")
-          //     .attr("x", (this.margin.left))
-          //     .attr("y", 10 - (this.margin.top / 2))
-          //     .attr("text-anchor", "middle")
-          //     .style("font-size", "12px")
-          //     .html("Selected date range: ");
 
         this.update_all(newData);
     }
