@@ -121,15 +121,11 @@ class TimelineHistogram extends Component {
         // meaning: regroup all data into different bins
         var bins = this.histogram(this.data);
 
-        var bar = this.svg.selectAll(".bar")
+        this.svg.selectAll(".timeline_backbar")
             .data(bins)
-            .enter().append("g")
-            .attr("class", "bar")
-            .attr("transform", (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")");
-
-        var rects = bar.append("rect")
-            .attr("x", 1)
-            // ensure that the width is >= 0
+            .enter().append("rect")
+            .attr("class", "timeline_backbar")
+            .attr("transform", (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")")
             .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
             .attr("height", (d) => this.height - this.time_yScale(d.length));
 
@@ -210,70 +206,66 @@ class TimelineHistogram extends Component {
     // updates all views
     update_all(newData) {
         // timeline histogram
-        d3.selectAll('.forebar2').remove();
-
-        // handles the coloring of the bars
         var bins = this.histogram(newData);
-
-        var bar = this.svg.selectAll(".forebar2")
-            .data(bins)
-            .enter()
-            .append("g")
-            .attr("class", "forebar2")
-            .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
-
-        var rects = bar.append("rect")
-            .attr("x", 1)
-            .attr("class", "timeline selected")
-            // for width, need to make sure to not return width with negative value
-            .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
-            .attr("height",  (d) => this.height - this.time_yScale(d.length));
-
-        //need to set cat_xScale domain before plotting
-        this.oh.cat_xScale.domain(this.data.map((d) => d.object_category));
+        this.svg.selectAll(".timeline_forebar").data(bins)
+            .join(
+                enter => enter.append("rect")
+                    .attr("class", "timeline_forebar")
+                    .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
+                    .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
+                    .attr("height",  (d) => this.height - this.time_yScale(d.length)),
+                update => update
+                    .attr("transform",  (d) => "translate(" + this.time_xScale(d.x0) + "," + this.time_yScale(d.length) + ")" )
+                    .attr("width",  (d) => this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 > 0 ? this.time_xScale(d.x1) - this.time_xScale(d.x0) - 1 : 0)
+                    .attr("height",  (d) => this.height - this.time_yScale(d.length))
+            )
 
         // map
-        d3.selectAll('.foredot').remove(); // remove old foredots
-        this.map.svg.selectAll('.foredot')
-            .data(this.locations)
-            .enter()
-            .append("circle")
-            .attr("class", "foredot")
-            .attr("opacity", "0.7")
-            .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
-            .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
-            .attr("transform", () => this.map.curr_transform)
-            .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
-            .on("mouseover", (d) => this.map.tooltip.style("visibility", "visible")
-                .text(d["town"]))
-            .on("mousemove", () => this.map.tooltip.style("top", (event.pageY-10)+"px")
-                .style("left",(event.pageX+10)+"px"))
-            .on("mouseout", () => this.map.tooltip.style("visibility", "hidden"));
+        this.map.svg.selectAll(".foredot").data(this.locations)
+            .join(
+                enter => enter.append("circle")
+                    .attr("class", "foredot")
+                    .attr("opacity", "0.7")
+                    .attr("cx", (d) => this.map.true_projection([d["lon"], d["lat"]])[0])
+                    .attr("cy", (d) => this.map.true_projection([d["lon"], d["lat"]])[1])
+                    .attr("transform", () => this.map.curr_transform)
+                    .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
+                    .on("mouseover", (d) => this.map.tooltip.style("visibility", "visible")
+                        .text(d["town"]))
+                    .on("mousemove", () => this.map.tooltip.style("top", (event.pageY-10)+"px")
+                        .style("left",(event.pageX+10)+"px"))
+                    .on("mouseout", () => this.map.tooltip.style("visibility", "hidden")),
+                update => update.attr("transform", () => this.map.curr_transform)
+                    .attr("r", (d) => Math.sqrt(newData.filter(el => el["town"] === d["town"]).length/2))
+            )
 
         // object histogram
-        this.oh.svg.selectAll('.forebar').remove();
-
         // update forebars
         this.oh.svg.selectAll(".forebar")
-            .data(this.categories)
-            .enter().append("rect")
-            .attr("class", (d) => {
-                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                return count !== 0 ? "forebar selected" : "forebar deselected";})
-            .attr("id", d => d["object category"])
-            .attr("x", (d) => this.oh.cat_xScale(d["object category"]))
-            .attr("width", this.oh.cat_xScale.bandwidth())
-            .attr("y", (d) => {
-                const count = newData.filter(el => el["object_category"] === d["object category"]).length;
-                //logscale need to handle case of empty selection when
-                //brushing
-                
-                return count === 0 ? 0 : this.oh.cat_yScale(count) - 2;
-            })
-            .attr("height", 2);
-            this.plunder_table.table.remove();
-            this.plunder_table.init();
-            
+            .data(this.plunder.get_categories(), d => d)
+            .join(
+                enter => enter.append("rect")
+                    .attr("class", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d).length;
+                        return count !== 0 ? "forebar selected" : "forebar deselected";})
+                    .attr("id", d => d)
+                    .attr("x", (d) => this.oh.cat_xScale(d))
+                    .attr("width", this.oh.cat_xScale.bandwidth())
+                    .attr("y", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d).length;
+                        return this.oh.cat_yScale(count) - 2;
+                    })
+                    .attr("height", 2),
+                update => update
+                    .attr("class", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d).length;
+                        return count !== 0 ? "forebar selected" : "forebar deselected";})
+                    .attr("y", (d) => {
+                        const count = newData.filter(el => el["object_category"] === d).length;
+                        return this.oh.cat_yScale(count) - 2;
+                    })
+            )
+
         // update allbars
         this.oh.svg.selectAll(".allbar")
             .attr("class", (d) => {
@@ -297,6 +289,22 @@ class TimelineHistogram extends Component {
             .attr("class", (d) => {
                 const selected = this.plunder.selected_categories[d];
                 return selected ? "tick xTick selected" : "tick xTick deselected";});
+
+        // update plunder table
+        this.plunder_table.rows.selectAll(".new-entry")
+            .data(newData, d => d.id)
+            .join(
+                enter => enter.append("tr")
+                    .attr("class", "new-entry")
+                    .selectAll('td')
+                        .data(d => [d.object, d.object_category, d.town, d.id])
+                        .join('td')
+                        .text(d => d),
+                update => update.selectAll('td')
+                        .data(d => [d.object, d.object_category, d.town, d.id])
+                        .join('td')
+                        .text(d => d),
+            )
     }
 
     // gridlines in x axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218

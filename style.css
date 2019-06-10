@@ -102,14 +102,14 @@ html, body {
     transition-duration: 0.2s;
 }
 
-.bar rect {
+.timeline_backbar {
     fill: lightgray;
 }
 
-.bar text {
+/* .timeline_backbar text {
     fill: #fff;
     font: 10px sans-serif;
-}
+} */
 
 div.town_tooltip {
     position: absolute;
@@ -280,7 +280,7 @@ button:hover {
     font-family: var(--body-font);
 }
 
-.timeline.selected {
+.timeline_forebar {
     fill: var(--green);
 }
 
@@ -329,6 +329,17 @@ button.visible {
     height: 100%;
     overflow: auto;
 }
+
+#tableViewer th {
+    /* background-color: var(--green); */
+    background-color: #6798c1;
+    color: white;
+    text-align: left;
+}
+
+#tableViewer tr:nth-child(even) {
+    background-color: #f2f2f2;
+} 
 
 .foredot {
     fill: var(--green);

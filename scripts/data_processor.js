@@ -51,6 +51,18 @@ class DataProcessor {
         }
     }
 
+    get_categories() {
+        var cat_array = [];
+        for (const key in this.selected_categories) {
+            // if (this.selected_categories.hasOwnProperty(key)) {
+                if (this.selected_categories[key]) {
+                    cat_array.push(key);
+                }
+            // }
+        }
+        return cat_array;
+    }
+
     filter_time() {
         if (arguments.length) {
             this.selected_start = arguments[0];

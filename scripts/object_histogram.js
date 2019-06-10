@@ -21,6 +21,7 @@ class ObjectHistogram extends Component {
             .padding(0.0);
 
         this.cat_yScale = d3.scaleLog()
+            .clamp(true) // forces data to fit in log scale (handles zero)
             .domain([1, 2000])
             .range([this.height, 0]);
 

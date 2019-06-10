@@ -1,5 +1,3 @@
-// TODO: alternating background on table (css)
-
 class PlunderTable {
     constructor (plunder) {
         this.plunder = plunder;
@@ -12,11 +10,12 @@ init() {
     //https://codepen.io/pj_/pen/aVEBOm
 
     // use es6 string templates to populate rows
-    const rowTemplate = (d) => {
+    this.rowTemplate = (d) => {
         return `
         <td>${d.object}</td>
         <td>${d.object_category}</td>
         <td>${d.town}</td>
+        <td>${d.id}</td>
         `;
     };
 
@@ -28,20 +27,13 @@ init() {
 
         // append headers
         const header = this.table.append("thead")
-        .selectAll('th')
-        .data(["Object", "Object Category", "Town"])
-        .enter()
-        .append('th')
-        .text(d => d);
+            .selectAll('th')
+            .data(["Object", "Object Category", "Town", "ID"])
+            .enter().append('th')
+            .text(d => d);
 
         // append rows with rowTemplate
-        const rows = this.table.append("tbody")
-        .selectAll("tr")
-        .attr("class", ".tr")
-        .data(p)
-        .enter()
-        .append("tr")
-        .html(rowTemplate);
+        this.rows = this.table.append("tbody");
 
     }
 
