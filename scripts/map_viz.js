@@ -91,6 +91,8 @@ class MapViz extends Component {
         // initial plottng of gray points for zoom
         // show map
 
+         
+
         this.svg.selectAll("path")
             .data(topojson.feature(this.map, this.map.objects.custom).features)
             .join("path")
@@ -131,6 +133,15 @@ class MapViz extends Component {
             .duration(this.load_transition_duration)
             .attr("d", this.true_path);
 
+            var legend_box=this.svg.append("rect")
+            .attr("fill", "white")
+            .attr("stroke", "white")
+            .attr("x", this.width-90)
+            .attr("y",this.height-280)
+            .attr("width", 80)
+            .attr("height", 250)
+            .attr("fill-opacity", 0.2)
+
         enterdots.transition("dot_zoom")
             .delay(this.load_transition_delay)
             .duration(this.load_transition_duration)
@@ -146,19 +157,13 @@ class MapViz extends Component {
                              .data([50,100,150,200])
                              .join("g");
 
-        var legend_box=this.svg.append("rect")
-            .attr("fill", "white")
-            .attr("stroke", "white")
-            .attr("x", this.width-90)
-            .attr("y",this.height-280)
-            .attr("width", 80)
-            .attr("height", 250)
-            .attr("fill-opacity", 0.2)
+       
         
             
 
           legend.append("circle")
                 .attr("fill", "#609f60")
+                .attr("opacity", "0.7")
                 .attr("stroke", "#609f60")
                 .attr("cy", d => -1.25*d)
                 .attr("class","legenddot")
@@ -226,6 +231,7 @@ class MapViz extends Component {
 
             legend.append("circle")
             .attr("fill", "#609f60")
+            .attr("opacity", "0.7")
             .attr("stroke", "#609f60")
             .attr("cy", d => -1.25*d)
             .attr("class","legenddot")
