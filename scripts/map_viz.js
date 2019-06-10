@@ -192,7 +192,6 @@ class MapViz extends Component {
                 .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
 
         var that = this;
-
     }
 
     // function for zoomin'

@@ -24,6 +24,10 @@ html, body {
     margin: 0;
 }
 
+.axisLabel {
+    font-family: var(--body-font);
+}
+
 .clickbar {
     cursor: pointer;
     fill: darkgray;
@@ -82,6 +86,10 @@ html, body {
 .allbar.deselected {
     opacity: 0.2;
     transition-duration: 0.2s;
+}
+
+.tick text {
+    font-family: var(--body-font);
 }
 
 .xTick.selected {
@@ -308,17 +316,22 @@ button.visible {
 }
 
 .foredot {
-    /* fill: green; */
     fill: var(--green);
     pointer-events: none;
 }
 
 .forebar {
-    /* fill: green; */
     fill: var(--green);
     pointer-events: none;
 }
 
+#categoryContainer p {
+    font-family: var(--header-font);
+    font-size: x-large;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
 
 #timelineContainer {
     width: var(--histogram-width);
