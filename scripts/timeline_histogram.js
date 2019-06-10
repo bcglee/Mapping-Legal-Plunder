@@ -312,12 +312,13 @@ class TimelineHistogram extends Component {
                 const count = newData.filter(el => el["object_category"] === d["object category"]).length;
                 //logscale need to handle case of empty selection when
                 //brushing
-                this.plunder_table.table.remove();
-                this.plunder_table.init();
+                
                 return count === 0 ? 0 : this.oh.cat_yScale(count) - 2;
             })
             .attr("height", 2);
-        
+            this.plunder_table.table.remove();
+            this.plunder_table.init();
+            
         // update allbars
         this.oh.svg.selectAll(".allbar")
             .attr("class", (d) => {
