@@ -34,29 +34,20 @@ class ObjectHistogram extends Component {
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-        // adds title to histogram
-        // http://www.d3noob.org/2013/01/adding-title-to-your-d3js-graph.html
-        this.svg.append("text")
-                .attr("x", (this.width / 2))
-                .attr("y", 10 - (this.margin.top / 2))
-                .attr("text-anchor", "middle")
-                .style("font-size", "16px")
-                .style("text-decoration", "underline")
-                .text("PLUNDERED OBJECT CATEGORIES");
-
         // text label for the x axis
         // https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
         this.svg.append("text")
+                .attr("class", "axisLabel")
                 .attr("x", (this.width / 2))
                 .attr("y", this.height + (2 * this.margin.bottom / 3))
                 .attr("text-anchor", "middle")
-                .style("font-size", "16px")
                 .text("Object Category");
 
         // text label for the y axis
         // http://jsfiddle.net/manojmcet/g47hN/
         // annoyingly subtle b/c defaults to rotating around origin (0,0)
         this.svg.append("text")
+                .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0 - this.margin.left)
                 .attr("x", 0 - (this.height / 2))
@@ -156,12 +147,12 @@ class ObjectHistogram extends Component {
             .attr("class", "xAxis")
             .attr("transform", "translate(0," + this.height + ")")
             .call(d3.axisBottom(this.cat_xScale))
-            .selectAll("text")
+            .selectAll(".tick text")
+            .call(this.wrap, this.cat_xScale.bandwidth())
             .style("text-anchor", "end")
             .style("color", "black")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
             .attr("transform", "rotate(-45)");          // https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+            
 
         // update x axis tick class so we can change it when category
         // deselected
@@ -182,6 +173,30 @@ class ObjectHistogram extends Component {
                 .tickSize(-this.width)
                 .tickFormat("")
             );
+    }
+
+    wrap(text, width) {
+        text.each(function() {
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 0.8, // ems
+                y = text.attr("y"),
+                dy = parseFloat(text.attr("dy")),
+                tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+            while (word = words.pop()) {
+                line.push(word)
+                tspan.text(line.join(" "))
+                if (tspan.node().getComputedTextLength() > width && tspan.text().includes(" ")) {
+                    line.pop()
+                    tspan.text(line.join(" "))
+                    line = [word]
+                    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+                }
+            }
+        })
     }
 
     onclick(d, bar){
