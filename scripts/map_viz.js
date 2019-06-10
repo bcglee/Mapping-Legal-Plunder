@@ -91,6 +91,8 @@ class MapViz extends Component {
         // initial plottng of gray points for zoom
         // show map
 
+         
+
         this.svg.selectAll("path")
             .data(topojson.feature(this.map, this.map.objects.custom).features)
             .join("path")
@@ -123,17 +125,20 @@ class MapViz extends Component {
             .on("mouseout", () => this.tooltip.style("visibility", "hidden"));
 
             var luccadot = this.svg.selectAll(".luccadot").data([{town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}]);
+            var that=this
+            setTimeout(function lucca_dot(){
             luccadot = luccadot.enter()
                 .append("rect")
                 .attr("class", "luccadot")
-                .attr("x", (d) => this.initial_projection([d["lon"], d["lat"]])[0])
-                .attr("y", (d) => this.initial_projection([d["lon"], d["lat"]])[1])
+                .attr("x", (d) => that.true_projection([d["lon"], d["lat"]])[0])
+                .attr("y", (d) => that.true_projection([d["lon"], d["lat"]])[1])
                 .attr("width", 9)
                 .attr("height", 9)
                 .attr("fill","#FFFFFF")
-                .on("mouseover", (d) => this.lucca_tooltip.style("visibility", "visible") .html(d["town"] + ' (city center)'))
-                .on("mousemove", () => this.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
-                .on("mouseout", () => this.lucca_tooltip.style("visibility", "hidden"));
+                .on("mouseover", (d) => that.lucca_tooltip.style("visibility", "visible") .html(d["town"] + ' (city center)'))
+                .on("mousemove", () => that.lucca_tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"))
+                .on("mouseout", () => that.lucca_tooltip.style("visibility", "hidden"));
+            },4000)
 
         // zoom in on load
         this.svg.selectAll("path")
@@ -144,18 +149,22 @@ class MapViz extends Component {
             .duration(this.load_transition_duration)
             .attr("d", this.true_path);
 
+            var legend_box=this.svg.append("rect")
+            .attr("fill", "white")
+            .attr("stroke", "white")
+            .attr("x", this.width-90)
+            .attr("y",this.height-280)
+            .attr("width", 80)
+            .attr("height", 250)
+            .attr("fill-opacity", 0.2)
+
         enterdots.transition("dot_zoom")
             .delay(this.load_transition_delay)
             .duration(this.load_transition_duration)
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
             
-        luccadot.transition("luccadot_zoom")
-            .delay(this.load_transition_delay)
-            .duration(this.load_transition_duration)
-            .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
-            .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
-
+       
         const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
         var legend = this.svg.append("g")
                              .attr("transform", `translate(${this.width-50},${this.height + 10})`)
@@ -165,19 +174,13 @@ class MapViz extends Component {
                              .data([50,100,150,200])
                              .join("g");
 
-        var legend_box=this.svg.append("rect")
-            .attr("fill", "white")
-            .attr("stroke", "white")
-            .attr("x", this.width-90)
-            .attr("y",this.height-280)
-            .attr("width", 80)
-            .attr("height", 250)
-            .attr("fill-opacity", 0.2)
+       
         
             
 
           legend.append("circle")
                 .attr("fill", "#609f60")
+                .attr("opacity", "0.7")
                 .attr("stroke", "#609f60")
                 .attr("cy", d => -1.25*d)
                 .attr("class","legenddot")
@@ -245,6 +248,7 @@ class MapViz extends Component {
 
             legend.append("circle")
             .attr("fill", "#609f60")
+            .attr("opacity", "0.7")
             .attr("stroke", "#609f60")
             .attr("cy", d => -1.25*d)
             .attr("class","legenddot")
