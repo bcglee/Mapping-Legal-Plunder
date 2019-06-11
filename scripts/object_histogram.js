@@ -12,7 +12,6 @@ class ObjectHistogram extends Component {
         // set the ranges
         this.cat_xScale = d3.scaleBand()
             .range([0, this.width])
-            // .padding(0.1);
             .paddingOuter(0.05)
             .paddingInner(0.1);
 
@@ -22,8 +21,8 @@ class ObjectHistogram extends Component {
 
         this.cat_yScale = d3.scaleLog()
             .clamp(true) // forces data to fit in log scale (handles zero)
-            .domain([1, 2000])
-            .range([this.height, 0]);
+            .domain([1, 2000]);
+            // .range([this.height, 0]);
 
         this.resize();
 
@@ -169,10 +168,8 @@ class ObjectHistogram extends Component {
             .attr("class", "tick xTick selected");
 
         const yAxis = d3.axisLeft(this.cat_yScale)
-            .ticks(null, d => `${+d.toFixed(6)}`)
-            // .tickValues(d3.scaleLinear().domain(this.cat_yScale.domain()).ticks(3));
-            .tickValues([1, 50, 100, 500, 1000, 2000]);
-            // .tickValues(this.cat_yScale.ticks(3));
+            .ticks(Infinity, d3.format("~s"))
+            .tickValues([1, 5, 10, 25, 50, 100, 250, 500, 1000, 2000]);
 
         // add the y Axis
         this.svg.append("g")
