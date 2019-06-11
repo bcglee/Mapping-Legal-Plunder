@@ -118,6 +118,11 @@ class ObjectHistogram extends Component {
             .attr("height", this.height)
             .on("click",  function(d) {
               that.onclick(d);
+              var total_num = that.data.filter(el => el["object_category"] === d["object category"]).length;
+              var selected_num = that.plunder.apply_filters().filter(el => el["object_category"] === d["object category"]).length;
+                // adds tooltip on object category when mouseover the bar, giving counts for bar
+                that.tooltip.style("visibility", "visible")
+                            .html("Total: " + total_num + "<br>Selected: " + selected_num);
             })
             .on("mouseover", function(d) {
                 var total_num = that.data.filter(el => el["object_category"] === d["object category"]).length;
@@ -216,6 +221,7 @@ class ObjectHistogram extends Component {
         var newData = this.plunder.filter_categories(d["object category"], !selected);
 
         this.th.update_all(newData);
+
      }
 
 
