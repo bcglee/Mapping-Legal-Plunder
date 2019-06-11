@@ -340,6 +340,7 @@ button.visible {
     font-size: small;
     height: 100%;
     overflow: auto;
+    
 }
 
 #tableViewer th {
@@ -347,6 +348,7 @@ button.visible {
     background-color: #6798c1;
     color: white;
     text-align: left;
+    width:480px
 }
 
 #tableViewer tr:nth-child(even) {
