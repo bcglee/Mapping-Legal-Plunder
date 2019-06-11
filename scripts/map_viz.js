@@ -28,7 +28,7 @@ class MapViz extends Component {
 
         this.true_projection = d3.geoAlbers() // zoomed in on Lucca
             .center([-2, 44])
-            .rotate([347.5, 0.125])
+            .rotate([347.40, 0.16])
             .parallels([35, 45])
             .scale(50000);
 
@@ -74,8 +74,8 @@ class MapViz extends Component {
         // adds blue background in order to make water blue
         this.svg.append('rect')
             .attr("class", "water");
-        
-        
+
+
 
         // reset zoom button
         this.button = document.createElement("button");
@@ -91,7 +91,7 @@ class MapViz extends Component {
         // initial plottng of gray points for zoom
         // show map
 
-         
+
 
         this.svg.selectAll("path")
             .data(topojson.feature(this.map, this.map.objects.custom).features)
@@ -171,8 +171,8 @@ class MapViz extends Component {
             .duration(this.load_transition_duration)
             .attr("cx", (d) => this.true_projection([d["lon"], d["lat"]])[0])
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
-            
-       
+
+
         const radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
         var legend = this.svg.append("g")
                              .attr("transform", `translate(${this.width-50},${this.height + 10})`)
@@ -182,9 +182,9 @@ class MapViz extends Component {
                              .data([50,100,150,200])
                              .join("g");
 
-       
-        
-            
+
+
+
 
           legend.append("circle")
                 .attr("fill", "#609f60")
@@ -199,7 +199,7 @@ class MapViz extends Component {
             .attr("y", d => -1.25*d + 4)
             .attr("fill","white")
             .text(d3.format(".2s"));
-        
+
 
 
             // added rectangle for Lucca
