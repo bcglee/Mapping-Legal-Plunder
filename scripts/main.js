@@ -49,7 +49,7 @@ d3.csv("data/DALME_datasets/lucca_debt_full_dates_cleaned.csv", type).then(funct
     d3.csv("data/unique_locations.csv").then(function (locations) {
         d3.csv("data/DALME_datasets/unique_categories.csv").then(function (categories) {
             plunder.post_load(data, locations, categories);
-            const plunder_table = new PlunderTable(plunder);
+            var plunder_table = new PlunderTable(plunder);
 
             th.post_load(data, map_viz, locations, categories, oh, plunder, plunder_table);
             oh.post_load(data, locations, categories, th, plunder);
