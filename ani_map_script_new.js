@@ -35,10 +35,30 @@ Promise.all(promises).then(function(values) {
         pared_lucca_ownership_change.push(lucca_ownership_change[i])
       }
     }
-
-
-
-
+    
+    // sort records
+    
+    pared_lucca_ownership_change.forEach(function(record) {
+      
+      day = record.date_plunder.split(' ')[0]
+      month = record.date_plunder.split(' ')[1].split(',')[0]
+      yr = record.date_plunder.split(' ')[2]
+      if (day.length < 2){
+        day = '0' + day
+      }
+      month_num = ('January___February__March_____April_____May_______June______July______August____September_October___November__December__'.indexOf(month) / 10) + 1
+      month_num = '' + month_num
+      if (month_num.length < 2){
+        month_num = '0' + month_num
+      }
+      record['ymd'] = parseInt(yr + month_num + day)
+      
+    });
+    
+    pared_lucca_ownership_change.sort(function (a, b) {
+      return a.ymd - b.ymd;
+    });
+    
     lucca_object = {town: "Lucca", lon: "10.5027", lat: "43.8429", ct: "150"}
     unique_locations.push(lucca_object)
 
@@ -216,10 +236,10 @@ Promise.all(promises).then(function(values) {
 
     var i = 0;
     setInterval(function() {
-      if (i > lucca_ownership_change.length - 1) {
+      if (i > pared_lucca_ownership_change.length - 1) {
         i = 0;
       }
-      var od = lucca_ownership_change[i];
+      var od = pared_lucca_ownership_change[i];
       const origin_obj = unique_locations.find(obj => obj.town === od.former_owner_residence);
       const destination_obj = unique_locations.find(obj => obj.town === od.new_owner_residence);
       if (origin_obj && destination_obj){
@@ -228,7 +248,7 @@ Promise.all(promises).then(function(values) {
         d3.select('p#value-simple').text(reformatted_date);
       }
       i++;
-    }, 50);//125); //150);
+    }, 400);//125); //150);
 
     // Simple Slider
   	var data = [25, 50, 75, 100, 125, 150];
