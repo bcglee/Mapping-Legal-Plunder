@@ -26,6 +26,7 @@ class TimelineHistogram extends Component {
         var time_xTickNum = 20;
 
         this.time_yScale = d3.scaleLinear()
+            .domain([0, 300])
             .range([this.height, 0]);
 
         this.resize();
@@ -54,7 +55,7 @@ class TimelineHistogram extends Component {
 
         // https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
         this.svg.append("g")
-            .attr("class", "grid")
+            .attr("class", "grid xGrid")
             .attr("transform", "translate(0," + this.height + ")")
             .call(
                 this.make_x_gridlines(this.time_xScale, time_xTickNum)
@@ -65,9 +66,6 @@ class TimelineHistogram extends Component {
             .attr("dy", "1.25em");
 
         var time_yAxis = d3.axisLeft(this.time_yScale);
-
-        // sets yScale
-        this.time_yScale.domain([0, 300]);
 
         // adds axis to this.svg
         this.svg.append("g")
@@ -113,7 +111,7 @@ class TimelineHistogram extends Component {
             .attr("y", 10 - (this.margin.top / 1.5))
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
-            .html(this.formatTime(new Date(1332, 10, 1)) + " - " + this.formatTime(new Date(1343, 2, 1)));
+            .html(this.formatTime(new Date(1332, 10, 1)) + " &#8212; " + this.formatTime(new Date(1343, 2, 1)));
     }
 
     draw() { // stuff we do AFTER loading data
@@ -318,8 +316,8 @@ class TimelineHistogram extends Component {
 
     // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     make_y_gridlines(scale) {
-        return d3.axisLeft(scale)
-            .ticks(10);
+        return d3.axisLeft(scale);
+            // .ticks(10);
     }
 }
 

@@ -10,7 +10,6 @@
     --top-margin: 2%;
     --side-margin: 1%;
     --mid-margin: 1%;
-    /* --histogram-width: calc(var(--mid-margin) + var(--selector-width) + var(--map-width)); */
     --histogram-width: calc((100% - 2 * var(--side-margin))/2 - var(--mid-margin));
     --histogram-height: 35%;
 
@@ -106,11 +105,6 @@ html, body {
     fill: lightgray;
 }
 
-/* .timeline_backbar text {
-    fill: #fff;
-    font: 10px sans-serif;
-} */
-
 div.town_tooltip {
     position: absolute;
     text-align: center;
@@ -158,11 +152,20 @@ div.obj_tooltip {
     stroke:black;
     opacity:0.8;}
 
-/* //https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218 */
-.grid line {
-    stroke: lightgrey;
-    stroke-opacity: 0.7;
-    shape-rendering: crispEdges;
+.grid .tick:not(:first-of-type) line {
+    stroke: darkgray;
+    stroke-opacity: 0.6;
+    stroke-dasharray: 3,2;
+}
+
+.xGrid line {
+    stroke: darkgray;
+    stroke-opacity: 0.6;
+    stroke-dasharray: 3,2;
+}
+
+.grid path {
+    stroke-width: 0;
 }
 
 #townContainer{
@@ -344,7 +347,6 @@ button.visible {
 }
 
 #tableViewer th {
-    /* background-color: var(--green); */
     background-color: #6798c1;
     color: white;
     text-align: left;

@@ -21,8 +21,11 @@ class ObjectHistogram extends Component {
 
         this.cat_yScale = d3.scaleLog()
             .clamp(true) // forces data to fit in log scale (handles zero)
-            .domain([1, 2000]);
+            // .domain([1, 2000]);
             // .range([this.height, 0]);
+
+            .base(2)
+            .domain([1, 2048])
 
         this.resize();
 
@@ -52,7 +55,7 @@ class ObjectHistogram extends Component {
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0 - this.margin.left)
                 .attr("x", 0 - (this.height / 2))
-                .attr("dy", "1em")
+                .attr("dy", "1.5em")
                 .style("text-anchor", "middle")
                 .text("Number of Objects");
 
@@ -91,9 +94,6 @@ class ObjectHistogram extends Component {
         this.cat_xScale.domain(this.data.map((d) => d.object_category));
         this.click_xScale.domain(this.data.map((d) => d.object_category));
 
-        // this.svg.selectAll(".forebar").remove();
-
-        
         // background bar used for deselect effect
         this.svg.selectAll(".backbar")
             .data(that.categories)
@@ -168,19 +168,19 @@ class ObjectHistogram extends Component {
             .attr("class", "tick xTick selected");
 
         const yAxis = d3.axisLeft(this.cat_yScale)
-            .ticks(Infinity, d3.format("~s"))
-            .tickValues([1, 5, 10, 25, 50, 100, 250, 500, 1000, 2000]);
+            .ticks(Infinity, d3.format(",d"));
 
         // add the y Axis
         this.svg.append("g")
             .attr("class", "y axis")
             // .call(d3.axisLeft(this.cat_yScale));
-            .call(yAxis);
+            .call(yAxis)
+            // .selectAll(".domain").remove();
 
         // adds horizontal grid lines
         this.svg.append("g")
             .attr("class", "grid")
-            .call(() => this.th.make_y_gridlines(this.cat_yScale)
+            .call(this.th.make_y_gridlines(this.cat_yScale)
                 .tickSize(-this.width)
                 .tickFormat("")
             );
