@@ -65,7 +65,7 @@ p { margin: 0 0 10px 0; }
       <strong>Team Members</strong>: Benjamin Lee, Timothy Akintilo, Joseph Janizek, Ashrujit Ghoshal
     </p>
   </section>
-  
+
    <section>
     <p>
       <strong>Contact</strong>: bcgl, akintilo, jjanizek, ashrujit @ cs.washington.edu
@@ -83,39 +83,80 @@ p { margin: 0 0 10px 0; }
   </section>
 
   <section>
+    <em><a href="poster.pdf">Poster</a></em>
+  </section>
+
+  <section>
     <p>
-      In this design review, we are including 4 visualizations, all of which concern 14th century legal plunder in Lucca, Italy.
-      Each record visualized is an object plundered in exchange for a debt owed.
-      This project is a collaboration with the Documentary Archaeology of Late Medieval Europe (DALME).
-      We thank Gabriel Pizzorno, Preceptor on History and Director of the Digital History Program at Harvard University,
-      as well as Daniel Smail, Frank B. Baird, Jr. Professor of History at Harvard University, for their willingness to
-      collaborate and provide us with data.
+      In this project, we have collaborated with the Documentary Archaelogy of Late Medieval Europe
+<a href="https://dalme.org/">DALME</a>
+      project to visualize 14th century legal plunder in Lucca, Italy. The primary goal of our  visualization is to enable our
+      collaborators - historians and domain experts - to seamlessly explore the geospatial ecosystem of plunder in order to answer
+      extant research questions.  In total, we provide 5 views on the data: a map, a timeline, a histogram of object categories,
+      an object list, and an animated flow of wealth.  In order to facilitate data interrogation, we include a number of different
+      modes of interaction, including brushing, selecting, cross-filtering, details-on-demand, panning, and zooming.  We believe
+      that our tool provides a new approach to geospatial data exploration in the digital humanities.
     </p>
 
     <p>
-      Our final project builds on our assignment 3 submission and addresses many of the suggestions raised
-      in peer review.  The first 3 visualizations all provide a map that utilizes zooming and panning using a mouse.
-      The map zoom can be reset using the "reset zoom" button in the upper-left corner.  On the map, tooltips reveal
-      the underlying town's name.
+      <b>Audience:</b>
+      The primary audience of our visualization is our <a href="https://dalme.org/">DALME</a> collaborators:
+      <a href="https://scholar.harvard.edu/pizzorno">Gabriel Pizzorno</a>, Preceptor on History and Director of the Digital History
+      Program at Harvard University, as well as <a href="https://scholar.harvard.edu/smail/home">Daniel Smail</a>
+      Professor of History at Harvard University.  Given that our primary audience consists of domain experts, we wanted to create
+      a visualization that would enable them to explore the data across axes that were most useful to them.  All of the features
+      that appear in our visualization were the result of direct communication with our collaborators.
     </p>
 
     <p>
-      <ol>
-        <li>The first visualization enables interactive brushing on the timeline histogram.  This interactive brushing selectively
-        filters the map and the object category histogram. </li>
-        <li>The second visualization enables interactive, 2D brushing on the map.  This interactive brushing selectively
-        filters on the timeline and the object category histogram.</li>
-        <li>The third visualization enables the user to highlight a specific category by mousing over the corresponding bar.
-        The map and the timeline update dynamically. </li>
-        <li>The fourth visualization is an animated map of wealth flow, corresponding to the movement of plundered items from
-          the debtor to the indvidual collecting on the debt.    </li>
+    <b>Multiple views on data:</b>
+<ol>
+<li> <i>Map:</i> Upon loading the webpage, the map first displays all of Italy and then zooms to the region of interest around Lucca.
+  In total, 155 towns are displayed, all of which have had items plundered from at least one of its residents.  Each town is
+  represented by a dot, where the area of the dot is proportional to the number of plundered items in the town.  Zooming and
+  panning is enabled on the map, and the dots on the legend dynamically scale to the zoom level.  The default map view can be
+  restored by clicking the \textit{default view} button on the bottom-right of the map.</li>
+<li><i>Timeline</i>  The timeline displays histogram of plundered items according to date.  The large gaps of plundering events is
+  due to the fact that transcription of inventories is currently in-progress, as well as the incompleteness of the historical
+  record.</li>
+<li><i>Object Category Histogram:</i>  This histogram displays the plundered objects, as they fall into 15 different categories:
+  animal, clothing, containers, decorative objects, dress accessories, equipment, fodder, foodstuffs, furniture, linens, materials,
+  money, tools and implements, weapons, and  a catch-all category of ``unspecified." </li>
+<li> <i>Object List:</i>  The object list displays plundered objects.  The displayed fields include object name, object category, and
+  the town from which the object was plundered.</li>
+  <li><i>Animation of Wealth Flow:</i>  When clicking the animation button on the main visualization, a new map visualization loads in the browser, showing an animated flow of wealth.  Each red dot corresponds to the movement of a plundered object from the debtor to the creditor. As the animation plays, the month and year dynamically update underneath the plot. The user can toggle back to the main visualization by clicking the appropriate button.
+    </li>
+</ol>
+
+    </p>
+
+
+    <p> <b>Interactivity:</b>
+
+          In order to produce a visualization that would be of most use to our collaborators, we focused on incorporating many
+          modes of interactivity, which we list below:
+          <ol>
+          <li> <i>Brushing</i> on the timeline dynamically filters the map, category histogram, and item list. </li>
+          <li> <i>Clicking</i> on town names in the town list dynamically filters the timeline, category
+            histogram, and item list.  The filtered date range appears in the top-left of the timeline and updates
+            dynamically.  For fast selection, one can <i>select all</i> or <i>deselect all</i> towns.</li>
+          <li> <i>Clicking</i> on bars in the category histogram dynamically filters the map, timeline, and item list.
+            For fast selection, one can <i>select all</i> or <i>deselect all</i> categories.</li>
+          <li> <i>Cross-filtering</i> can be accomplished by applying
+          1, 2, and 3 together.</li>
+          <li> <i>Panning</i>  and <i>zooming</i> on the map using the mouse allows the user to explore the map.
+            The zoom extent and pan extent are fixed at set ranges for ease of use.
+            Clicking  <i>default view</i> in the bottom right of the map returns the map to its original configuration upon
+            loading the page.</li>
+          <li> <i>Hovering</i> over towns on the map produces tooltips on-demand that display the town name, the total
+            number of plundered items from the town, and the number of selected items via cross-filtering.</li>
+          <li> <i>Hovering</i> on bars in the category histogram produces tooltips on-demand that display the total number
+            of plundered items from the town and the number of selected items via cross-filtering.</li>
       </ol>
 
     </p>
   </section>
-  <section>
-    <em><a href="poster.pdf">Poster</a></em>
-  </section>
+
 
 
    <!-- <section>
