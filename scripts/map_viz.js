@@ -152,11 +152,19 @@ class MapViz extends Component {
             var legend_box=this.svg.append("rect")
             .attr("fill", "white")
             .attr("stroke", "white")
-            .attr("x", this.width-90)
+            .attr("x", this.width-96)
             .attr("y",this.height-280)
-            .attr("width", 80)
-            .attr("height", 250)
+            .attr("width", 94)
+            .attr("height", 270)
             .attr("fill-opacity", 0.2)
+
+            this.svg.append("text")
+            .attr("x", this.width-95)
+            .attr("y",this.height-20)
+            .attr("font-size","9pt")
+            .attr("fill","white")
+            .text("Number of Objects")
+
 
         enterdots.transition("dot_zoom")
             .delay(this.load_transition_delay)
@@ -191,6 +199,7 @@ class MapViz extends Component {
             .attr("y", d => -1.25*d + 4)
             .attr("fill","white")
             .text(d3.format(".2s"));
+        
 
 
             // added rectangle for Lucca
