@@ -30,7 +30,7 @@ class MapViz extends Component {
             .center([-2, 44])
             .rotate([347.5, 0.125])
             .parallels([35, 45])
-            .scale(60000);
+            .scale(50000);
 
         // define path generators
         this.initial_path = d3.geoPath()
