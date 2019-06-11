@@ -76,7 +76,7 @@ p { margin: 0 0 10px 0; }
     <p>
       <strong>Visualizations</strong>
       <ol>
-        <li><a href="./viz.html">Interactive Map, Timeline and Object histogram</a></li>
+        <li><a href="./viz.html">Interactive Map, Timeline and Object Histogram</a></li>
         <li><a href="./ani_map.html">Animation of wealth flow on map</a></li>
         </ol>
     </p>
@@ -89,7 +89,7 @@ p { margin: 0 0 10px 0; }
   <section>
     <p>
       In this project, we have collaborated with the Documentary Archaelogy of Late Medieval Europe
-<a href="https://dalme.org/">DALME</a>
+      (<a href="https://dalme.org/">DALME</a>)
       project to visualize 14th century legal plunder in Lucca, Italy. The primary goal of our  visualization is to enable our
       collaborators - historians and domain experts - to seamlessly explore the geospatial ecosystem of plunder in order to answer
       extant research questions.  In total, we provide 5 views on the data: a map, a timeline, a histogram of object categories,
@@ -102,7 +102,7 @@ p { margin: 0 0 10px 0; }
       <b>Audience:</b>
       The primary audience of our visualization is our <a href="https://dalme.org/">DALME</a> collaborators:
       <a href="https://scholar.harvard.edu/pizzorno">Gabriel Pizzorno</a>, Preceptor on History and Director of the Digital History
-      Program at Harvard University, as well as <a href="https://scholar.harvard.edu/smail/home">Daniel Smail</a>
+      Program at Harvard University, as well as <a href="https://scholar.harvard.edu/smail/home">Daniel Smail</a>,
       Professor of History at Harvard University.  Given that our primary audience consists of domain experts, we wanted to create
       a visualization that would enable them to explore the data across axes that were most useful to them.  All of the features
       that appear in our visualization were the result of direct communication with our collaborators.
@@ -112,19 +112,20 @@ p { margin: 0 0 10px 0; }
     <b>Multiple views on data:</b>
 <ol>
 <li> <i>Map:</i> Upon loading the webpage, the map first displays all of Italy and then zooms to the region of interest around Lucca.
-  In total, 155 towns are displayed, all of which have had items plundered from at least one of its residents.  Each town is
-  represented by a dot, where the area of the dot is proportional to the number of plundered items in the town.  Zooming and
+  In total, 155 towns are displayed, all of which have had objects plundered from at least one of its residents.  Each town is
+  represented by a dot, where the area of the dot is proportional to the number of plundered objects in the town.  Zooming and
   panning is enabled on the map, and the dots on the legend dynamically scale to the zoom level.  The default map view can be
-  restored by clicking the \textit{default view} button on the bottom-right of the map.</li>
-<li><i>Timeline</i>  The timeline displays histogram of plundered items according to date.  The large gaps of plundering events is
-  due to the fact that transcription of inventories is currently in-progress, as well as the incompleteness of the historical
+  restored by clicking the <i>default view</i> button to the bottom-right of the map.</li>
+  <i>Town List:</i> The town list provides a list of all of the towns that appear on the map view, sorted alphabetically.
+<li><i>Timeline</i>:  The timeline displays a histogram of plundered objects according to date.  The large spans of time without plundering events is
+  due to the fact that transcription of inventories is currently in-progress, as well as the incomplete state of the historical
   record.</li>
-<li><i>Object Category Histogram:</i>  This histogram displays the plundered objects, as they fall into 15 different categories:
+<li><i>Object Category Histogram:</i>  This histogram displays the plundered objects as they fall into 15 different categories:
   animal, clothing, containers, decorative objects, dress accessories, equipment, fodder, foodstuffs, furniture, linens, materials,
-  money, tools and implements, weapons, and  a catch-all category of ``unspecified." </li>
-<li> <i>Object List:</i>  The object list displays plundered objects.  The displayed fields include object name, object category, and
-  the town from which the object was plundered.</li>
-  <li><i>Animation of Wealth Flow:</i>  When clicking the animation button on the main visualization, a new map visualization loads in the browser, showing an animated flow of wealth.  Each red dot corresponds to the movement of a plundered object from the debtor to the creditor. As the animation plays, the month and year dynamically update underneath the plot. The user can toggle back to the main visualization by clicking the appropriate button.
+  money, tools and implements, weapons, and  a catch-all category of "unspecified." </li>
+<li> <i>Object List:</i>  The object list displays plundered objects.  The displayed fields include object name, object category,
+  the town from which the object was plundered, and the object ID within the database.</li>
+  <li><i>Animation of Wealth Flow:</i>  When clicking the animation link on the main visualization, a new map visualization loads in the browser, showing an animated flow of wealth.  Each colored dot corresponds to the movement of a plundered object from the debtor to the creditor. As the animation plays, the month and year dynamically update underneath the plot. The user can toggle back to the main visualization by clicking the appropriate button.
     </li>
 </ol>
 
@@ -136,22 +137,22 @@ p { margin: 0 0 10px 0; }
           In order to produce a visualization that would be of most use to our collaborators, we focused on incorporating many
           modes of interactivity, which we list below:
           <ol>
-          <li> <i>Brushing</i> on the timeline dynamically filters the map, category histogram, and item list. </li>
+          <li> <i>Brushing</i> on the timeline dynamically filters the map, category histogram, and object list. The filtered date range appears to the top-left of the timeline and updates
+          dynamically.   </li>
           <li> <i>Clicking</i> on town names in the town list dynamically filters the timeline, category
-            histogram, and item list.  The filtered date range appears in the top-left of the timeline and updates
-            dynamically.  For fast selection, one can <i>select all</i> or <i>deselect all</i> towns.</li>
-          <li> <i>Clicking</i> on bars in the category histogram dynamically filters the map, timeline, and item list.
+            histogram, and object list.  For fast selection, one can <i>select all</i> or <i>deselect all</i> towns.</li>
+          <li> <i>Clicking</i> on bars in the category histogram dynamically filters the map, timeline, and object list.
             For fast selection, one can <i>select all</i> or <i>deselect all</i> categories.</li>
           <li> <i>Cross-filtering</i> can be accomplished by applying
           1, 2, and 3 together.</li>
           <li> <i>Panning</i>  and <i>zooming</i> on the map using the mouse allows the user to explore the map.
-            The zoom extent and pan extent are fixed at set ranges for ease of use.
-            Clicking  <i>default view</i> in the bottom right of the map returns the map to its original configuration upon
+            The zoom extent and pan extent are fixed between set ranges for ease of use.
+            Clicking  <i>default view</i> to the bottom right of the map returns the map to its original configuration upon
             loading the page.</li>
           <li> <i>Hovering</i> over towns on the map produces tooltips on-demand that display the town name, the total
-            number of plundered items from the town, and the number of selected items via cross-filtering.</li>
+            number of plundered objects from the town, and the number of selected objects via cross-filtering.</li>
           <li> <i>Hovering</i> on bars in the category histogram produces tooltips on-demand that display the total number
-            of plundered items from the town and the number of selected items via cross-filtering.</li>
+            of plundered objects from the town and the number of selected objects via cross-filtering.</li>
       </ol>
 
     </p>
