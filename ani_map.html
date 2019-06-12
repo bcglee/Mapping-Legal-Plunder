@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Mapping Legal Plunder</title>
+    <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans|Proza+Libre:400,700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style_animation.css">
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="ani_map_script_new.js?scratch_114"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
 </head>
-<title>Mapping Legal Plunder</title>
-<p> Plundered records transition from former owner's town to new owner's town.</p>
-<svg width="1000" height="450"></svg>
-<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/topojson@3"></script>
-<script src="ani_map_script_new.js?scratch_114"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
-<div class="row align-items-center">
-    <div class="col-sm-2"><p id="value-simple"></p></div>
-<!--     <div class="col-sm"><div id="slider-simple"></div></div> -->
-</div>
-<div id="animateButton">
-        <a href="./viz.html">Interact with Map</a>
-    </div>
+<body>
+    <!-- <div id="all"> -->
+        <div id="animationDescription">
+            <p> Plundered records transition from former owner's town to new
+            owner's town.</p>
+        </div>
+        <div id="animationMap">
+            <svg width="1000" height="450"></svg>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-sm-2"><p id="value-simple"></p></div>
+        <!--     <div class="col-sm"><div id="slider-simple"></div></div> -->
+        </div>
+        <div id="animateButton">
+                <a href="./viz.html">Interact with Map</a>
+        </div>
+    <!-- </div> -->
+</body>
 </html>

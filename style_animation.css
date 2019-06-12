@@ -26,6 +26,8 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-family: var(--body-font);
 }
 
@@ -437,7 +439,6 @@ button.visible {
     display: flex;
     flex-direction: column;
     flex-grow: 2;
-    /* float: right; */
     flex-basis: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);
@@ -453,4 +454,26 @@ button.visible {
 
 #categoryHist {
     flex-grow: 1;
+}
+
+/* #all {
+    align-self: flex-end;
+    flex-grow: 1;
+} */
+
+#animationDescription {
+    order: 1;
+}
+
+#animationMap {
+    order: 2;
+}
+
+.row {
+    order: 3;
+    /* align-self: flex-start; */
+}
+
+#animateButton {
+    order: 4;
 }

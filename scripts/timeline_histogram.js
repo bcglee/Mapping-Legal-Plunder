@@ -65,7 +65,8 @@ class TimelineHistogram extends Component {
             .selectAll("text")
             .attr("dy", "1.25em");
 
-        var time_yAxis = d3.axisLeft(this.time_yScale);
+        var time_yAxis = d3.axisLeft(this.time_yScale)
+            .ticks(7);
 
         // adds axis to this.svg
         this.svg.append("g")
@@ -316,8 +317,8 @@ class TimelineHistogram extends Component {
 
     // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
     make_y_gridlines(scale) {
-        return d3.axisLeft(scale);
-            // .ticks(10);
+        return d3.axisLeft(scale)
+            .ticks(7);
     }
 }
 

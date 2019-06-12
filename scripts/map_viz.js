@@ -232,6 +232,10 @@ class MapViz extends Component {
         this.svg.selectAll(".luccadot")
             .attr('transform', d3.event.transform);
 
+        //transforms the dots appropriately (with zoom)
+        this.svg.selectAll(".foredot")
+            .attr('transform', d3.event.transform);
+
         // legend
         this.svg.selectAll("circle.legend").remove();
         this.svg.selectAll(".legend.label").remove();
@@ -245,14 +249,6 @@ class MapViz extends Component {
             .attr("y", d => -1.25*d + 4)
             .attr("fill","white")
             .text(d3.format(".2s"));
-
-        //transforms the dots appropriately (with zoom)
-        this.svg.selectAll(".foredot")
-            .attr('transform', d3.event.transform);
-
-        //transforms brush appropriately (with zoom)
-        this.svg.selectAll(".brush")
-            .attr('transform', d3.event.transform);
 
         // hide zoom button when already at default zoom
         if (Math.abs(this.curr_transform.k - d3.zoomIdentity.k > 1e-5) ||
