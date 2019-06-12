@@ -266,6 +266,7 @@ circle.legend {
 }
 
 #animateButton {
+    align-self: center;
     margin-top: 15%;
     order: 4;
 }
