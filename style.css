@@ -26,6 +26,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    align-content: space-between;
     font-family: var(--body-font);
 }
 
@@ -35,8 +36,9 @@ body {
 
 #title h1 {
     font-family: var(--header-font);
-    margin-top: 1%;
-    margin-bottom: 1%;
+    font-size: 3.7vh;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 #viz {

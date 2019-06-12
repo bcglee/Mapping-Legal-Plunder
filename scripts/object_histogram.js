@@ -25,7 +25,7 @@ class ObjectHistogram extends Component {
             // .range([this.height, 0]);
 
             .base(2)
-            .domain([1, 2048])
+            .domain([1, 2048]);
 
         this.resize();
 
@@ -57,7 +57,7 @@ class ObjectHistogram extends Component {
                 .attr("x", 0 - (this.height / 2))
                 .attr("dy", "1.5em")
                 .style("text-anchor", "middle")
-                .text("Number of Objects");
+                .text("# of Objects");
 
         // http://bl.ocks.org/biovisualize/1016860
         // https://bl.ocks.org/alandunning/274bf248fd0f362d64674920e85c1eb7
@@ -168,7 +168,7 @@ class ObjectHistogram extends Component {
             .attr("class", "tick xTick selected");
 
         const yAxis = d3.axisLeft(this.cat_yScale)
-            .ticks(Infinity, d3.format(",d"));
+            .ticks(10, d3.format(",d"));
 
         // add the y Axis
         this.svg.append("g")
@@ -180,7 +180,7 @@ class ObjectHistogram extends Component {
         // adds horizontal grid lines
         this.svg.append("g")
             .attr("class", "grid")
-            .call(this.th.make_y_gridlines(this.cat_yScale)
+            .call(this.th.make_y_gridlines(this.cat_yScale, 10)
                 .tickSize(-this.width)
                 .tickFormat("")
             );

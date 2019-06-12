@@ -76,7 +76,7 @@ class TimelineHistogram extends Component {
         this.svg.append("g")
             .attr("class", "grid")
             .call(
-                this.make_y_gridlines(this.time_yScale)
+                this.make_y_gridlines(this.time_yScale, 7)
                     .tickSize(-this.width)
                     .tickFormat("")
                   );
@@ -102,7 +102,7 @@ class TimelineHistogram extends Component {
             .attr("x", 0 - (this.height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text("Number of Objects");
+            .text("# of Objects");
 
         //adds text of full date range on top-left of plot
         this.formatTime = d3.timeFormat("%b, %Y");
@@ -316,9 +316,9 @@ class TimelineHistogram extends Component {
     }
 
     // gridlines in y axis function https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218
-    make_y_gridlines(scale) {
+    make_y_gridlines(scale, tickNum) {
         return d3.axisLeft(scale)
-            .ticks(7);
+            .ticks(tickNum);
     }
 }
 
