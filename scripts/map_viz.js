@@ -167,9 +167,9 @@ class MapViz extends Component {
         this.svg.append("text")
             .attr("class", "legend title")
             // .attr("x", this.width-93)
-            .attr("x", 12)
+            .attr("x", 30)
             .attr("y",this.height-40)
-            .text("Number of Objects");
+            .text("# of Objects");
 
 
         this.radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
