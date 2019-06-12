@@ -152,6 +152,22 @@ div.obj_tooltip {
     stroke:black;
     opacity:0.8;}
 
+circle.legend {
+    fill: var(--green);
+    opacity: 0.7;
+}
+
+.legend.label {
+    fill: white;
+    font-family: var(--body-font);
+}
+
+.legend.title {
+    font-size: x-small;
+    font-family: var(--body-font);
+    fill: white;
+}
+
 .grid .tick:not(:first-of-type) line {
     stroke: darkgray;
     stroke-opacity: 0.6;
