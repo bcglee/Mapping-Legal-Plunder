@@ -1,8 +1,4 @@
 :root {
-    --selector-height: 50%;
-    --selector-width: 10%;
-    --table-height: 60%;
-    --table-width: 30%;
     --map-height: 60%;
     --map-width: 55%;
     --header-font: 'Proza Libre', sans-serif;
@@ -10,8 +6,6 @@
     --top-margin: 0;
     --side-margin: 1%;
     --mid-margin: 1%;
-    --histogram-width: calc((100% - 2 * var(--side-margin))/2 - var(--mid-margin));
-    --histogram-height: 35%;
 
     --green: #609f60;
     --hover-blue: #ccdcea;
@@ -39,99 +33,6 @@ body {
     font-family: var(--header-font);
     margin-top: 1%;
     margin-bottom: 1%;
-}
-
-#viz {
-    overflow:auto;
-    flex-grow: 1;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-/* #row1 {
-    display: flex;
-} */
-
-.axisLabel {
-    font-family: var(--body-font);
-}
-
-.clickbar {
-    cursor: pointer;
-    fill: darkgray;
-    opacity: 0;
-    transition-duration: 0.2s;
-}
-
-.clickbar:hover, .clickbar.deselected:hover {
-    fill: var(--hover-blue);
-    opacity: 0.5;
-    transition-duration: 0.1s;
-}
-
-.clickbar.deselected {
-    opacity: 0.2;
-    transition-duration: 0.2s;
-}
-
-.backbar {
-    fill: url(#pattern);
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-}
-
-.backbar.selected {
-    transition-duration: 0.2s;
-    opacity: 0;
-}
-
-.backbar.deselected {
-    transition-duration: 0.2s;
-    opacity: 0.25;
-}
-
-.forebar.selected {
-    color: var(--green);
-    visibility: visible;
-    transition-duration: 0.2s;
-}
-
-.forebar.deselected {
-    visibility: hidden;
-    transition-duration: 0.2s;
-}
-
-.allbar {
-    pointer-events: none;
-}
-
-.allbar.selected {
-    opacity: 1;
-    transition-duration: 0.2s;
-}
-
-.allbar.deselected {
-    opacity: 0.2;
-    transition-duration: 0.2s;
-}
-
-.tick text {
-    font-family: var(--body-font);
-}
-
-.xTick.selected {
-    opacity: 1;
-    transition-duration: 0.2s;
-}
-
-.xTick.deselected {
-    opacity: 0.3;
-    transition-duration: 0.2s;
-}
-
-.timeline_backbar {
-    fill: lightgray;
 }
 
 div.town_tooltip {
@@ -176,143 +77,6 @@ div.obj_tooltip {
     opacity: 0.9;
 }
 
-.legend rect {
-    fill:white;
-    stroke:black;
-    opacity:0.8;}
-
-circle.legend {
-    fill: var(--green);
-    /* opacity: 0.7; */
-}
-
-.legend.label {
-    fill: white;
-    font-family: var(--body-font);
-}
-
-.legend.title {
-    font-size: x-small;
-    font-family: var(--body-font);
-    fill: white;
-}
-
-.grid .tick:not(:first-of-type) line {
-    stroke: darkgray;
-    stroke-opacity: 0.6;
-    stroke-dasharray: 3,2;
-}
-
-.xGrid line {
-    stroke: darkgray;
-    stroke-opacity: 0.6;
-    stroke-dasharray: 3,2;
-}
-
-.grid path {
-    stroke-width: 0;
-}
-
-#townContainer{
-    order: 1;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 2;
-    flex-basis: auto;
-    /* float: left; */
-    height: var(--selector-height);
-    /* width: var(--selector-width); */
-    margin-right: var(--mid-margin);
-    margin-left: var(--side-margin);
-}
-
-#townContainer p {
-    order: 1;
-    font-family: var(--header-font);
-    font-size: medium;
-    font-weight: bold;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-#townSelector {
-    order: 2;
-    position: relative;
-    flex-grow: 1;
-    font-family: var(--body-font);
-    font-size: x-small;
-    overflow: auto;
-}
-
-#townSelector input {
-    position: absolute;
-    left: -9999px;
-}
-
-#townSelector label {
-    display: block;
-    width: 100%;
-    transition-duration: 0.1s;
-}
-
-#townSelector label:hover {
-    background-color: var(--hover-blue);
-    transition-duration: inherit;
-}
-
-#townSelector input[type="checkbox"]:checked + label {
-    background-color: #6798c1;
-    color: white;
-    transition-duration: 0.1s;
-}
-
-#townSelector input[type="checkbox"]:checked + label:hover {
-    color: initial;
-    background-color: var(--hover-blue);
-    transition-duration: inherit;
-}
-
-#animateButton {
-    margin-top: 15%;
-    order: 4;
-}
-
-#animateButton a {
-    font-size: xx-large;
-}
-
-#mapContainer {
-    order: 2;
-    flex-grow: 2;
-    height: var(--map-height);
-    flex-basis: var(--map-width);
-    /* float: left; */
-    /* margin-top: var(--top-margin); */
-    margin-top: 5px;
-    margin-right: var(--mid-margin);
-    display: flex;
-    flex-direction: column;
-}
-
-.map {
-    height: 100%;
-    width: 100%;
-}
-
-.water {
-    fill: lightblue;
-}
-
-#townButtons {
-    order: 3;
-}
-
-#mapContainer button {
-    align-self: flex-end;
-}
-
-/* #mapContainer button { */
 button, a {
     float: right;
     font-family: var(--body-font);
@@ -322,144 +86,13 @@ button, a {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition-duration: 0.4s;
 }
 
-/* #mapContainer button:hover { */
 button:hover, a:hover {
     transition: color 0.4s;
     color: steelblue;
 }
-
-#timelineContainer {
-    order: 4;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 2;
-    /* float: left; */
-    flex-basis: var(--histogram-width);
-    height: var(--histogram-height);
-    margin-left: var(--side-margin);
-    margin-right: var(--mid-margin);
-}
-
-#timelineContainer p {
-    font-family: var(--header-font);
-    font-size: x-large;
-    font-weight: bold;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-#timelineHist {
-    flex-grow: 1;
-}
-
-.dateText {
-    font-family: var(--body-font);
-}
-
-.timeline_forebar {
-    fill: var(--green);
-}
-
-.time_hist {
-    height: 100%;
-    width: 100%;
-}
-
-.obj_hist {
-    height: 100%;
-    width: 100%;
-}
-
-button.hidden {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 400ms, opacity 400ms;
-}
-
-button.visible {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s linear 0s, opacity 400ms, color 0.4s;
-}
-
-#tableContainer{
-    order: 3;
-    /* flex-grow: 4; */
-    flex-shrink: 2;
-    /* display: flex; */
-    flex-direction: column;
-    /* float: right; */
-    height: var(--table-height);
-    margin-right: var(--side-margin);
-    flex-basis: var(--table-width);
-}
-
-#tableContainer p {
-    font-family: var(--header-font);
-    font-size: x-large;
-    font-weight: bold;
-    margin-bottom: 0px;
-    margin-top: 0px;
-}
-
-#tableViewer {
-    flex-grow: 1;
-    font-family: var(--body-font);
-    font-size: small;
-    height: 100%;
-    overflow: auto;
-
-}
-
-#tableViewer th {
-    background-color: #6798c1;
-    color: white;
-    text-align: left;
-    width:480px
-}
-
-#tableViewer tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.foredot {
-    fill: var(--green);
-    pointer-events: none;
-}
-
-.forebar {
-    fill: var(--green);
-    pointer-events: none;
-}
-
-#categoryContainer {
-    order: 5;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 2;
-    flex-basis: var(--histogram-width);
-    height: var(--histogram-height);
-    margin-left: var(--side-margin);
-}
-
-#categoryContainer p {
-    font-family: var(--header-font);
-    font-size: x-large;
-    font-weight: bold;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-#categoryHist {
-    flex-grow: 1;
-}
-
-/* #all {
-    align-self: flex-end;
-    flex-grow: 1;
-} */
 
 #animationDescription {
     order: 1;
@@ -469,11 +102,12 @@ button.visible {
     order: 2;
 }
 
-.row {
+#returnButton {
     order: 3;
-    /* align-self: flex-start; */
+    font-size: x-large;
 }
 
-#animateButton {
-    order: 4;
+#mapDate {
+    fill: white;
+    font-size: xx-large;
 }

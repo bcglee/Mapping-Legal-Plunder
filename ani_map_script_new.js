@@ -244,8 +244,18 @@ Promise.all(promises).then(function(values) {
       const destination_obj = unique_locations.find(obj => obj.town === od.new_owner_residence);
       if (origin_obj && destination_obj){
         fly(od.former_owner_residence, od.new_owner_residence);
-        reformatted_date = od.date_plunder.split(" ")[1] + " " + od.date_plunder.split(" ")[2]
-        d3.select('p#value-simple').text(reformatted_date);
+        var reformatted_date = od.date_plunder.split(" ")[1] + " " + od.date_plunder.split(" ")[2];
+
+        // d3.select('p#value-simple').text(reformatted_date);
+        d3.select("svg")
+          .selectAll("text")
+          .data([reformatted_date])
+          .join("text")
+            .text(reformatted_date)
+            .attr("id", "mapDate")
+            .attr("x", 20)
+            .attr("y", 430);
+
       }
       i++;
     }, 400);//125); //150);

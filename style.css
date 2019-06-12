@@ -46,10 +46,6 @@ body {
     flex-wrap: wrap;
 }
 
-/* #row1 {
-    display: flex;
-} */
-
 .axisLabel {
     font-family: var(--body-font);
 }
@@ -181,7 +177,6 @@ div.obj_tooltip {
 
 circle.legend {
     fill: var(--green);
-    /* opacity: 0.7; */
 }
 
 .legend.label {
@@ -218,7 +213,6 @@ circle.legend {
     flex-grow: 1;
     flex-shrink: 2;
     flex-basis: auto;
-    /* float: left; */
     height: var(--selector-height);
     /* width: var(--selector-width); */
     margin-right: var(--mid-margin);
@@ -285,8 +279,6 @@ circle.legend {
     flex-grow: 2;
     height: var(--map-height);
     flex-basis: var(--map-width);
-    /* float: left; */
-    /* margin-top: var(--top-margin); */
     margin-top: 5px;
     margin-right: var(--mid-margin);
     display: flex;
@@ -320,6 +312,7 @@ button, a {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition-duration: 0.4s;
 }
 
 /* #mapContainer button:hover { */
@@ -333,7 +326,6 @@ button:hover, a:hover {
     display: flex;
     flex-direction: column;
     flex-grow: 2;
-    /* float: left; */
     flex-basis: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);
@@ -384,11 +376,8 @@ button.visible {
 
 #tableContainer{
     order: 3;
-    /* flex-grow: 4; */
     flex-shrink: 2;
-    /* display: flex; */
     flex-direction: column;
-    /* float: right; */
     height: var(--table-height);
     margin-right: var(--side-margin);
     flex-basis: var(--table-width);
@@ -437,7 +426,6 @@ button.visible {
     display: flex;
     flex-direction: column;
     flex-grow: 2;
-    /* float: right; */
     flex-basis: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);
