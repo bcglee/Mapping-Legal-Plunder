@@ -28,6 +28,7 @@ body {
     flex-direction: column;
     align-content: space-between;
     font-family: var(--body-font);
+    margin-bottom: -50px;
 }
 
 #title {
@@ -444,4 +445,16 @@ button.visible {
 
 #categoryHist {
     flex-grow: 1;
+}
+
+footer {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+
+footer p {
+    margin: 0;
+    font-size: small;
+    max-width: 33em;
 }
