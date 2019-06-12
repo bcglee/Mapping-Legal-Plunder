@@ -166,8 +166,7 @@ class MapViz extends Component {
 
         this.svg.append("text")
             .attr("class", "legend title")
-            // .attr("x", this.width-93)
-            .attr("x", 30)
+            .attr("x", 26)
             .attr("y",this.height-40)
             .text("# of Objects");
 
