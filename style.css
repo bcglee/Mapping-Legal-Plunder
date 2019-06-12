@@ -1,5 +1,5 @@
 :root {
-    --selector-height: 40%;
+    --selector-height: 50%;
     --selector-width: 10%;
     --table-height: 60%;
     --table-width: 30%;
@@ -7,7 +7,7 @@
     --map-width: 55%;
     --header-font: 'Proza Libre', sans-serif;
     --body-font: 'Open Sans', sans-serif;
-    --top-margin: 2%;
+    --top-margin: 0;
     --side-margin: 1%;
     --mid-margin: 1%;
     --histogram-width: calc((100% - 2 * var(--side-margin))/2 - var(--mid-margin));
@@ -22,6 +22,32 @@ html, body {
     width: 100%;
     margin: 0;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#title {
+    margin-left: var(--side-margin);
+}
+
+#title h1 {
+    font-family: var(--header-font);
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+#viz {
+    overflow:auto;
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* #row1 {
+    display: flex;
+} */
 
 .axisLabel {
     font-family: var(--body-font);
@@ -154,7 +180,7 @@ div.obj_tooltip {
 
 circle.legend {
     fill: var(--green);
-    opacity: 0.7;
+    /* opacity: 0.7; */
 }
 
 .legend.label {
@@ -185,23 +211,30 @@ circle.legend {
 }
 
 #townContainer{
+    order: 1;
     display: flex;
     flex-direction: column;
-    float: left;
+    flex-grow: 1;
+    flex-shrink: 2;
+    flex-basis: auto;
+    /* float: left; */
     height: var(--selector-height);
-    width: var(--selector-width);
+    /* width: var(--selector-width); */
     margin-right: var(--mid-margin);
     margin-left: var(--side-margin);
 }
 
 #townContainer p {
+    order: 1;
     font-family: var(--header-font);
     font-size: medium;
     font-weight: bold;
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 #townSelector {
+    order: 2;
     position: relative;
     flex-grow: 1;
     font-family: var(--body-font);
@@ -238,10 +271,8 @@ circle.legend {
 }
 
 #animateButton {
-    position: absolute;
-    float:left;
-    top: 45%;
-    left: var(--side-margin);
+    margin-top: 15%;
+    order: 4;
 }
 
 #animateButton a {
@@ -249,22 +280,33 @@ circle.legend {
 }
 
 #mapContainer {
+    order: 2;
+    flex-grow: 2;
     height: var(--map-height);
-    width: var(--map-width);
-    float: left;
-    margin-top: var(--top-margin);
+    flex-basis: var(--map-width);
+    /* float: left; */
+    /* margin-top: var(--top-margin); */
+    margin-top: 5px;
     margin-right: var(--mid-margin);
+    display: flex;
+    flex-direction: column;
 }
 
 .map {
-    height: 90%;
+    height: 100%;
     width: 100%;
 }
 
 .water {
-    height: 100%;
-    width: 100%;
     fill: lightblue;
+}
+
+#townButtons {
+    order: 3;
+}
+
+#mapContainer button {
+    align-self: flex-end;
 }
 
 /* #mapContainer button { */
@@ -286,10 +328,12 @@ button:hover, a:hover {
 }
 
 #timelineContainer {
+    order: 4;
     display: flex;
     flex-direction: column;
-    float: left;
-    width: var(--histogram-width);
+    flex-grow: 2;
+    /* float: left; */
+    flex-basis: var(--histogram-width);
     height: var(--histogram-height);
     margin-left: var(--side-margin);
     margin-right: var(--mid-margin);
@@ -338,12 +382,15 @@ button.visible {
 }
 
 #tableContainer{
-    display: flex;
+    order: 3;
+    /* flex-grow: 4; */
+    flex-shrink: 2;
+    /* display: flex; */
     flex-direction: column;
-    float: right;
+    /* float: right; */
     height: var(--table-height);
     margin-right: var(--side-margin);
-    width: var(--table-width);
+    flex-basis: var(--table-width);
 }
 
 #tableContainer p {
@@ -351,6 +398,7 @@ button.visible {
     font-size: x-large;
     font-weight: bold;
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 #tableViewer {
@@ -383,21 +431,23 @@ button.visible {
     pointer-events: none;
 }
 
+#categoryContainer {
+    order: 5;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 2;
+    /* float: right; */
+    flex-basis: var(--histogram-width);
+    height: var(--histogram-height);
+    margin-left: var(--side-margin);
+}
+
 #categoryContainer p {
     font-family: var(--header-font);
     font-size: x-large;
     font-weight: bold;
     margin-top: 0px;
     margin-bottom: 0px;
-}
-
-#categoryContainer {
-    display: flex;
-    flex-direction: column;
-    float: right;
-    width: var(--histogram-width);
-    height: var(--histogram-height);
-    margin-left: var(--side-margin);
 }
 
 #categoryHist {

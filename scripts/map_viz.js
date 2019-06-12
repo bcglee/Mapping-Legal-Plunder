@@ -14,7 +14,6 @@ class MapViz extends Component {
         this.div = d3.select("#mapContainer")
         this.svg = this.div.append("svg")
             .attr("class", "map");
-            // .attr("height", this.height);
 
         // now getting width and height via css
         this.width = parseInt(this.svg.style("width"), 10);
@@ -73,7 +72,9 @@ class MapViz extends Component {
 
         // adds blue background in order to make water blue
         this.svg.append('rect')
-            .attr("class", "water");
+            .attr("class", "water")
+            .attr("height", "100%")
+            .attr("width", "100%");
 
 
 
@@ -83,7 +84,6 @@ class MapViz extends Component {
         var button_text = document.createTextNode("default view");
         this.button.appendChild(button_text);
         this.button.addEventListener("click", () => this.resetzoom());
-        this.div.node().appendChild(document.createElement("br"));
         this.div.node().appendChild(this.button);
     }
 
@@ -156,24 +156,26 @@ class MapViz extends Component {
             .attr("cy", (d) => this.true_projection([d["lon"], d["lat"]])[1]);
 
         var legend_box=this.svg.append("rect")
-            .attr("fill", "white")
+            .attr("fill", "#264662")
             .attr("stroke", "white")
-            .attr("x", this.width-96)
-            .attr("y",this.height-280)
+            .attr("x", 10)
+            .attr("y",this.height-300)
             .attr("width", 94)
             .attr("height", 270)
-            .attr("fill-opacity", 0.2);
+            .attr("fill-opacity", 0.8);
 
         this.svg.append("text")
             .attr("class", "legend title")
-            .attr("x", this.width-93)
-            .attr("y",this.height-20)
+            // .attr("x", this.width-93)
+            .attr("x", 12)
+            .attr("y",this.height-40)
             .text("Number of Objects");
 
 
         this.radius = d3.scaleSqrt().domain([0, 200]).range([0, 10]);
         this.legend = this.svg.append("g")
-            .attr("transform", `translate(${this.width-50},${this.height + 10})`)
+            // .attr("transform", `translate(${this.width-50},${this.height + 10})`)
+            .attr("transform", `translate(57,${this.height - 10})`)
             .attr("text-anchor", "middle")
             .style("font", "10px sans-serif")
             .selectAll("g")
